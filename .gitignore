@@ -1,0 +1,7 @@
+.idea
+.env*
+!.env_sample
+*.DS_Store
+node_modules
+.cache
+dist
