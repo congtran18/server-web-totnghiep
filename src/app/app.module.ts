@@ -13,6 +13,9 @@ import { InMemoryDBModule } from '@nestjs-addons/in-memory-db';
 import { UsersModule } from '../collections/users/users.module';
 import { AuthModule } from '../collections/auth/auth.module';
 import { AdminsModule } from '../collections/admins/admins.module';
+import { ProductModule } from '../collections/product/product.module';
+import { TypeProductModule } from '../collections/typeProduct/typeProduct.module';
+import { CategoryProductModule } from '../collections/categoryProduct/categoryProduct.module';
 //import {RealtimeModule} from "../packages/realtime/realtime.module";
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
@@ -46,6 +49,9 @@ import { StakingModule } from 'src/collections/staking/staking.module';
     AppLogModule,
     AuthModule,
     AdminsModule,
+    ProductModule,
+    TypeProductModule,
+    CategoryProductModule,
     StakingModule,
     UsersModule,
     StorageModule,
