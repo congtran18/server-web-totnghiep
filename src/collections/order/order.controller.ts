@@ -25,79 +25,75 @@ import { AuthJwt } from '../auth/auth.decorator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { JwtPayload } from '../auth/jwt.payload';
 import { RolesGuard } from '../auth/roles.guard';
-import { RolesAllowed } from '../auth/roles.decorator'
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
-import { Product } from './schemas/product.schema';
-import { ProductService } from './product.service';
-import { ROLE_OWNER } from "../../collections/admins/dto/admin.roles";
+import { CreateOrderDto } from './dto/create-order.dto';
+import { UpdateOrderDto } from './dto/update-order.dto';
+import { Order } from './schemas/order.schema';
+import { OrderService } from './order.service';
 
-@ApiTags('product')
-@Controller('product')
-export class ProductController {
-  private logger: Logger = new Logger(ProductController.name);
+@ApiTags('order')
+@Controller('order')
+export class OrderController {
+  private logger: Logger = new Logger(OrderController.name);
 
-  constructor(private readonly productService: ProductService) { }
+  constructor(private readonly orderService: OrderService) { }
 
   @ApiOkResponse({
-    description: 'Create product',
-    type: Product,
+    description: 'Create order',
+    type: Order,
   })
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Create product' })
+  @ApiOperation({ summary: 'Create order' })
   @Post()
-  @RolesAllowed(ROLE_OWNER)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  async createProduct(
-    @Body() createProducttDto: any,
+  async createOrder(
+    @Body() createOrdertDto: any,
     // @AuthJwt() payload: JwtPayload,
-  ): Promise<BaseResponse<Model<Product>>> {
-    const response: BaseResponse<Model<Product>> = {};
-    const product = await this.productService.createProduct(createProducttDto);
-    if (!product) {
-      response.error = {
-        code: HttpStatus.BAD_REQUEST,
-        message: 'Bạn không có quyền!',
-      };
-    } else {
-      response.data = product;
-    }
-    return response;
-  }
-
-  @ApiOkResponse({
-    description: 'Update product',
-    type: Product,
-  })
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Update product' })
-  @Patch(':id')
-  @RolesAllowed(ROLE_OWNER)
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  async updateProduct(
-    @Param('id') id: string,
-    @Body() updateProducttDto: UpdateProductDto,
-    // @AuthJwt() payload: JwtPayload,
-  ): Promise<BaseResponse<Model<Product>>> {
-    const response: BaseResponse<Model<Product>> = {};
-    const product = await this.productService.updateProduct(id, updateProducttDto);
-    if (!product) {
+  ): Promise<BaseResponse<Model<Order>>> {
+    const response: BaseResponse<Model<Order>> = {};
+    const order = await this.orderService.createOrder(createOrdertDto);
+    if (!order) {
       response.error = {
         code: HttpStatus.BAD_REQUEST,
         message: 'ERROR.',
       };
     } else {
-      response.data = product;
+      response.data = order;
     }
     return response;
   }
 
   @ApiOkResponse({
-    description: 'Get all product',
-    type: Product,
+    description: 'Update order',
+    type: Order,
+  })
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Update order' })
+  @Patch(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async updateOrder(
+    @Param('id') id: string,
+    @Body() updateOrdertDto: UpdateOrderDto,
+    // @AuthJwt() payload: JwtPayload,
+  ): Promise<BaseResponse<Model<Order>>> {
+    const response: BaseResponse<Model<Order>> = {};
+    const order = await this.orderService.updateOrder(id, updateOrdertDto);
+    if (!order) {
+      response.error = {
+        code: HttpStatus.BAD_REQUEST,
+        message: 'ERROR.',
+      };
+    } else {
+      response.data = order;
+    }
+    return response;
+  }
+
+  @ApiOkResponse({
+    description: 'Get all order',
+    type: Order,
   })
   // @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get all product' })
+  @ApiOperation({ summary: 'Get all order' })
   @Get()
   @ApiQuery({ name: 'page', required: false })
   @ApiQuery({ name: 'limit', required: false })
@@ -105,126 +101,125 @@ export class ProductController {
   @ApiQuery({ name: 'category', required: false })
   @ApiQuery({ name: 'realname', required: false })
   // @UseGuards(JwtAuthGuard, RolesGuard)
-  async getAllProduct(
+  async getAllOrder(
     // @AuthJwt() payload: JwtPayload,
     @Query('page') page: string,
     @Query('limit') limit: string,
     @Query('type') type: string,
     @Query('category') category: string,
     @Query('realname') realname: string,
-  ): Promise<BaseResponse<Product>> {
-    const response: BaseResponse<Product> = {};
-    const product = await this.productService.getAllProduct(page, limit, type, category, realname);
-    if (!product) {
+  ): Promise<BaseResponse<Order>> {
+    const response: BaseResponse<Order> = {};
+    const order = await this.orderService.getAllOrder(page, limit, type, category, realname);
+    if (!order) {
       response.error = {
         code: HttpStatus.BAD_REQUEST,
         message: 'ERROR.',
       };
     } else {
-      response.data = product
+      response.data = order
     }
     return response;
   }
 
   @ApiOkResponse({
-    description: 'Get all restore product',
-    type: Product,
+    description: 'Get all restore order',
+    type: Order,
   })
   // @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get all restore product' })
+  @ApiOperation({ summary: 'Get all restore order' })
   @Get("/restore")
   @ApiQuery({ name: 'page', required: false })
   @ApiQuery({ name: 'limit', required: false })
   @ApiQuery({ name: 'type', required: false })
   @ApiQuery({ name: 'category', required: false })
   @ApiQuery({ name: 'realname', required: false })
-  async getAllRestoreProduct(
+  async getAllRestoreOrder(
     // @AuthJwt() payload: JwtPayload,
     @Query('page') page: string,
     @Query('limit') limit: string,
     @Query('type') type: string,
     @Query('category') category: string,
     @Query('realname') realname: string,
-  ): Promise<BaseResponse<Product>> {
-    const response: BaseResponse<Product> = {};
-    const product = await this.productService.getAllRestoreProduct(page, limit, type, category, realname);
-    if (!product) {
+  ): Promise<BaseResponse<Order>> {
+    const response: BaseResponse<Order> = {};
+    const order = await this.orderService.getAllRestoreOrder(page, limit, type, category, realname);
+    if (!order) {
       response.error = {
         code: HttpStatus.BAD_REQUEST,
         message: 'ERROR.',
       };
     } else {
-      response.data = product
+      response.data = order
     }
     return response;
   }
 
   @ApiOkResponse({
-    description: 'Get single product',
-    type: Product,
+    description: 'Get single order',
+    type: Order,
   })
   // @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get single product' })
+  @ApiOperation({ summary: 'Get single order' })
   @Get(':id')
   // @UseGuards(JwtAuthGuard, RolesGuard)
-  async getProductById(
+  async getOrderById(
     @Param('id') params: string,
     // @AuthJwt() payload: JwtPayload,
-  ): Promise<BaseResponse<Product>> {
-    const response: BaseResponse<Product> = {};
-    const product = await this.productService.getProductById(params);
-    if (!product) {
+  ): Promise<BaseResponse<Order>> {
+    const response: BaseResponse<Order> = {};
+    const order = await this.orderService.getOrderById(params);
+    if (!order) {
       response.error = {
         code: HttpStatus.BAD_REQUEST,
         message: 'ERROR.',
       };
     } else {
-      response.data = product;
+      response.data = order;
     }
     return response;
   }
 
   @ApiOkResponse({
-    description: 'Delete product',
-    type: Product,
+    description: 'Delete order',
+    type: Order,
   })
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Delete product' })
+  @ApiOperation({ summary: 'Delete order' })
   @Get('/track/:id')
-  @RolesAllowed(ROLE_OWNER)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  async deleteProduct(
+  async deleteOrder(
     @Param('id') params: string,
     // @AuthJwt() payload: JwtPayload,
   ): Promise<any> {
     const response: BaseResponse<any> = {};
-    const product = await this.productService.deleteProduct(params);
-    if (!product) {
+    const order = await this.orderService.deleteOrder(params);
+    if (!order) {
       response.error = {
         code: HttpStatus.BAD_REQUEST,
         message: 'ERROR.',
       };
     } else {
-      response.data = product;
+      response.data = order;
     }
     return response;
   }
 
   @ApiOkResponse({
-    description: 'Remove product',
-    type: Product,
+    description: 'Remove order',
+    type: Order,
   })
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Remove product' })
+  @ApiOperation({ summary: 'Remove order' })
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  async removeProduct(
+  async removeOrder(
     @Param('id') params: string,
     // @AuthJwt() payload: JwtPayload,
   ): Promise<any> {
     const response: BaseResponse<any> = {};
     try {
-      const result = await this.productService.removeProduct(params);
+      const result = await this.orderService.removeOrder(params);
       return result;
     } catch (error) {
       response.error = {

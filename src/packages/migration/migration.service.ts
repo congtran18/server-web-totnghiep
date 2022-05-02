@@ -1,12 +1,12 @@
-import {Injectable, Logger} from '@nestjs/common';
-import {ConfigService} from "@nestjs/config";
-import {AppConfigService} from "../../collections/app-config/app-config.service";
-import {AppConfig} from "../../collections/app-config/schemas/app-config.schema";
-import {MigrationService1_0_0} from "./migration.service.1_0_0";
-import {Document} from "mongoose";
-import {ROLE_OWNER} from "../../collections/admins/dto/admin.roles";
-import {AdminsService} from "../../collections/admins/admins.service";
-import {UsersService} from "../../collections/users/users.service";
+import { Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from "@nestjs/config";
+import { AppConfigService } from "../../collections/app-config/app-config.service";
+import { AppConfig } from "../../collections/app-config/schemas/app-config.schema";
+import { MigrationService1_0_0 } from "./migration.service.1_0_0";
+import { Document } from "mongoose";
+import { ROLE_OWNER } from "../../collections/admins/dto/admin.roles";
+import { AdminsService } from "../../collections/admins/admins.service";
+import { UsersService } from "../../collections/users/users.service";
 
 @Injectable()
 export class MigrationService {
@@ -76,7 +76,7 @@ export class MigrationService {
 
       let nextVersion: string;
       switch (currentAppVersion) {
-        case '0.0.0' :
+        case '0.0.0':
         // case '1.0.0' :
         //   await this.migrateService1_0_0.migrate(appConfig);
         default:
@@ -111,22 +111,22 @@ export class MigrationService {
     // Init user
     const isUserEmpty = await this.usersService.isEmpty();
     if (isUserEmpty) {
-      const user = await this.usersService.createUser({
-        username: 'admin',
-        password: 'admin',
-        fullName: 'Admin',
-      });
-      if (user) {
-        // Init admin collection
-        const isAdminEmpty = await this.adminsService.isEmpty();
-        if (isAdminEmpty) {
-          await this.adminsService.createAdmin({
-            role: ROLE_OWNER, uid: user.uid,
-          });
+      for (let i = 1; i < 3; i++) {
+        const user = await this.usersService.createUser({
+          username: `admin${i}`,
+          password: `admin${i}`,
+          fullName: `admin${i}`,
+        });
+        if (user) {
+          // Init admin collection
+          const isAdminEmpty = await this.adminsService.isEmpty();
+          if (isAdminEmpty) {
+            await this.adminsService.createAdmin({
+              role: ROLE_OWNER, uid: user.uid,
+            });
+          }
         }
       }
-
     }
-
   }
 }

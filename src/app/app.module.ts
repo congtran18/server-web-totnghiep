@@ -14,6 +14,7 @@ import { UsersModule } from '../collections/users/users.module';
 import { AuthModule } from '../collections/auth/auth.module';
 import { AdminsModule } from '../collections/admins/admins.module';
 import { ProductModule } from '../collections/product/product.module';
+import { OrderModule } from '../collections/order/order.module';
 import { TypeProductModule } from '../collections/typeProduct/typeProduct.module';
 import { CategoryProductModule } from '../collections/categoryProduct/categoryProduct.module';
 //import {RealtimeModule} from "../packages/realtime/realtime.module";
@@ -22,7 +23,6 @@ import { APP_GUARD } from '@nestjs/core';
 import { ProjectsModule } from '../collections/projects/projects.module';
 import { UploadModule } from 'src/collections/upload/upload.module';
 import { StorageModule } from 'src/collections/storage/storage.module';
-import { StakingModule } from 'src/collections/staking/staking.module';
 
 @Module({
   imports: [
@@ -50,9 +50,9 @@ import { StakingModule } from 'src/collections/staking/staking.module';
     AuthModule,
     AdminsModule,
     ProductModule,
+    OrderModule,
     TypeProductModule,
     CategoryProductModule,
-    StakingModule,
     UsersModule,
     StorageModule,
     // RealtimeModule,

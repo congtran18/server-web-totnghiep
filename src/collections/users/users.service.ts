@@ -1,14 +1,14 @@
-import {Injectable} from '@nestjs/common';
-import {Connection, Model} from "mongoose";
-import {User} from "./schemas/user.schema";
-import {InjectConnection, InjectModel} from "@nestjs/mongoose";
-import {UpdateUserDto} from "./dto/update-user.dto";
-import {FullUserDto} from "./dto/full-user.dto";
+import { Injectable } from '@nestjs/common';
+import { Connection, Model } from "mongoose";
+import { User } from "./schemas/user.schema";
+import { InjectConnection, InjectModel } from "@nestjs/mongoose";
+import { UpdateUserDto } from "./dto/update-user.dto";
+import { FullUserDto } from "./dto/full-user.dto";
 import moment from "moment";
-import {AppUtil} from "../../utils/app.util";
-import {CreateUserDto} from "./dto/create-user.dto";
+import { AppUtil } from "../../utils/app.util";
+import { CreateUserDto } from "./dto/create-user.dto";
 
-const defaultProjection = {'_id': 0, '__v': 0, 'password': 0};
+const defaultProjection = { '_id': 0, '__v': 0, 'password': 0 };
 
 @Injectable()
 export class UsersService {
@@ -26,44 +26,78 @@ export class UsersService {
   // Search users
   // Input: username
   // If input is undefined, return all
-  async getUsers(input?: string, fromIndex?: number, toIndex?: number): Promise<User[]> {
+  async getUsers(input?: string, fromIndex?: number, toIndex?: number): Promise<any> {
     const MAX_ITEMS_PAGING = 50;
     const from = Math.abs(fromIndex ?? 0);
     const to = Math.abs(toIndex ?? MAX_ITEMS_PAGING);
     const skip = Math.min(from, to);
     const limit = Math.min(MAX_ITEMS_PAGING, Math.abs(to - from));
-    return await this.userModel.find(input ? {
-        $or: [
-          {username: new RegExp('^' + input, 'i')},
-        ]
-      } : {},
-      defaultProjection,
+    // return await this.userModel.find(input ? {
+    //     $or: [
+    //       {username: new RegExp('^' + input, 'i')},
+    //     ]
+    //   } : {},
+    //   defaultProjection,
+    //   {
+    //     skip: skip,
+    //     limit: limit,
+    //     sort: {created_at: -1}
+    //   }).exec();
+    const result = await this.userModel.aggregate([
       {
-        skip: skip,
-        limit: limit,
-        sort: {created_at: -1}
-      }).exec();
+        $lookup: {
+          from: "admins",
+          localField: "uid",
+          foreignField: "uid",
+          as: "role-user"
+        }
+      },
+      {
+        $match: {
+          $and: [
+            input ? { 'username': new RegExp('^' + input, 'i') } : {}
+            // { 'isMobileVerified': false}
+          ]
+        }
+      },
+      { $sort: { createdAt: -1 } },
+      {
+        $facet: {
+          'role-user':
+            [
+              { $unwind: '$role-user' },
+              { $skip: skip },
+              { $limit: limit },
+            ],
+          'count':
+            [
+              { $count: "totalCount" },
+            ],
+        }
+      }
+    ])
+    return result;
   }
 
   // Get users in a uid list
   async getAllInList(uids: string[]): Promise<User[]> {
-    return this.userModel.find({uid: {'$in': uids}}, defaultProjection).exec();
+    return this.userModel.find({ uid: { '$in': uids } }, defaultProjection).exec();
   }
 
   // Get user information by uid
   async getUserByUid(uid: string): Promise<User | null> {
-    return await this.userModel.findOne({uid: uid}, defaultProjection).exec();
+    return await this.userModel.findOne({ uid: uid }, defaultProjection).exec();
   }
 
   // Get user information by username
   // Return full user object with password to verify
   async getUserByUsernameRaw(username: string): Promise<User | null> {
-    return await this.userModel.findOne({username: username}).exec();
+    return await this.userModel.findOne({ username: username }).exec();
   }
 
   // Get user information by username
   async getUserByUsername(username: string): Promise<User | null> {
-    return await this.userModel.findOne({username: username}, defaultProjection).exec();
+    return await this.userModel.findOne({ username: username }, defaultProjection).exec();
   }
 
   async createUser(userDto: CreateUserDto): Promise<User | null> {
@@ -94,10 +128,10 @@ export class UsersService {
       ...userDto,
       uid: uid
     }
-    const res = await this.userModel.updateOne({uid: uid}, {
+    const res = await this.userModel.updateOne({ uid: uid }, {
       ...fullUserDto,
       updatedAt: moment().toDate(),
-    }, {upsert: true});
+    }, { upsert: true });
     if (res) {
       return this.getUserByUid(uid);
     } else {
@@ -106,7 +140,7 @@ export class UsersService {
   }
 
   async deleteUser(uid: string): Promise<boolean> {
-    const res = await this.userModel.deleteOne({uid: uid}).exec();
+    const res = await this.userModel.deleteOne({ uid: uid }).exec();
     return (res && res.deletedCount ? res.deletedCount > 0 : false);
   }
 

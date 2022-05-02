@@ -1,10 +1,11 @@
+import { NotFoundException } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { Connection, Model } from 'mongoose';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Product } from './schemas/product.schema';
 import { CategoryProduct } from '../categoryProduct/schemas/categoryProduct.schema';
-import { CreateProducttDto } from './dto/create-product.dto';
-import { UpdateProducttDto } from './dto/update-product.dto';
+import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @Injectable()
 export class ProductService {
@@ -21,8 +22,8 @@ export class ProductService {
   async getProductById(id: string): Promise<any> {
     const result = await this.productModel.findOne({
       _id: id,
-      isDeleted: false,
-    });
+      // isDeleted: false,
+    }).populate('type').populate('category');
     return result;
   }
 
@@ -62,16 +63,56 @@ export class ProductService {
 
     var productfilter = {}
 
-    if(realname){
-      productfilter = {"realname": new RegExp(realname, 'i'), ...productfilter};
+    if (realname) {
+      productfilter = { "realname": new RegExp(realname, 'i'), ...productfilter };
     }
     if (type) {
       console.log(type)
-      productfilter = {"type": type, ...productfilter};
+      productfilter = { "type": type, ...productfilter };
     }
     if (category) {
-      productfilter= {"category": category, ...productfilter};
+      productfilter = { "category": category, ...productfilter };
     }
+
+    productfilter = { "track": false, ...productfilter };
+
+    const result = await this.productModel
+      .find(productfilter).sort([['create_at', 'descending']]).populate('type').populate('category')
+      .limit(limitNumber)
+      .skip((pageNumber - 1) * limitNumber);
+
+    let total = await this.productModel.countDocuments(productfilter)
+
+    total = Math.ceil(total / limitNumber);
+
+    return { 'product': result, 'total': total };
+  }
+
+  async getAllRestoreProduct(page?: string, limit?: string, type?: string, category?: string, realname?: string): Promise<any> {
+    let pageNumber = 1;
+    let limitNumber = 100;
+    if (page) {
+      pageNumber = parseInt(page);
+    }
+
+    if (limit) {
+      limitNumber = parseInt(limit);
+    }
+
+    var productfilter = {}
+
+    if (realname) {
+      productfilter = { "realname": new RegExp(realname, 'i'), ...productfilter };
+    }
+    if (type) {
+      console.log(type)
+      productfilter = { "type": type, ...productfilter };
+    }
+    if (category) {
+      productfilter = { "category": category, ...productfilter };
+    }
+
+    productfilter = { "track": true, ...productfilter };
 
     const result = await this.productModel
       .find(productfilter).sort([['create_at', 'descending']]).populate('type').populate('category')
@@ -86,7 +127,7 @@ export class ProductService {
   }
 
   async createProduct(
-    createProducttDto: CreateProducttDto,
+    createProducttDto: CreateProductDto,
   ): Promise<any> {
     const categoryProductService = await this.CategoryProductModel.findOne({
       _id: createProducttDto.category,
@@ -94,14 +135,12 @@ export class ProductService {
 
     const categoryname = categoryProductService?.realname
 
-    let code : any;
+    let code: any;
     let codeexit: any;
-	//Sinh ra mã ko bị trùng
 
-  
-
+    //Sinh ra mã ko bị trùng
     do {
-      code = (( categoryname?  categoryname?.split(" ") : []).concat("-").concat(createProducttDto.realname.split(" ") || []))
+      code = ((categoryname ? categoryname?.split(" ") : []).concat("-").concat(createProducttDto.realname.split(" ") || []))
       code = code.map((codeelement) => codeelement[0]).join('').concat("00").concat((Math.floor(Math.random() * 1000).toString()))
       //loại bỏ dấu tiếng việt
       code = code.normalize('NFD')
@@ -110,9 +149,9 @@ export class ProductService {
       code = code.toUpperCase()
       codeexit = await this.productModel.findOne({ code: code });
     } while (codeexit !== null)
-  
+
     const model = new this.productModel({
-      ...createProducttDto,code
+      ...createProducttDto, code
     });
     const modelRes = await model.save();
     if (modelRes) {
@@ -124,12 +163,57 @@ export class ProductService {
     return null;
   }
 
-  async updateProduct(updateProducttDto: UpdateProducttDto): Promise<any> {
-    const { _id, ...rest } = updateProducttDto;
+  async updateProduct(id: string, updateProducttDto: UpdateProductDto): Promise<any> {
+
+    const { slideImage, ...rest } = updateProducttDto
+
+    if (slideImage) {
+      slideImage.forEach(async (element) => {
+        const existProductImage = await this.productModel.findOne({ _id: id, 'slideImage.index': element.index });
+
+        if (element.data === "delete") {
+          await this.productModel.findOneAndUpdate(
+            { _id: id },
+            {
+              $pull : {
+                'slideImage': { "index": element.index },
+              },
+            },
+          );
+        } else if (existProductImage) {
+          await this.productModel.findOneAndUpdate(
+            { _id: id, 'slideImage.index': element.index },
+            {
+              'slideImage.$.index': element.index,
+              'slideImage.$.data': element.data,
+            },
+            {
+              upsert: true,
+            }
+          );
+        } else {
+          await this.productModel.findOneAndUpdate(
+            { _id: id },
+            {
+              $push: {
+                slideImage: {
+                  index: element.index,
+                  data: element.data,
+                },
+              },
+            },
+            {
+              upsert: true,
+            }
+          );
+        }
+      });
+    }
+
 
     const result = await this.productModel.findOneAndUpdate(
       {
-        _id: _id,
+        _id: id,
       },
       rest,
       {
@@ -141,12 +225,15 @@ export class ProductService {
   }
 
   async deleteProduct(id: string): Promise<any> {
+
+    const existProduct = await this.productModel.findOne({ _id: id })
+
     const result = await this.productModel.findOneAndUpdate(
       {
         _id: id,
       },
       {
-        isDeleted: true,
+        track: !existProduct?.track,
       },
       {
         new: true,
@@ -154,5 +241,14 @@ export class ProductService {
       },
     );
     return result;
+  }
+
+  async removeProduct(id: string): Promise<any> {
+    try {
+      await this.productModel.findOneAndRemove({ _id: id });
+      return 'successfully removed product';
+    } catch (err) {
+      throw new NotFoundException('Do not find data'); //Return which when not find?
+    }
   }
 }

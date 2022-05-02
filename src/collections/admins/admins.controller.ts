@@ -7,7 +7,7 @@ import {AuthJwt} from "../auth/auth.decorator";
 import {BaseResponse} from "../../utils/base.response";
 import {JwtPayload} from "../auth/jwt.payload";
 import {RolesGuard} from "../auth/roles.guard";
-import {Roles} from "../auth/roles.decorator";
+import {RolesAllowed} from "../auth/roles.decorator";
 import {ROLE_ADMIN, ROLE_OWNER} from "./dto/admin.roles";
 import {AdminDto} from "./dto/admin.dto";
 
@@ -31,7 +31,7 @@ export class AdminsController {
   @ApiBearerAuth()
   @ApiOperation({summary: 'Get admin info'})
   @Get()
-  @Roles(ROLE_OWNER, ROLE_ADMIN)
+  @RolesAllowed(ROLE_OWNER, ROLE_ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   async getAdmin(@AuthJwt() payload: JwtPayload): Promise<BaseResponse<Admin>> {
     const response: BaseResponse<Admin> = {}
@@ -55,7 +55,7 @@ export class AdminsController {
   @ApiBearerAuth()
   @ApiOperation({summary: 'Get all admins'})
   @Get('all')
-  @Roles(ROLE_OWNER, ROLE_ADMIN)
+  @RolesAllowed(ROLE_OWNER, ROLE_ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   async getAllAdmins(@AuthJwt() payload: JwtPayload): Promise<BaseResponse<Admin[]>> {
     const response: BaseResponse<Admin[]> = {}
@@ -71,7 +71,7 @@ export class AdminsController {
   @ApiBearerAuth()
   @ApiOperation({summary: 'Create new admin'})
   @Post()
-  @Roles(ROLE_OWNER, ROLE_ADMIN)
+  @RolesAllowed(ROLE_OWNER, ROLE_ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   async createAdmin(@Body() adminDto: AdminDto, @AuthJwt() payload: JwtPayload): Promise<BaseResponse<Admin>> {
     const response: BaseResponse<Admin> = {}
@@ -87,7 +87,7 @@ export class AdminsController {
   @ApiBearerAuth()
   @ApiOperation({summary: 'Update admin'})
   @Put()
-  @Roles(ROLE_OWNER, ROLE_ADMIN)
+  @RolesAllowed(ROLE_OWNER, ROLE_ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   async updateAdmin(@Body() adminDto: AdminDto, @AuthJwt() payload: JwtPayload): Promise<BaseResponse<Admin>> {
     const response: BaseResponse<Admin> = {}
@@ -102,7 +102,7 @@ export class AdminsController {
   @ApiBearerAuth()
   @ApiOperation({summary: 'Delete admin - owner only'})
   @Delete(':uid')
-  @Roles(ROLE_OWNER)
+  @RolesAllowed(ROLE_OWNER)
   @UseGuards(JwtAuthGuard, RolesGuard)
   async deleteAdmin(@Param('uid') adminId: string, @AuthJwt() payload: JwtPayload): Promise<BaseResponse<boolean>> {
     const response: BaseResponse<boolean> = {}

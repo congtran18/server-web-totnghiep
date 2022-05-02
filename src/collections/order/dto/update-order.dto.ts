@@ -1,28 +1,34 @@
 import { ApiProperty } from '@nestjs/swagger';
 import mongoose from 'mongoose';
 
-export class CreateProductDto {
+export class UpdateOrderDto {
+
+  // @ApiProperty()
+  // _id: string;
 
   @ApiProperty()
   productId: string;
 
   @ApiProperty()
   realname: string;
-
+  
   @ApiProperty()
   mainImage: string;
 
-  @ApiProperty({type:[{data:{type: String}, index:{type: Number}}]})
+  @ApiProperty()
   slideImage: { data: string; index: number }[];
 
   @ApiProperty()
-  type: string;
+  type: mongoose.Schema.Types.ObjectId;
 
   @ApiProperty()
-  category: string;
+  category: mongoose.Schema.Types.ObjectId;
 
   @ApiProperty()
   cost: number;
+
+  @ApiProperty()
+  discount: number;
 
   @ApiProperty()
   description: string;
@@ -30,21 +36,24 @@ export class CreateProductDto {
   @ApiProperty()
   status: string;
 
-  @ApiProperty({ type: [String] })
+  @ApiProperty()
   include: string[];
 
   constructor(
+    // _id: string,
     productId: string,
     realname: string,
     mainImage: string,
     slideImage: { data: string; index: number }[],
-    type: string,
-    category: string,
+    type: mongoose.Schema.Types.ObjectId,
+    category: mongoose.Schema.Types.ObjectId,
     cost: number,
+    discount: number,
     description: string,
     status: string,
     include: string[],
   ) {
+    // this._id = _id;
     this.productId = productId;
     this.realname = realname;
     this.mainImage = mainImage;
@@ -52,6 +61,7 @@ export class CreateProductDto {
     this.type = type;
     this.category = category;
     this.cost = cost;
+    this.discount = discount;
     this.description = description;
     this.status = status;
     this.include = include;

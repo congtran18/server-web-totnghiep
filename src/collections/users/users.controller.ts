@@ -39,10 +39,10 @@ export class UsersController {
   @ApiImplicitQuery({name: 'input', required: false})
   @ApiImplicitQuery({name: 'from', required: false})
   @ApiImplicitQuery({name: 'to', required: false})
-  @ApiBearerAuth()
+  // @ApiBearerAuth()
   @ApiOperation({summary: 'Search by username. Leave empty to get all.'})
   @Get('search')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   async getUsers(
     @Query('input') input: string,
     @Query('from') from: number,

@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import mongoose from 'mongoose';
 
-export class CreateProductDto {
+export class CreateOrderDto {
 
   @ApiProperty()
   productId: string;

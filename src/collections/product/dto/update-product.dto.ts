@@ -1,19 +1,22 @@
 import { ApiProperty } from '@nestjs/swagger';
 import mongoose from 'mongoose';
 
-export class UpdateProducttDto {
+export class UpdateProductDto {
 
-  @ApiProperty()
-  _id: string;
+  // @ApiProperty()
+  // _id: string;
 
   @ApiProperty()
   productId: string;
 
   @ApiProperty()
-  name: string;
+  realname: string;
+  
+  @ApiProperty()
+  mainImage: string;
 
   @ApiProperty()
-  image: { data: string; index: number }[];
+  slideImage: { data: string; index: number }[];
 
   @ApiProperty()
   type: mongoose.Schema.Types.ObjectId;
@@ -37,10 +40,11 @@ export class UpdateProducttDto {
   include: string[];
 
   constructor(
-    _id: string,
+    // _id: string,
     productId: string,
-    name: string,
-    image: { data: string; index: number }[],
+    realname: string,
+    mainImage: string,
+    slideImage: { data: string; index: number }[],
     type: mongoose.Schema.Types.ObjectId,
     category: mongoose.Schema.Types.ObjectId,
     cost: number,
@@ -49,10 +53,11 @@ export class UpdateProducttDto {
     status: string,
     include: string[],
   ) {
-    this._id = _id;
+    // this._id = _id;
     this.productId = productId;
-    this.name = name;
-    this.image = image;
+    this.realname = realname;
+    this.mainImage = mainImage;
+    this.slideImage = slideImage;
     this.type = type;
     this.category = category;
     this.cost = cost;

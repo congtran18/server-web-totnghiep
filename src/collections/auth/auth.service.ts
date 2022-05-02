@@ -44,6 +44,8 @@ export class AuthService {
         duration: tokenDuration,
       })
 
+      let roles = await this.adminsService.getAdmin(uid)
+
       // User projection to remove password
       const obj = user.toObject<User>();
       delete obj._id;
@@ -52,6 +54,7 @@ export class AuthService {
 
       return {
         user: obj,
+        role: roles?.role,
         accessToken: accessToken,
         expiresIn: tokenDuration,
       }

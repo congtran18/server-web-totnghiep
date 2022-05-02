@@ -21,10 +21,14 @@ export class Product extends Document {
   realname: string;
 
   @ApiProperty()
+  @Prop()
+  mainImage: string;
+
+  @ApiProperty()
   @Prop({
     type:[{data:{type: String}, index:{type: Number}}]
   })
-  image: { data: string; index: number }[];
+  slideImage: { data: string; index: number }[];
 
   @ApiProperty()
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: TypeProduct.name })
@@ -72,7 +76,8 @@ export class Product extends Document {
     productId: string,
     code: string,
     realname: string,
-    image: { data: string; index: number }[],
+    mainImage: string,
+    slideImage: { data: string; index: number }[],
     type: string,
     category: string,
     cost: number,
@@ -90,7 +95,8 @@ export class Product extends Document {
     this.productId = productId;
     this.code = code;
     this.realname = realname;
-    this.image = image;
+    this.mainImage = mainImage;
+    this.slideImage = slideImage;
     this.type = type;
     this.category = category;
     this.cost = cost;
