@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Connection, Model } from "mongoose";
 import { User } from "./schemas/user.schema";
+import {Admin} from "../admins/schemas/admin.schema";
+import { ROLE_USER, ROLE_TUTOR } from "../../collections/admins/dto/admin.roles";
 import { InjectConnection, InjectModel } from "@nestjs/mongoose";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { FullUserDto } from "./dto/full-user.dto";
@@ -16,6 +18,7 @@ export class UsersService {
   constructor(
     @InjectConnection() private connection: Connection,
     @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(Admin.name) private adminModel: Model<Admin>,
   ) {
   }
 
@@ -91,13 +94,13 @@ export class UsersService {
 
   // Get user information by username
   // Return full user object with password to verify
-  async getUserByUsernameRaw(username: string): Promise<User | null> {
-    return await this.userModel.findOne({ username: username }).exec();
+  async getUserByEmailRaw(email: string): Promise<User | null> {
+    return await this.userModel.findOne({ email: email }).exec();
   }
 
   // Get user information by username
-  async getUserByUsername(username: string): Promise<User | null> {
-    return await this.userModel.findOne({ username: username }, defaultProjection).exec();
+  async getUserByEmail(email: string): Promise<User | null> {
+    return await this.userModel.findOne({ email: email }, defaultProjection).exec();
   }
 
   async createUser(userDto: CreateUserDto): Promise<User | null> {
@@ -111,6 +114,11 @@ export class UsersService {
     const user = await userModel.save();
     if (user) {
       const obj = user.toObject<User>();
+
+      const adminModel = new this.adminModel({"uid": uid, "role": ROLE_USER})
+
+      await adminModel.save();
+
       delete obj._id;
       delete obj.__v;
       delete obj.password;

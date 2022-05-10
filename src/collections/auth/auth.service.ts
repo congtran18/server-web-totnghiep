@@ -27,7 +27,7 @@ export class AuthService {
   }
 
   async login(loginDto: LoginDto): Promise<TokenResponse> {
-    const user = await this.usersService.getUserByUsernameRaw(loginDto.username);
+    const user = await this.usersService.getUserByEmailRaw(loginDto.email);
     const loginPassword = loginDto.password;
     const userPassword = user?.password;
     if (user && userPassword && await AppUtil.hashVerify(loginPassword, userPassword)) {

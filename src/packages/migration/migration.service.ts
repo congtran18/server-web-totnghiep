@@ -113,7 +113,7 @@ export class MigrationService {
     if (isUserEmpty) {
       for (let i = 1; i < 3; i++) {
         const user = await this.usersService.createUser({
-          username: `admin${i}`,
+          email: `admin${i}@gmail.com`,
           password: `admin${i}`,
           fullName: `admin${i}`,
         });

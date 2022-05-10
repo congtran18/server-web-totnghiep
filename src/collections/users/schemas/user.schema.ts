@@ -10,7 +10,7 @@ export class User extends Document {
 
   @ApiProperty()
   @Prop({ unique: true })
-  username: string;
+  email: string;
 
   @Prop()
   password?: string;
@@ -27,10 +27,10 @@ export class User extends Document {
   @Prop({ type: Date, default: Date.now })
   updatedAt: Date;
 
-  constructor(doc: any, uid: string, username: string, password: string, fullName: string, createdAt: Date, updatedAt: Date) {
+  constructor(doc: any, uid: string, email: string, password: string, fullName: string, createdAt: Date, updatedAt: Date) {
     super(doc);
     this.uid = uid;
-    this.username = username;
+    this.email = email;
     this.password = password;
     this.fullName = fullName;
     this.createdAt = createdAt;

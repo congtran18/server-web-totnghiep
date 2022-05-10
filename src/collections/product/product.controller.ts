@@ -30,7 +30,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './schemas/product.schema';
 import { ProductService } from './product.service';
-import { ROLE_OWNER } from "../../collections/admins/dto/admin.roles";
+import { ROLE_OWNER, ROLE_ADMIN } from "../../collections/admins/dto/admin.roles";
 
 @ApiTags('product')
 @Controller('product')
@@ -46,7 +46,7 @@ export class ProductController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Create product' })
   @Post()
-  @RolesAllowed(ROLE_OWNER)
+  @RolesAllowed(ROLE_OWNER,ROLE_ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   async createProduct(
     @Body() createProducttDto: any,
@@ -72,7 +72,7 @@ export class ProductController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update product' })
   @Patch(':id')
-  @RolesAllowed(ROLE_OWNER)
+  @RolesAllowed(ROLE_OWNER, ROLE_ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   async updateProduct(
     @Param('id') id: string,
@@ -104,6 +104,7 @@ export class ProductController {
   @ApiQuery({ name: 'type', required: false })
   @ApiQuery({ name: 'category', required: false })
   @ApiQuery({ name: 'realname', required: false })
+  @ApiQuery({ name: 'sort', required: false })
   // @UseGuards(JwtAuthGuard, RolesGuard)
   async getAllProduct(
     // @AuthJwt() payload: JwtPayload,
@@ -112,9 +113,10 @@ export class ProductController {
     @Query('type') type: string,
     @Query('category') category: string,
     @Query('realname') realname: string,
+    @Query('sort') sort: string,
   ): Promise<BaseResponse<Product>> {
     const response: BaseResponse<Product> = {};
-    const product = await this.productService.getAllProduct(page, limit, type, category, realname);
+    const product = await this.productService.getAllProduct(page, limit, type, category, realname, sort);
     if (!product) {
       response.error = {
         code: HttpStatus.BAD_REQUEST,
@@ -191,7 +193,7 @@ export class ProductController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete product' })
   @Get('/track/:id')
-  @RolesAllowed(ROLE_OWNER)
+  @RolesAllowed(ROLE_OWNER, ROLE_ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   async deleteProduct(
     @Param('id') params: string,

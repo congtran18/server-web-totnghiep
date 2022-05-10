@@ -90,10 +90,10 @@ export class TypeProductController {
     description: 'Get all type product',
     type: TypeProduct,
   })
-  @ApiBearerAuth()
+  // @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all product' })
   @Get()
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
   async getAllTypeProduct(
     // @AuthJwt() payload: JwtPayload,
     // @Query('page') page: string,

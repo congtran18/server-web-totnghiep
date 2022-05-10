@@ -50,7 +50,7 @@ export class ProductService {
     }
   }
 
-  async getAllProduct(page?: string, limit?: string, type?: string, category?: string, realname?: string): Promise<any> {
+  async getAllProduct(page?: string, limit?: string, type?: string, category?: string, realname?: string, sort?: string): Promise<any> {
     let pageNumber = 1;
     let limitNumber = 100;
     if (page) {
@@ -62,6 +62,8 @@ export class ProductService {
     }
 
     var productfilter = {}
+    var productSort = {}
+    productSort = {'create_at': -1, ...productSort}
 
     if (realname) {
       productfilter = { "realname": new RegExp(realname, 'i'), ...productfilter };
@@ -73,11 +75,19 @@ export class ProductService {
     if (category) {
       productfilter = { "category": category, ...productfilter };
     }
+    if (sort) {
+      if (sort === "high") {
+        productSort = { "cost": -1, ...productSort };
+      }else{
+        productSort = { "cost": 1, ...productSort };
+      }
+    }
+
 
     productfilter = { "track": false, ...productfilter };
 
     const result = await this.productModel
-      .find(productfilter).sort([['create_at', 'descending']]).populate('type').populate('category')
+      .find(productfilter).sort(productSort).populate('type').populate('category')
       .limit(limitNumber)
       .skip((pageNumber - 1) * limitNumber);
 
@@ -105,7 +115,6 @@ export class ProductService {
       productfilter = { "realname": new RegExp(realname, 'i'), ...productfilter };
     }
     if (type) {
-      console.log(type)
       productfilter = { "type": type, ...productfilter };
     }
     if (category) {
@@ -175,7 +184,7 @@ export class ProductService {
           await this.productModel.findOneAndUpdate(
             { _id: id },
             {
-              $pull : {
+              $pull: {
                 'slideImage': { "index": element.index },
               },
             },

@@ -101,8 +101,8 @@ export class UsersController {
     const response: BaseResponse<any> = {};
 
     // Check user available
-    if (user.username) {
-      const exist = (await this.usersService.getUsers(user.username)).length > 0;
+    if (user.email) {
+      const exist = await this.usersService.getUserByEmail(user.email);
       if (!exist) {
         response.data = await this.usersService.createUser(user);
       } else {
