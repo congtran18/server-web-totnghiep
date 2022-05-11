@@ -193,7 +193,7 @@ export class Project extends Document {
   deposit_at: Date;
 
   @ApiProperty()
-  @Prop({ default: env.SMART_CONTRACT_ADDRESS })
+  @Prop({ default: "12345678" })
   smartContractAddress: string;
 
   @ApiProperty()
