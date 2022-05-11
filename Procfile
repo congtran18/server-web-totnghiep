@@ -1,1 +1,1 @@
-web: nest start
+web: yarn run start:prod
