@@ -1,2 +1,2 @@
-web: yarn run start:prod
+web: yarn start:prod
 release: node app/dist/main.js
