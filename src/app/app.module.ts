@@ -31,7 +31,7 @@ import { StorageModule } from 'src/collections/storage/storage.module';
       rootPath: join(__dirname, '..', '..', 'public'),
       exclude: ['/api*'],
     }),
-    MongooseModule.forRoot(process.env.MONGODB_URL ?? ''),
+    MongooseModule.forRoot(process.env.MONGODB_URL ?? 'mongodb+srv://@free.abcde.mongodb.net'),
     InMemoryDBModule.forRoot(),
     ScheduleModule.forRoot(),
     // https://docs.nestjs.com/security/rate-limiting
