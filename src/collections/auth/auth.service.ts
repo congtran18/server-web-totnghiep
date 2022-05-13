@@ -73,6 +73,10 @@ export class AuthService {
     return await this.accessTokenModel.find({uid: uid}, {'_id': 0, '__v': 0}).exec();
   }
 
+  async getAuthTokensByUidRaw(uid: string): Promise<AuthToken| null> {
+    return await this.accessTokenModel.findOne({uid: uid}, {'_id': 0, '__v': 0}).exec();
+  }
+
   // Get tokens by Uid
   async getAuthTokenByAccessToken(accessToken: string): Promise<AuthToken | null> {
     return await this.accessTokenModel.findOne({accessToken: accessToken}, {'_id': 0, '__v': 0}).exec();

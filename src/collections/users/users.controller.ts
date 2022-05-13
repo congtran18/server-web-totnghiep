@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, HttpStatus, Logger, Param, Post, Put, Query, UseGuards,} from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Logger, Param, Post, Put, Query, UseGuards, } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -7,18 +7,20 @@ import {
   ApiNotAcceptableResponse,
   ApiOkResponse,
   ApiOperation,
-  ApiTags
+  ApiTags,
+  ApiQuery
 } from "@nestjs/swagger";
-import {BaseResponse, ErrorResponseType} from "../../utils/base.response";
-import {AuthJwt} from "../auth/auth.decorator";
-import {JwtAuthGuard} from "../auth/jwt-auth.guard";
-import {JwtPayload} from "../auth/jwt.payload";
-import {User} from "./schemas/user.schema";
-import {UpdateUserDto} from "./dto/update-user.dto";
-import {UsersService} from "./users.service";
-import {ApiImplicitQuery} from "@nestjs/swagger/dist/decorators/api-implicit-query.decorator";
-import {CreateUserDto} from "./dto/create-user.dto";
-import {AuthService} from "../auth/auth.service";
+import { BaseResponse, ErrorResponseType } from "../../utils/base.response";
+import { AuthJwt } from "../auth/auth.decorator";
+import { JwtAuthGuard } from "../auth/jwt-auth.guard";
+import { JwtPayload } from "../auth/jwt.payload";
+import { User } from "./schemas/user.schema";
+import { UpdateUserDto } from "./dto/update-user.dto";
+import { UsersService } from "./users.service";
+import { ApiImplicitQuery } from "@nestjs/swagger/dist/decorators/api-implicit-query.decorator";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { AuthService } from "../auth/auth.service";
+import { AdminsService } from "../admins/admins.service";
 
 @ApiTags('users')
 @Controller('users')
@@ -29,6 +31,7 @@ export class UsersController {
   constructor(
     private readonly usersService: UsersService,
     private readonly authService: AuthService,
+    private readonly adminService: AdminsService,
   ) {
   }
 
@@ -36,11 +39,11 @@ export class UsersController {
     description: 'List of user',
     type: [User],
   })
-  @ApiImplicitQuery({name: 'input', required: false})
-  @ApiImplicitQuery({name: 'from', required: false})
-  @ApiImplicitQuery({name: 'to', required: false})
+  @ApiImplicitQuery({ name: 'input', required: false })
+  @ApiImplicitQuery({ name: 'from', required: false })
+  @ApiImplicitQuery({ name: 'to', required: false })
   // @ApiBearerAuth()
-  @ApiOperation({summary: 'Search by username. Leave empty to get all.'})
+  @ApiOperation({ summary: 'Search by username. Leave empty to get all.' })
   @Get('search')
   // @UseGuards(JwtAuthGuard)
   async getUsers(
@@ -58,7 +61,7 @@ export class UsersController {
     type: User,
   })
   @ApiBearerAuth()
-  @ApiOperation({summary: 'Get me'})
+  @ApiOperation({ summary: 'Get me' })
   @Get()
   @UseGuards(JwtAuthGuard)
   async getMe(@AuthJwt() payload: JwtPayload): Promise<BaseResponse<User | null>> {
@@ -72,7 +75,7 @@ export class UsersController {
     type: User,
   })
   @ApiBearerAuth()
-  @ApiOperation({summary: 'Get user info'})
+  @ApiOperation({ summary: 'Get user info' })
   @Get(':uid')
   @UseGuards(JwtAuthGuard)
   async getUserInfo(@Param('uid') uid: string, @AuthJwt() payload: JwtPayload): Promise<BaseResponse<User | null>> {
@@ -80,6 +83,64 @@ export class UsersController {
     response.data = await this.usersService.getUserByUid(uid);
     return response;
   }
+
+  @ApiOkResponse({
+    description: 'Check exist user email',
+    type: User,
+  })
+  @ApiOperation({ summary: 'Check exist user email' })
+  @Get('/check-email/email')
+  @ApiQuery({ name: 'email', required: false })
+  @ApiQuery({ name: 'name', required: false })
+  async getUserInfo2(@Query('email') email: string, @Query('name') name: string, @AuthJwt() payload: JwtPayload): Promise<any> {
+    const existUser = await this.usersService.getUserByEmail(email);
+    let roleUser: any;
+    let accessToken: any;
+    if (existUser) {
+      const uid = existUser?.uid
+      const getRoleUser = await this.adminService.getAdmin(uid)
+      if (getRoleUser) {
+        roleUser = getRoleUser.role
+      }
+      const getAccessToken = await this.authService.getAuthTokensByUidRaw(uid)
+      if (getAccessToken) {
+        accessToken = getAccessToken.accessToken
+      }
+    } else {
+      const createUser = await this.usersService.createUser({ "email": email, "fullName": name, "password": "1234" });
+      if (createUser) {
+        const dataLogin = await this.authService.login({"email": email,  "password": "1234"});
+        if(dataLogin){
+          const response = { "role": dataLogin.role, "accessToken": dataLogin.accessToken }; 
+          return response;
+        }
+      }
+    }
+    const response = { "role": roleUser, "accessToken": accessToken }; 
+    return response;
+  }
+
+
+  // @ApiOkResponse({
+  //   description: 'Check exist user email',
+  //   type: User,
+  // })
+  // @ApiOperation({ summary: 'Check exist user email' })
+  // @Get(':email')
+  // async checkUserEmail(@Param('email') email: string, @AuthJwt() payload: JwtPayload): Promise<any> {
+  //   const response: BaseResponse<User | null> = {}
+  //   response.data = await this.usersService.getUserByUid(email);
+  //   // let roleUser: any;
+  //   // let accessToken: any;
+  //   // if (existUser) {
+  //   //   const uid = existUser?.uid
+  //   //   roleUser = await this.adminService.getAdmin(uid)
+  //   //   accessToken = await this.authService.getAuthTokensByUid(uid)
+  //   // }
+  //   // const response = {...existUser, roleUser, accessToken}
+  //   return response;
+  // }
+
 
   // @HttpCode(201)
   @ApiCreatedResponse({
@@ -94,8 +155,8 @@ export class UsersController {
     description: 'Internal Server Error',
     type: ErrorResponseType,
   })
-  @ApiBody({type: CreateUserDto})
-  @ApiOperation({summary: 'Create user'})
+  @ApiBody({ type: CreateUserDto })
+  @ApiOperation({ summary: 'Create user' })
   @Post()
   async createUser(@Body() user: CreateUserDto): Promise<BaseResponse<User | null>> {
     const response: BaseResponse<any> = {};
@@ -124,9 +185,9 @@ export class UsersController {
     description: 'User info',
     type: User,
   })
-  @ApiBody({type: UpdateUserDto})
+  @ApiBody({ type: UpdateUserDto })
   @ApiBearerAuth()
-  @ApiOperation({summary: 'Update me'})
+  @ApiOperation({ summary: 'Update me' })
   @Put()
   @UseGuards(JwtAuthGuard)
   async updateMe(@Body() userDto: UpdateUserDto, @AuthJwt() payload: JwtPayload): Promise<BaseResponse<User | null>> {
@@ -151,7 +212,7 @@ export class UsersController {
     return response;
   }
 
-  @ApiOperation({summary: 'Delete user'})
+  @ApiOperation({ summary: 'Delete user' })
   @ApiBearerAuth()
   @ApiOkResponse({
     description: 'true or false',
