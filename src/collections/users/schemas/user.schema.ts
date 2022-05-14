@@ -20,6 +20,10 @@ export class User extends Document {
   fullName?: string;
 
   @ApiProperty()
+  @Prop({ default: "https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png" })
+  imageUrl?: string;
+
+  @ApiProperty()
   @Prop({ type: Date, default: Date.now })
   createdAt: Date;
 
@@ -27,12 +31,13 @@ export class User extends Document {
   @Prop({ type: Date, default: Date.now })
   updatedAt: Date;
 
-  constructor(doc: any, uid: string, email: string, password: string, fullName: string, createdAt: Date, updatedAt: Date) {
+  constructor(doc: any, uid: string, email: string, password: string, fullName: string, imageUrl: string, createdAt: Date, updatedAt: Date) {
     super(doc);
     this.uid = uid;
     this.email = email;
     this.password = password;
     this.fullName = fullName;
+    this.imageUrl = imageUrl;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }

@@ -97,7 +97,7 @@ export class UsersController {
     let roleUser: any;
     let accessToken: any;
     if (existUser) {
-      const uid = existUser?.uid
+      const uid = existUser.uid
       const getRoleUser = await this.adminService.getAdmin(uid)
       if (getRoleUser) {
         roleUser = getRoleUser.role
