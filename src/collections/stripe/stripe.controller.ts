@@ -33,17 +33,24 @@ export class StripeController {
 
         if (sig) {
 
+            
+        console.log("vo day nek2")
+
             try {
                 event = this.stripeService.stripe.webhooks.constructEvent(payload, sig, 'whsec_nab1ZyXFmD1k9JXDqbvge2EJqYljuFwc' || "");
             } catch (err: any) {
                 return response.status(HttpStatus.FORBIDDEN).send(`Webhook Error: ${err?.message}`);
             }
 
+            console.log("vo day nek3")
+
             if (event.type === 'checkout.session.completed') {
                 const session = event.data.object as Stripe.Checkout.Session;
 
                 // Fulfill the purchase...
                 this.stripeService.fulfill(session);
+
+                console.log("vo day nek4")
             }
         }
 
