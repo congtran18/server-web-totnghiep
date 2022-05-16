@@ -39,16 +39,7 @@ async function bootstrap() {
   const migrationService = app.select(MigrationModule).get(MigrationService, { strict: true });
   await migrationService.migrate();
 
-  const rawBodyBuffer = (req: IncomingMessage, res: ServerResponse, buf: Buffer, encoding: BufferEncoding) => {
-    if (!req.headers['stripe-signature']) { return; }
-
-    if (buf && buf.length) {
-      req['rawBody'] = buf.toString(encoding || 'utf8');
-    }
-  };
-
-  app.use(bodyParser.urlencoded({ verify: rawBodyBuffer, extended: true }));
-  app.use(bodyParser.json({ verify: rawBodyBuffer }));
+  app.use('/webhook', bodyParser.raw({type: 'application/json'}));
 
   //------Web Applications------//
   // For nginx proxy forward
