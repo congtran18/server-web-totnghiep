@@ -38,8 +38,8 @@ export class StripeService {
                             currency: 'usd',
                         },
                         display_name: 'Free shipping',
-                    //Delivers between 5-7 business days
-                    delivery_estimate: {
+                        //Delivers between 5-7 business days
+                        delivery_estimate: {
                             minimum: {
                                 unit: 'business_day',
                                 value: 5,
@@ -59,8 +59,8 @@ export class StripeService {
                             currency: 'usd',
                         },
                         display_name: 'Next day air',
-                    //Delivers in exactly 1 business day
-                    delivery_estimate: {
+                        //Delivers in exactly 1 business day
+                        delivery_estimate: {
                             minimum: {
                                 unit: 'business_day',
                                 value: 1,
@@ -123,7 +123,9 @@ export class StripeService {
                 items = expanded_session.line_items.data;
             }
 
-            if (items) {
+            var address = customer?.address
+
+            if (items && address) {
                 const createOrderDto: CreateOrderDto = {
                     status: 'Hoàn thành',
                     user: customer?.email !== null ? customer?.email : '',
@@ -135,7 +137,15 @@ export class StripeService {
                             unit_price: item.price.unit_amount,
                             qty: item.quantity,
                         }
-                    })
+                    }),
+                    address:
+                    {
+                        city: address?.city ? address?.city : "",
+                        country: address?.country ? address?.country : "",
+                        address: address?.line1 ? address?.line1 : "",
+                        postal_code: address?.postal_code ? address?.postal_code : "",
+                        state: address?.state ? address?.state : "",
+                    },
                 }
 
                 const newOrder = new this.orderModel({ ...createOrderDto });

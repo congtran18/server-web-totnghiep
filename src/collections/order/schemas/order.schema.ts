@@ -16,7 +16,6 @@ export class Order extends Document {
         qty: { type: Number, required: true },
         ProductId: {
           type: mongoose.Schema.Types.ObjectId,
-          required: true,
           ref: Product.name,
         },
         subtotal: Number, unit_price: Number, ticket_id: String
@@ -29,15 +28,15 @@ export class Order extends Document {
   @Prop({
     type: [
       {
-        city: { type: String, required: true },
-        country: { type: String, required: true },
-        address: { type: String, required: true },
+        city: { type: String },
+        country: { type: String },
+        address: { type: String },
         postal_code: { type: String },
         state: { type: String }
       }
     ]
   })
-  address: { city: string, country: string, address: string, postal_code: string, state: string }[];
+  address: { city?: string, country?: string, address?: string, postal_code?: string, state?: string };
 
   // @ApiProperty()
   // @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
@@ -82,7 +81,7 @@ export class Order extends Document {
 
   constructor(
     orderItems: { qty: number, productId?: mongoose.Schema.Types.ObjectId, subtotal: number, unit_price: number, ticket_id?: any }[],
-    address: {city: string, country: string, address: string, postal_code: string, state: string}[],
+    address: {city: string, country: string, address: string, postal_code: string, state: string},
     user: string,
     totalPrice: number,
     status: string,
