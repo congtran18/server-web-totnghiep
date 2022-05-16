@@ -3,57 +3,45 @@ import mongoose from 'mongoose';
 
 export class CreateOrderDto {
 
-  @ApiProperty()
-  productId: string;
 
   @ApiProperty()
-  realname: string;
+  orderItems: { qty: number, productId?: mongoose.Schema.Types.ObjectId, subtotal: number, unit_price: number, ticket_id?:any }[];
 
   @ApiProperty()
-  mainImage: string;
-
-  @ApiProperty({type:[{data:{type: String}, index:{type: Number}}]})
-  slideImage: { data: string; index: number }[];
+  user?: string;
 
   @ApiProperty()
-  type: string;
-
-  @ApiProperty()
-  category: string;
-
-  @ApiProperty()
-  cost: number;
-
-  @ApiProperty()
-  description: string;
+  totalPrice: number;
 
   @ApiProperty()
   status: string;
 
-  @ApiProperty({ type: [String] })
-  include: string[];
+  @ApiProperty()
+  paymentMethod?: string;
+
+
+  @ApiProperty()
+  shippingPrice?: number;
+
+  @ApiProperty()
+  isDelivered?: boolean;
+
 
   constructor(
-    productId: string,
-    realname: string,
-    mainImage: string,
-    slideImage: { data: string; index: number }[],
-    type: string,
-    category: string,
-    cost: number,
-    description: string,
+    orderItems: { qty: number, productId?: mongoose.Schema.Types.ObjectId, subtotal: number, unit_price: number, ticket_id?:any }[],
+    totalPrice: number,
     status: string,
-    include: string[],
+    user?: string,
+    paymentMethod?: string,
+    shippingPrice?: number,
+    isDelivered?: boolean,
   ) {
-    this.productId = productId;
-    this.realname = realname;
-    this.mainImage = mainImage;
-    this.slideImage = slideImage;
-    this.type = type;
-    this.category = category;
-    this.cost = cost;
-    this.description = description;
+    this.orderItems = orderItems;
+    this.user = user;
+    this.totalPrice = totalPrice;
     this.status = status;
-    this.include = include;
+    this.paymentMethod = paymentMethod;
+    this.shippingPrice = shippingPrice;
+    this.isDelivered = isDelivered;
   }
 }

@@ -4,6 +4,7 @@
     "declaration": false,
     "esModuleInterop": true,
     "strict": true,
+    // "strictNullChecks": false,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,

@@ -23,6 +23,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { ProjectsModule } from '../collections/projects/projects.module';
 import { UploadModule } from 'src/collections/upload/upload.module';
 import { StorageModule } from 'src/collections/storage/storage.module';
+import { StripeModule } from 'src/collections/stripe/stripe.module'
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { StorageModule } from 'src/collections/storage/storage.module';
     UsersModule,
     StorageModule,
     // RealtimeModule,
+    StripeModule,
     ProjectsModule,
     UploadModule
   ],

@@ -97,20 +97,16 @@ export class OrderController {
   @Get()
   @ApiQuery({ name: 'page', required: false })
   @ApiQuery({ name: 'limit', required: false })
-  @ApiQuery({ name: 'type', required: false })
-  @ApiQuery({ name: 'category', required: false })
   @ApiQuery({ name: 'realname', required: false })
   // @UseGuards(JwtAuthGuard, RolesGuard)
   async getAllOrder(
     // @AuthJwt() payload: JwtPayload,
     @Query('page') page: string,
     @Query('limit') limit: string,
-    @Query('type') type: string,
-    @Query('category') category: string,
     @Query('realname') realname: string,
   ): Promise<BaseResponse<Order>> {
     const response: BaseResponse<Order> = {};
-    const order = await this.orderService.getAllOrder(page, limit, type, category, realname);
+    const order = await this.orderService.getAllOrder(page, limit, realname);
     if (!order) {
       response.error = {
         code: HttpStatus.BAD_REQUEST,
@@ -131,19 +127,15 @@ export class OrderController {
   @Get("/restore")
   @ApiQuery({ name: 'page', required: false })
   @ApiQuery({ name: 'limit', required: false })
-  @ApiQuery({ name: 'type', required: false })
-  @ApiQuery({ name: 'category', required: false })
   @ApiQuery({ name: 'realname', required: false })
   async getAllRestoreOrder(
     // @AuthJwt() payload: JwtPayload,
     @Query('page') page: string,
     @Query('limit') limit: string,
-    @Query('type') type: string,
-    @Query('category') category: string,
     @Query('realname') realname: string,
   ): Promise<BaseResponse<Order>> {
     const response: BaseResponse<Order> = {};
-    const order = await this.orderService.getAllRestoreOrder(page, limit, type, category, realname);
+    const order = await this.orderService.getAllRestoreOrder(page, limit, realname);
     if (!order) {
       response.error = {
         code: HttpStatus.BAD_REQUEST,

@@ -9,31 +9,22 @@ import { Type } from 'class-transformer';
 @Schema()
 export class Order extends Document {
 
-  @ApiProperty()
-  @Prop()
-  realname: string;
-
-  @ApiProperty()
-  @Prop()
-  mobile: string;
 
   @ApiProperty()
   @Prop({
     type: [
       {
-        realname: { type: String },
         qty: { type: Number, required: true },
-        cost: { type: Number },
-        code: { type: String },
-        _id: {
+        ProductId: {
           type: mongoose.Schema.Types.ObjectId,
           required: true,
           ref: Product.name,
         },
+        subtotal: Number, unit_price: Number, ticket_id: String
       }
     ]
   })
-  orderItems: { realname: string; qty: number, cost: number, code: string, _id: mongoose.Schema.Types.ObjectId }[];
+  orderItems: { qty: number, productId?: mongoose.Schema.Types.ObjectId, subtotal: number, unit_price: number, ticket_id?: any }[];
 
   @ApiProperty()
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
@@ -44,17 +35,12 @@ export class Order extends Document {
   @Prop()
   totalPrice: number;
 
-
-  @ApiProperty()
-  @Prop()
-  description: string;
-
   @ApiProperty()
   @Prop({ enum: ['Hoàn thành', 'Chưa thanh toán', 'Đã hủy'], default: 'Chưa thanh toán' })
   status: string;
 
   @ApiProperty()
-  @Prop({ default: 'Khi nhận hàng' })
+  @Prop({ default: 'Stripe' })
   paymentMethod: string;
 
   @ApiProperty()
@@ -78,12 +64,9 @@ export class Order extends Document {
   update_at: Date;
 
   constructor(
-    realname: string,
-    mobile: string,
-    orderItems: { realname: string; qty: number, cost: number, code: string, _id: mongoose.Schema.Types.ObjectId }[],
+    orderItems: { qty: number, productId?: mongoose.Schema.Types.ObjectId,  subtotal: number, unit_price: number, ticket_id?:any }[],
     user: string,
     totalPrice: number,
-    description: string,
     status: string,
     paymentMethod: string,
     track: boolean,
@@ -93,12 +76,9 @@ export class Order extends Document {
     update_at: Date
   ) {
     super();
-    this.realname = realname;
-    this.mobile = mobile;
     this.orderItems = orderItems;
     this.user = user;
     this.totalPrice = totalPrice;
-    this.description = description;
     this.status = status;
     this.paymentMethod = paymentMethod;
     this.track = track;

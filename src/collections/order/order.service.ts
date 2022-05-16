@@ -21,34 +21,12 @@ export class OrderService {
     const result = await this.orderModel.findOne({
       _id: id,
       // isDeleted: false,
-    }).populate('type').populate('category');
+    });
     return result;
   }
 
-  async getOldPool(projectId: string, poolTitle: string, network: string, chainId: string): Promise<any> {
-    // const result = await this.orderModel.aggregate([
-    //   // where: {
-    //   //   contractIsFinished: false,
-    //   //   contractIsFail: false,
-    //   //   // contractPoolSync: false,// chua sync
-    //   //   // smartContractAddress: {neq: null},
-    //   //   // chainId: {neq: null},
-    //   //   // network: 'bsc',
-    //   // },
-    //   //{ contractIsFinished: false }, { contractIsFail: false }, 
-    //   { $match: { $and: [{ projectId: projectId }, { poolTitle: poolTitle }, { network: network }, { chainId: chainId }] } }
-    // ]);
 
-    const result = await this.orderModel.findOne({ projectId: projectId, poolTitle: poolTitle, network: network, chainId: chainId })
-
-    if (result) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  async getAllOrder(page?: string, limit?: string, type?: string, category?: string, realname?: string): Promise<any> {
+  async getAllOrder(page?: string, limit?: string, sort?: string, realname?: string): Promise<any> {
     let pageNumber = 1;
     let limitNumber = 100;
     if (page) {
@@ -59,34 +37,37 @@ export class OrderService {
       limitNumber = parseInt(limit);
     }
 
-    var orderfilter = {}
+    var orderFilter = {}
+    var orderSort = {}
+    orderSort = { 'create_at': -1, ...orderSort }
 
     if (realname) {
-      orderfilter = { "realname": new RegExp(realname, 'i'), ...orderfilter };
-    }
-    if (type) {
-      console.log(type)
-      orderfilter = { "type": type, ...orderfilter };
-    }
-    if (category) {
-      orderfilter = { "category": category, ...orderfilter };
+      orderFilter = { "users.email": new RegExp(realname, 'i'), ...orderFilter };
     }
 
-    orderfilter = { "track": false, ...orderfilter };
+    if (sort) {
+      if (sort === "high") {
+        orderSort = { "cost": -1, ...orderSort };
+      } else {
+        orderSort = { "cost": 1, ...orderSort };
+      }
+    }
+
+    orderFilter = { "track": false, ...orderFilter };
 
     const result = await this.orderModel
-      .find(orderfilter).sort([['create_at', 'descending']]).populate('type').populate('category')
+      .find(orderFilter).sort(orderSort).populate('orderItems.productId')
       .limit(limitNumber)
       .skip((pageNumber - 1) * limitNumber);
 
-    let total = await this.orderModel.countDocuments(orderfilter)
+    let total = await this.orderModel.countDocuments(orderFilter)
 
     total = Math.ceil(total / limitNumber);
 
     return { 'order': result, 'total': total };
   }
 
-  async getAllRestoreOrder(page?: string, limit?: string, type?: string, category?: string, realname?: string): Promise<any> {
+  async getAllRestoreOrder(page?: string, limit?: string, sort?: string, realname?: string): Promise<any> {
     let pageNumber = 1;
     let limitNumber = 100;
     if (page) {
@@ -97,27 +78,30 @@ export class OrderService {
       limitNumber = parseInt(limit);
     }
 
-    var orderfilter = {}
+    var orderFilter = {}
+    var orderSort = {}
+    orderSort = { 'create_at': -1, ...orderSort }
 
     if (realname) {
-      orderfilter = { "realname": new RegExp(realname, 'i'), ...orderfilter };
-    }
-    if (type) {
-      console.log(type)
-      orderfilter = { "type": type, ...orderfilter };
-    }
-    if (category) {
-      orderfilter = { "category": category, ...orderfilter };
+      orderFilter = { "realname": new RegExp(realname, 'i'), ...orderFilter };
     }
 
-    orderfilter = { "track": true, ...orderfilter };
+    if (sort) {
+      if (sort === "high") {
+        orderSort = { "cost": -1, ...orderSort };
+      } else {
+        orderSort = { "cost": 1, ...orderSort };
+      }
+    }
+
+    orderFilter = { "track": true, ...orderFilter };
 
     const result = await this.orderModel
-      .find(orderfilter).sort([['create_at', 'descending']]).populate('type').populate('category')
+      .find(orderFilter).sort(orderSort).populate('orderItems.productId')
       .limit(limitNumber)
       .skip((pageNumber - 1) * limitNumber);
 
-    let total = await this.orderModel.countDocuments(orderfilter)
+    let total = await this.orderModel.countDocuments(orderFilter)
 
     total = Math.ceil(total / limitNumber);
 
@@ -143,57 +127,11 @@ export class OrderService {
 
   async updateOrder(id: string, updateOrdertDto: UpdateOrderDto): Promise<any> {
 
-    const { slideImage, ...rest } = updateOrdertDto
-
-    if (slideImage) {
-      slideImage.forEach(async (element) => {
-        const existOrderImage = await this.orderModel.findOne({ _id: id, 'slideImage.index': element.index });
-
-        if (element.data === "delete") {
-          await this.orderModel.findOneAndUpdate(
-            { _id: id },
-            {
-              $pull : {
-                'slideImage': { "index": element.index },
-              },
-            },
-          );
-        } else if (existOrderImage) {
-          await this.orderModel.findOneAndUpdate(
-            { _id: id, 'slideImage.index': element.index },
-            {
-              'slideImage.$.index': element.index,
-              'slideImage.$.data': element.data,
-            },
-            {
-              upsert: true,
-            }
-          );
-        } else {
-          await this.orderModel.findOneAndUpdate(
-            { _id: id },
-            {
-              $push: {
-                slideImage: {
-                  index: element.index,
-                  data: element.data,
-                },
-              },
-            },
-            {
-              upsert: true,
-            }
-          );
-        }
-      });
-    }
-
-
     const result = await this.orderModel.findOneAndUpdate(
       {
         _id: id,
       },
-      rest,
+      updateOrdertDto,
       {
         new: true,
         useFindAndModify: false,
