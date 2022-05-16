@@ -161,7 +161,6 @@ export class UsersController {
   async createUser(@Body() user: CreateUserDto): Promise<BaseResponse<User | null>> {
     const response: BaseResponse<any> = {};
 
-    console.log("vo day nak")
     // Check user available
     if (user.email) {
       const exist = await this.usersService.getUserByEmail(user.email);

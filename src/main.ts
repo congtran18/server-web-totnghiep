@@ -1,16 +1,18 @@
-import {NestFactory} from '@nestjs/core';
-import {AppModule} from './app/app.module';
-import {AllExceptionFilter} from "./utils/all.exception.filter";
-import {Logger, ValidationPipe} from "@nestjs/common";
-import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app/app.module';
+import { AllExceptionFilter } from "./utils/all.exception.filter";
+import { Logger, ValidationPipe } from "@nestjs/common";
+import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import morgan from 'morgan';
 import moment from 'moment';
-import {MigrationService} from "./packages/migration/migration.service";
-import {MigrationModule} from "./packages/migration/migration.module";
-import {NestExpressApplication} from "@nestjs/platform-express";
+import { MigrationService } from "./packages/migration/migration.service";
+import { MigrationModule } from "./packages/migration/migration.module";
+import { NestExpressApplication } from "@nestjs/platform-express";
 import * as admin from 'firebase-admin';
+import * as bodyParser from 'body-parser';
 import { ServiceAccount } from 'firebase-admin';
 import * as serviceAccount from './serviceAccountKey.json';
+import { IncomingMessage, ServerResponse } from 'http';
 declare const module: any;
 
 async function bootstrap() {
@@ -29,15 +31,24 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, isDev ? {} : {
     httpsOptions: httpsOptions,
   });
-  
+
   // //------Standalone Applications------//
   // // https://docs.nestjs.com/standalone-applications
   // // Application logic......
   // Get migration module: https://docs.nestjs.com/standalone-applications
-  const migrationService = app.select(MigrationModule).get(MigrationService, {strict: true});
+  const migrationService = app.select(MigrationModule).get(MigrationService, { strict: true });
   await migrationService.migrate();
 
+  const rawBodyBuffer = (req: IncomingMessage, res: ServerResponse, buf: Buffer, encoding: BufferEncoding) => {
+    if (!req.headers['stripe-signature']) { return; }
 
+    if (buf && buf.length) {
+      req['rawBody'] = buf.toString(encoding || 'utf8');
+    }
+  };
+
+  app.use(bodyParser.urlencoded({ verify: rawBodyBuffer, extended: true }));
+  app.use(bodyParser.json({ verify: rawBodyBuffer }));
 
   //------Web Applications------//
   // For nginx proxy forward
