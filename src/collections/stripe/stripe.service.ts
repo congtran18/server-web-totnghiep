@@ -25,6 +25,7 @@ export class StripeService {
 
         const session = await this._stripe.checkout.sessions.create({
             payment_method_types: ['card'],
+            customer_email: 'congdeptrai@gmail.com',
             shipping_address_collection: {
                 allowed_countries: ['GB', 'US', 'CA', 'AU', 'PH', 'VN'],
             },

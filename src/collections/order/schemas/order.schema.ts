@@ -9,7 +9,6 @@ import { Type } from 'class-transformer';
 @Schema()
 export class Order extends Document {
 
-
   @ApiProperty()
   @Prop({
     type: [
@@ -27,8 +26,26 @@ export class Order extends Document {
   orderItems: { qty: number, productId?: mongoose.Schema.Types.ObjectId, subtotal: number, unit_price: number, ticket_id?: any }[];
 
   @ApiProperty()
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
-  @Type(() => User)
+  @Prop({
+    type: [
+      {
+        city: { type: String, required: true },
+        country: { type: String, required: true },
+        address: { type: String, required: true },
+        postal_code: { type: String },
+        state: { type: String }
+      }
+    ]
+  })
+  address: { city: string, country: string, address: string, postal_code: string, state: string }[];
+
+  // @ApiProperty()
+  // @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
+  // @Type(() => User)
+  // user: string;
+
+  @ApiProperty()
+  @Prop()
   user: string;
 
   @ApiProperty()
@@ -36,7 +53,7 @@ export class Order extends Document {
   totalPrice: number;
 
   @ApiProperty()
-  @Prop({ enum: ['Hoàn thành', 'Chưa thanh toán', 'Đã hủy'], default: 'Chưa thanh toán' })
+  @Prop({ enum: ['Hoàn thành', 'Chưa thanh toán', 'Đã hủy'], default: 'Hoàn thành' })
   status: string;
 
   @ApiProperty()
@@ -64,7 +81,8 @@ export class Order extends Document {
   update_at: Date;
 
   constructor(
-    orderItems: { qty: number, productId?: mongoose.Schema.Types.ObjectId,  subtotal: number, unit_price: number, ticket_id?:any }[],
+    orderItems: { qty: number, productId?: mongoose.Schema.Types.ObjectId, subtotal: number, unit_price: number, ticket_id?: any }[],
+    address: {city: string, country: string, address: string, postal_code: string, state: string}[],
     user: string,
     totalPrice: number,
     status: string,
@@ -77,6 +95,7 @@ export class Order extends Document {
   ) {
     super();
     this.orderItems = orderItems;
+    this.address = address;
     this.user = user;
     this.totalPrice = totalPrice;
     this.status = status;
