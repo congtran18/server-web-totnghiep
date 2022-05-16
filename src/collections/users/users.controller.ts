@@ -161,15 +161,18 @@ export class UsersController {
   async createUser(@Body() user: CreateUserDto): Promise<BaseResponse<User | null>> {
     const response: BaseResponse<any> = {};
 
+    console.log("vo day nak")
     // Check user available
     if (user.email) {
       const exist = await this.usersService.getUserByEmail(user.email);
+      console.log("exist", exist)
       if (!exist) {
+        console.log("exist", exist)
         response.data = await this.usersService.createUser(user);
       } else {
         response.error = {
           code: HttpStatus.NOT_ACCEPTABLE,
-          message: "User exist."
+          message: "Email đã tồn tại!"
         }
       }
     } else {
@@ -178,6 +181,7 @@ export class UsersController {
         message: "username is empty"
       }
     }
+    console.log("response",response)
     return response;
   }
 
