@@ -23,17 +23,59 @@ export class StripeService {
     async create(checkoutDto: CheckoutDto) {
         const { realname, cost } = checkoutDto;
 
-        console.log("vo day", checkoutDto)
-
         const session = await this._stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             shipping_address_collection: {
-                allowed_countries: ['GB', 'US', 'CA', 'AU', 'PH'],
+                allowed_countries: ['GB', 'US', 'CA', 'AU', 'PH', 'VN'],
             },
+            shipping_options: [
+                {
+                    shipping_rate_data: {
+                        type: 'fixed_amount',
+                        fixed_amount: {
+                            amount: 0,
+                            currency: 'usd',
+                        },
+                        display_name: 'Free shipping',
+                    //Delivers between 5-7 business days
+                    delivery_estimate: {
+                            minimum: {
+                                unit: 'business_day',
+                                value: 5,
+                            },
+                            maximum: {
+                                unit: 'business_day',
+                                value: 7,
+                            },
+                        }
+                    }
+                },
+                {
+                    shipping_rate_data: {
+                        type: 'fixed_amount',
+                        fixed_amount: {
+                            amount: 1500,
+                            currency: 'usd',
+                        },
+                        display_name: 'Next day air',
+                    //Delivers in exactly 1 business day
+                    delivery_estimate: {
+                            minimum: {
+                                unit: 'business_day',
+                                value: 1,
+                            },
+                            maximum: {
+                                unit: 'business_day',
+                                value: 1,
+                            },
+                        }
+                    }
+                },
+            ],
             line_items: [
                 {
                     price_data: {
-                        currency: 'eur',
+                        currency: 'usd',
                         product_data: {
                             name: realname,
                         },
@@ -61,6 +103,7 @@ export class StripeService {
     }
 
     async fulfill(session: Stripe.Checkout.Session) {
+        console.log("vo day1")
         const expanded_session = await this._stripe.checkout.sessions.retrieve(
             session.id,
             {
@@ -72,6 +115,8 @@ export class StripeService {
 
         if (expanded_session) {
 
+            console.log("vo day2")
+
             var customer = expanded_session.customer_details;
             if (expanded_session.line_items) {
                 items = expanded_session.line_items.data;
@@ -82,7 +127,7 @@ export class StripeService {
                     status: 'Hoàn thành',
                     user: customer?.email !== null ? customer?.email : '',
                     totalPrice: expanded_session.amount_total || 0,
-                    orderItems: items.map((item : any) => {
+                    orderItems: items.map((item: any) => {
                         return {
                             ticket_id: item.description,
                             subtotal: item.amount_total,
@@ -92,8 +137,10 @@ export class StripeService {
                     })
                 }
 
-                const newOrder = new this.orderModel(createOrderDto);
-                return await newOrder.save();
+                const newOrder = new this.orderModel({ ...createOrderDto });
+                const data = await newOrder.save();
+                console.log("data", data)
+                return;
             }
 
         }
