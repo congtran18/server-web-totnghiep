@@ -27,12 +27,14 @@ export class StripeService {
             description: item.category,
             quantity: item.quantity,
             price_data: {
-                product: item.idProduct,
                 currency: 'usd',
-                unit_amount: Math.round(item.cost*100),
+                unit_amount: Math.round(item.cost * 100),
                 product_data: {
                     name: item.realname,
                     images: [item.mainImage],
+                    metadata: {
+                        idProduct: item.idProduct,
+                    }
                 },
             },
         }));
