@@ -28,7 +28,7 @@ export class StripeService {
             quantity: item.quantity,
             price_data: {
                 currency: 'usd',
-                unit_amount: item.cost * 100,
+                unit_amount: item.cost,
                 product_data: {
                     name: item.realname,
                     images: [item.mainImage],
