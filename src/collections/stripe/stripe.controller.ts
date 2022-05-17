@@ -3,7 +3,6 @@ import { Request, Response } from 'express';
 import { StripeService } from './stripe.service';
 import Stripe from 'stripe';
 import { CheckoutDto } from './dto/checkout.dto';
-const env = require('dotenv').config().parsed
 
 @Controller('stripe')
 export class StripeController {
@@ -35,7 +34,7 @@ export class StripeController {
         if (sig) {
 
             try {
-                event = this.stripeService.stripe.webhooks.constructEvent(payload, sig, env.STRIPE_WEBHOOK_SECRET || "");
+                event = this.stripeService.stripe.webhooks.constructEvent(payload, sig, process.env.STRIPE_WEBHOOK_SECRET || "");
             } catch (err: any) {
                 return response.status(HttpStatus.FORBIDDEN).send(`Webhook Error: ${err?.message}`);
             }
