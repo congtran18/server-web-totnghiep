@@ -27,6 +27,7 @@ export class StripeService {
             description: item.category,
             quantity: item.quantity,
             price_data: {
+                product: item.idProduct,
                 currency: 'usd',
                 unit_amount: Math.round(item.cost*100),
                 product_data: {
@@ -123,6 +124,8 @@ export class StripeService {
                 items = expanded_session.line_items.data;
             }
 
+            console.log("itemsitems", items)
+
             var total_details = expanded_session.total_details
             var address = customer?.address
 
@@ -151,7 +154,6 @@ export class StripeService {
 
                 const newOrder = new this.orderModel({ ...createOrderDto });
                 const data = await newOrder.save();
-                console.log("data", data)
                 return;
             }
 
