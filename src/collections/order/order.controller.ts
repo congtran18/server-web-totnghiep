@@ -41,12 +41,12 @@ export class OrderController {
     description: 'Create order',
     type: Order,
   })
-  @ApiBearerAuth()
+  // @ApiBearerAuth()
   @ApiOperation({ summary: 'Create order' })
   @Post()
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
   async createOrder(
-    @Body() createOrdertDto: any,
+    @Body() createOrdertDto: CreateOrderDto,
     // @AuthJwt() payload: JwtPayload,
   ): Promise<BaseResponse<Model<Order>>> {
     const response: BaseResponse<Model<Order>> = {};

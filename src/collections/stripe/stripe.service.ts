@@ -130,7 +130,6 @@ export class StripeService {
             var address = customer?.address
             var dataProduct = session?.metadata
 
-            console.log("dataProduct", dataProduct)
 
             if (items && address && total_details && dataProduct) {
                 const idProducts = dataProduct?.idProduct ? JSON.parse(dataProduct.idProduct) : ''
@@ -140,7 +139,6 @@ export class StripeService {
                     totalPrice: expanded_session.amount_total || 0,
                     shippingPrice: total_details?.amount_shipping ? total_details?.amount_shipping : 0,
                     orderItems: items.map((item: any, index: number) => {
-                        console.log("dataProduct?.idProduct[index]",idProducts[index])
                         return {
                             productId: idProducts ? idProducts[index] : '',
                             subtotal: item.amount_total,
@@ -157,7 +155,6 @@ export class StripeService {
                         state: address?.state ? address?.state : "",
                     },
                 }
-                console.log("vo day2", items)
                 const newOrder = new this.orderModel({ ...createOrderDto });
                 const data = await newOrder.save();
                 return;
