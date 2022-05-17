@@ -32,11 +32,12 @@ export class StripeService {
                 product_data: {
                     name: item.realname,
                     images: [item.mainImage],
-                    metadata: {
-                        idProduct: item.idProduct,
-                    }
                 },
             },
+            metadata:{
+                idProduct: item.idProduct,
+                name: item.realname,
+            }
         }));
 
         const session = await this._stripe.checkout.sessions.create({
