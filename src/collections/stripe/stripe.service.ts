@@ -10,7 +10,7 @@ import { CheckoutDto } from './dto/checkout.dto';
 export class StripeService {
     private readonly _stripe: Stripe;
 
-    private redirect_url = 'http://localhost:3000';
+    private redirect_url = process.env.HOST || "";
 
     get stripe() {
         return this._stripe;

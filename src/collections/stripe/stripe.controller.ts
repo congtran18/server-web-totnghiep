@@ -27,9 +27,6 @@ export class StripeController {
         const payload = request['rawBody'];
         const sig = request.headers['stripe-signature'];
 
-        console.log("vo day nek 1", process.env.STRIPE_TEST_KEY)
-        console.log("vo day nek 2", process.env.STRIPE_WEBHOOK_SECRET)
-
         let event: Stripe.Event;
 
         if (sig) {
