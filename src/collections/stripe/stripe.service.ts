@@ -109,7 +109,7 @@ export class StripeService {
     }
 
     async fulfill(session: Stripe.Checkout.Session) {
-        console.log("vo day1")
+        console.log("vo day1", session)
         const expanded_session = await this._stripe.checkout.sessions.retrieve(
             session.id,
             {
@@ -152,7 +152,7 @@ export class StripeService {
                         state: address?.state ? address?.state : "",
                     },
                 }
-
+                console.log("vo day2", items)
                 const newOrder = new this.orderModel({ ...createOrderDto });
                 const data = await newOrder.save();
                 return;
