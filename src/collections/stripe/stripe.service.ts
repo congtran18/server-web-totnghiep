@@ -34,10 +34,6 @@ export class StripeService {
                     images: [item.mainImage],
                 },
             },
-            metadata:{
-                idProduct: item.idProduct,
-                name: item.realname,
-            }
         }));
 
         const session = await this._stripe.checkout.sessions.create({
@@ -125,9 +121,8 @@ export class StripeService {
             var customer = expanded_session.customer_details;
             if (expanded_session.line_items) {
                 items = expanded_session.line_items.data;
+                console.log("itemsitems", expanded_session.line_items)
             }
-
-            console.log("itemsitems", items)
 
             var total_details = expanded_session.total_details
             var address = customer?.address
