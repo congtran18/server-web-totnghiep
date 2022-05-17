@@ -86,8 +86,6 @@ export class Product extends Document {
     status: string,
     include: string[],
     track: boolean,
-    isFrozen: boolean,
-    isMaster: boolean,
     create_at: Date,
     update_at: Date
   ) {

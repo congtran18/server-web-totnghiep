@@ -5,7 +5,7 @@ export class CreateOrderDto {
 
 
   @ApiProperty()
-  orderItems: { qty: number, productId?: mongoose.Schema.Types.ObjectId, subtotal: number, unit_price: number, ticket_id?:any }[];
+  orderItems: { qty: number, productId?: mongoose.Schema.Types.ObjectId, subtotal: number, unit_price: number }[];
 
   @ApiProperty()
   address: { city?: string, country?: string, address?: string, postal_code?: string, state?: string };
@@ -31,7 +31,7 @@ export class CreateOrderDto {
 
 
   constructor(
-    orderItems: { qty: number, productId?: mongoose.Schema.Types.ObjectId, subtotal: number, unit_price: number, ticket_id?:any }[],
+    orderItems: { qty: number, productId?: mongoose.Schema.Types.ObjectId, subtotal: number, unit_price: number }[],
     address: { city: string, country: string, address: string, postal_code: string, state: string },
     totalPrice: number,
     status: string,

@@ -21,11 +21,24 @@ export class StripeService {
     }
 
     async create(checkoutDto: CheckoutDto) {
-        const { realname, cost } = checkoutDto;
+        const { items, email } = checkoutDto;
+
+        const transformedItems = items.map((item) => ({
+            description: item.category,
+            quantity: item.quantity,
+            price_data: {
+                currency: 'usd',
+                unit_amount: item.cost * 100,
+                product_data: {
+                    name: item.realname,
+                    images: [item.mainImage],
+                },
+            },
+        }));
 
         const session = await this._stripe.checkout.sessions.create({
             payment_method_types: ['card'],
-            customer_email: 'congdeptrai@gmail.com',
+            customer_email: email,
             shipping_address_collection: {
                 allowed_countries: ['GB', 'US', 'CA', 'AU', 'PH', 'VN'],
             },
@@ -73,21 +86,10 @@ export class StripeService {
                     }
                 },
             ],
-            line_items: [
-                {
-                    price_data: {
-                        currency: 'usd',
-                        product_data: {
-                            name: realname,
-                        },
-                        unit_amount: cost * 100,
-                    },
-                    quantity: 2,
-                },
-            ],
+            line_items: transformedItems,
             mode: 'payment',
             success_url: this.redirect_url.concat('/success'),
-            cancel_url: this.redirect_url.concat(`/checkout/${realname}`),
+            cancel_url: this.redirect_url.concat(`/error`),
         });
 
         return { id: session.id };
@@ -116,23 +118,22 @@ export class StripeService {
 
         if (expanded_session) {
 
-            console.log("vo day2")
-
             var customer = expanded_session.customer_details;
             if (expanded_session.line_items) {
                 items = expanded_session.line_items.data;
             }
 
+            var total_details = expanded_session.total_details
             var address = customer?.address
 
-            if (items && address) {
+            if (items && address && total_details) {
                 const createOrderDto: CreateOrderDto = {
                     status: 'Hoàn thành',
-                    user: customer?.email !== null ? customer?.email : '',
+                    user: customer?.email ? customer?.email : '',
                     totalPrice: expanded_session.amount_total || 0,
+                    shippingPrice: total_details?.amount_shipping ? total_details?.amount_shipping : 0,
                     orderItems: items.map((item: any) => {
                         return {
-                            ticket_id: item.description,
                             subtotal: item.amount_total,
                             unit_price: item.price.unit_amount,
                             qty: item.quantity,

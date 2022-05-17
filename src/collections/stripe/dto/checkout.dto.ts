@@ -1,30 +1,33 @@
-import { IsNotEmpty, Max, IsNumber, IsString } from 'class-validator';
+import { ApiProperty } from "@nestjs/swagger";
 
 export class CheckoutDto {
-    user_id?: string;
-    realname!: string;
-    cost!: number;
-    qty: number = 0;
+
+    @ApiProperty()
+    items: {
+        idProduct: string,
+        realname: string,
+        mainImage: string,
+        type: string,
+        category: string,
+        cost: number,
+        quantity: number,
+    }[];
+    @ApiProperty()
+    email!: string;
+
+    constructor(
+        email: string,
+        items: {
+            idProduct: string,
+            realname: string,
+            mainImage: string,
+            type: string,
+            category: string,
+            cost: number,
+            quantity: number,
+        }[]
+    ) {
+        this.email = email;
+        this.items = items;
+    }
 }
-
-// import { IsNotEmpty, Max, IsNumber, IsString } from 'class-validator';
-// import { ApiProperty } from "@nestjs/swagger";
-
-// export class CheckoutDto {
-    
-//     @ApiProperty()
-//     user_id?: string;
-//     @ApiProperty()
-//     realname!: string;
-//     @ApiProperty()
-//     cost!: number;
-//     @ApiProperty()
-//     qty: number = 0;
-
-//     constructor(email: string, password: string, fullName: string, imageUrl: string) {
-//         this.email = email;
-//         this.password = password;
-//         this.fullName = fullName;
-//         this.imageUrl = imageUrl;
-//     }
-// }
