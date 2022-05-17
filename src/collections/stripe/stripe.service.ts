@@ -17,7 +17,7 @@ export class StripeService {
     }
 
     constructor(@InjectModel(Order.name) private readonly orderModel: Model<Order>) {
-        this._stripe = new Stripe('sk_test_51KcBufBq3agEdPRyL86yIZv9tXZeYJ4trRJlxgXaomQ7RPsvgi9AIZ3HX4k7XCeAcLQlJ2mvDWOlVKSOh7orvN7800fVt9l2be' || "", { apiVersion: '2020-08-27' });
+        this._stripe = new Stripe(process.env.STRIPE_TEST_KEY || "", { apiVersion: '2020-08-27' });
     }
 
     async create(checkoutDto: CheckoutDto) {

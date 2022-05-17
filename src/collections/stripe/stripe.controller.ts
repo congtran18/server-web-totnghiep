@@ -34,7 +34,7 @@ export class StripeController {
         if (sig) {
 
             try {
-                event = this.stripeService.stripe.webhooks.constructEvent(payload, sig, 'whsec_nab1ZyXFmD1k9JXDqbvge2EJqYljuFwc' || "");
+                event = this.stripeService.stripe.webhooks.constructEvent(payload, sig, process.env.STRIPE_WEBHOOK_SECRET || "");
             } catch (err: any) {
                 return response.status(HttpStatus.FORBIDDEN).send(`Webhook Error: ${err?.message}`);
             }
