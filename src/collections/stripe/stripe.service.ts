@@ -92,7 +92,7 @@ export class StripeService {
             line_items: transformedItems,
             mode: 'payment',
             success_url: this.redirect_url.concat('/success'),
-            cancel_url: this.redirect_url.concat(`/error`),
+            cancel_url: this.redirect_url.concat('/error'),
         });
 
         return { id: session.id };
@@ -109,7 +109,6 @@ export class StripeService {
     }
 
     async fulfill(session: Stripe.Checkout.Session) {
-        console.log("vo day1", session)
         const expanded_session = await this._stripe.checkout.sessions.retrieve(
             session.id,
             {

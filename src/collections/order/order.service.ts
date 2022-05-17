@@ -26,7 +26,7 @@ export class OrderService {
   }
 
 
-  async getAllOrder(page?: string, limit?: string, sort?: string, realname?: string): Promise<any> {
+  async getAllOrder(page?: string, limit?: string, sort?: string, realname?: string, email?: string): Promise<any> {
     let pageNumber = 1;
     let limitNumber = 100;
     if (page) {
@@ -42,7 +42,11 @@ export class OrderService {
     orderSort = { 'create_at': -1, ...orderSort }
 
     if (realname) {
-      orderFilter = { "users.email": new RegExp(realname, 'i'), ...orderFilter };
+      orderFilter = { "user": new RegExp(realname, 'i'), ...orderFilter };
+    }
+
+    if(email){
+      orderFilter = { "user": email };
     }
 
     if (sort) {
