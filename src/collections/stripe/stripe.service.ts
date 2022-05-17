@@ -88,7 +88,6 @@ export class StripeService {
             ],
             metadata: {
                 idProduct: JSON.stringify(items.map((item) => item.idProduct)),
-                quantity: JSON.stringify(items.map((item) => item.quantity)),
             },
             line_items: transformedItems,
             mode: 'payment',
@@ -129,16 +128,17 @@ export class StripeService {
 
             var total_details = expanded_session.total_details
             var address = customer?.address
+            var dataProduct = session?.metadata
 
-            if (items && address && total_details) {
+            if (items && address && total_details && dataProduct) {
                 const createOrderDto: CreateOrderDto = {
                     status: 'Hoàn thành',
                     user: customer?.email ? customer?.email : '',
                     totalPrice: expanded_session.amount_total || 0,
                     shippingPrice: total_details?.amount_shipping ? total_details?.amount_shipping : 0,
-                    orderItems: items.map((item: any) => {
-                        console.log("itemsitems", items.data?.price)
+                    orderItems: items.map((item: any, index: number) => {
                         return {
+                            productId: dataProduct?.idProduct[index] ? dataProduct.idProduct[index] : '',
                             subtotal: item.amount_total,
                             unit_price: item.price.unit_amount,
                             qty: item.quantity,
