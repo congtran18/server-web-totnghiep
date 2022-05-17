@@ -121,7 +121,6 @@ export class StripeService {
             var customer = expanded_session.customer_details;
             if (expanded_session.line_items) {
                 items = expanded_session.line_items.data;
-                console.log("itemsitems", expanded_session.line_items)
             }
 
             var total_details = expanded_session.total_details
@@ -134,6 +133,7 @@ export class StripeService {
                     totalPrice: expanded_session.amount_total || 0,
                     shippingPrice: total_details?.amount_shipping ? total_details?.amount_shipping : 0,
                     orderItems: items.map((item: any) => {
+                        console.log("itemsitems", items.data?.price)
                         return {
                             subtotal: item.amount_total,
                             unit_price: item.price.unit_amount,
