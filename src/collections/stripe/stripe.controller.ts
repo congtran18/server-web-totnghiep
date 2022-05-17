@@ -43,8 +43,6 @@ export class StripeController {
 
                 // Fulfill the purchase...
                 this.stripeService.fulfill(session);
-
-                console.log("vo day nek4", session)
             }
         }
 

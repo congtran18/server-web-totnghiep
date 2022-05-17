@@ -86,6 +86,9 @@ export class StripeService {
                     }
                 },
             ],
+            metadata: {
+                items: JSON.stringify(items.map((item) => item)),
+            },
             line_items: transformedItems,
             mode: 'payment',
             success_url: this.redirect_url.concat('/success'),
