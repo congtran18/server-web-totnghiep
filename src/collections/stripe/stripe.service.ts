@@ -134,14 +134,13 @@ export class StripeService {
 
             if (items && address && total_details && dataProduct) {
                 const idProducts = dataProduct?.idProduct ? JSON.parse(dataProduct.idProduct) : ''
-                console.log("idProducts",idProducts)
                 const createOrderDto: CreateOrderDto = {
                     status: 'Hoàn thành',
                     user: customer?.email ? customer?.email : '',
                     totalPrice: expanded_session.amount_total || 0,
                     shippingPrice: total_details?.amount_shipping ? total_details?.amount_shipping : 0,
                     orderItems: items.map((item: any, index: number) => {
-                        console.log("dataProduct?.idProduct[index]",JSON.parse(dataProduct?.idProduct || ""))
+                        console.log("dataProduct?.idProduct[index]",index)
                         return {
                             productId: idProducts ? idProducts[index] : '',
                             subtotal: item.amount_total,
