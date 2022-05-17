@@ -140,9 +140,9 @@ export class StripeService {
                     totalPrice: expanded_session.amount_total || 0,
                     shippingPrice: total_details?.amount_shipping ? total_details?.amount_shipping : 0,
                     orderItems: items.map((item: any, index: number) => {
-                        console.log("dataProduct?.idProduct[index]",index)
+                        console.log("dataProduct?.idProduct[index]",idProducts[index])
                         return {
-                            productId: "6267669f6de615cfad6936c8",
+                            productId: idProducts ? idProducts[index] : '',
                             subtotal: item.amount_total,
                             unit_price: item.price.unit_amount,
                             qty: item.quantity,

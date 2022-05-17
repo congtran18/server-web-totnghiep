@@ -14,10 +14,7 @@ export class Order extends Document {
     type: [
       {
         qty: { type: Number, required: true },
-        ProductId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: Product.name,
-        },
+        ProductId: String,
         subtotal: Number, unit_price: Number, ticket_id: String
       }
     ]
