@@ -142,7 +142,7 @@ export class StripeService {
                     orderItems: items.map((item: any, index: number) => {
                         console.log("dataProduct?.idProduct[index]",index)
                         return {
-                            productId: idProducts ? idProducts[index] : '',
+                            productId: "6267669f6de615cfad6936c8",
                             subtotal: item.amount_total,
                             unit_price: item.price.unit_amount,
                             qty: item.quantity,
