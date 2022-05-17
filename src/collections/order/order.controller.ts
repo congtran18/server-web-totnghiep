@@ -27,7 +27,6 @@ import { JwtPayload } from '../auth/jwt.payload';
 import { RolesGuard } from '../auth/roles.guard';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { GetOrderDto } from './dto/getby-email.dto'
 import { Order } from './schemas/order.schema';
 import { OrderService } from './order.service';
 
@@ -95,7 +94,7 @@ export class OrderController {
   })
   // @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all order' })
-  @Get()
+  @Get(':email')
   @ApiQuery({ name: 'page', required: false })
   @ApiQuery({ name: 'limit', required: false })
   @ApiQuery({ name: 'realname', required: false })
@@ -105,10 +104,9 @@ export class OrderController {
     @Query('page') page: string,
     @Query('limit') limit: string,
     @Query('realname') realname: string,
-    @Body() getOrderDto: GetOrderDto,
+    @Param('email') email: string,
   ): Promise<BaseResponse<Order>> {
     const response: BaseResponse<Order> = {};
-    const { email } = getOrderDto
     const order = await this.orderService.getAllOrder(page, limit, realname, email);
     if (!order) {
       response.error = {
