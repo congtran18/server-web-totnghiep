@@ -87,7 +87,8 @@ export class StripeService {
                 },
             ],
             metadata: {
-                items: JSON.stringify(items.map((item) => item)),
+                idProduct: JSON.stringify(items.map((item) => item.idProduct)),
+                quantity: JSON.stringify(items.map((item) => item.quantity)),
             },
             line_items: transformedItems,
             mode: 'payment',
