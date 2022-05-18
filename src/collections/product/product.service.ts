@@ -74,6 +74,7 @@ export class ProductService {
     if (category) {
       productfilter = { "category": category, ...productfilter };
     }
+
     if (sort) {
       if (sort === "high") {
         productSort = { "cost": -1, ...productSort };

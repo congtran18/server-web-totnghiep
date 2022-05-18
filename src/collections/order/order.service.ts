@@ -49,7 +49,9 @@ export class OrderService {
       orderFilter = { "user": email };
     }
 
+    console.log("sort", sort)
     if (sort) {
+      console.log("vo sort")
       if (sort === "high") {
         orderSort = { "totalPrice": -1, ...orderSort };
       } else if (sort === "low"){
