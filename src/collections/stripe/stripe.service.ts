@@ -87,7 +87,9 @@ export class StripeService {
                 },
             ],
             metadata: {
-                idProduct: JSON.stringify(items.map((item) => item.idProduct)),
+                realname: JSON.stringify(items.map((item) => item.realname)),
+                mainImage: JSON.stringify(items.map((item) => item.mainImage)),
+                category: JSON.stringify(items.map((item) => item.category)),
             },
             line_items: transformedItems,
             mode: 'payment',
@@ -131,7 +133,9 @@ export class StripeService {
 
 
             if (items && address && total_details && dataProduct) {
-                const idProducts = dataProduct?.idProduct ? JSON.parse(dataProduct.idProduct) : ''
+                const realname = dataProduct?.realname ? JSON.parse(dataProduct.realname) : ''
+                const mainImage = dataProduct?.mainImage ? JSON.parse(dataProduct.mainImage) : ''
+                const category = dataProduct?.category ? JSON.parse(dataProduct.category) : ''
                 const createOrderDto: CreateOrderDto = {
                     status: 'Hoàn thành',
                     user: customer?.email ? customer?.email : '',
@@ -139,7 +143,9 @@ export class StripeService {
                     shippingPrice: total_details?.amount_shipping ? total_details?.amount_shipping : 0,
                     orderItems: items.map((item: any, index: number) => {
                         return {
-                            productId: idProducts ? idProducts[index] : '',
+                            realname: realname ? realname[index] : '',
+                            mainImage: mainImage ? mainImage[index] : '',
+                            category: category ? category[index] : '',
                             subtotal: item.amount_total,
                             unit_price: item.price.unit_amount,
                             qty: item.quantity,

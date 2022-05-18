@@ -13,16 +13,20 @@ export class Order extends Document {
   @Prop({
     type: [
       {
-        qty: { type: Number },
-        productId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: Product.name,
-        },
-        subtotal: Number, unit_price: Number
+        qty: Number,
+        // productId: {
+        //   type: mongoose.Schema.Types.ObjectId,
+        //   ref: Product.name,
+        // },
+        realname: String,
+        mainImage: String,
+        category: String,
+        subtotal: Number, 
+        unit_price: Number
       }
     ]
   })
-  orderItems: { qty: number, productId: string, subtotal: number, unit_price: number }[];
+  orderItems: { qty: number, realname: string, mainImage: string, category: string, subtotal: number, unit_price: number }[];
 
   @ApiProperty()
   @Prop({
@@ -80,7 +84,7 @@ export class Order extends Document {
   update_at: Date;
 
   constructor(
-    orderItems: { qty: number, productId: string, subtotal: number, unit_price: number }[],
+    orderItems: { qty: number, realname: string, mainImage: string, category: string , subtotal: number, unit_price: number }[],
     address: {city: string, country: string, address: string, postal_code: string, state: string},
     user: string,
     totalPrice: number,
