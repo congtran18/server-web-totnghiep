@@ -65,9 +65,8 @@ export class OrderService {
       .skip((pageNumber - 1) * limitNumber);
 
     let total = await this.orderModel.countDocuments(orderFilter)
-    let totalpage = total
 
-    total = Math.ceil(total / limitNumber);
+    let totalpage = Math.ceil(total / limitNumber);
 
     return { 'order': result, 'total': total, 'totalpage': totalpage };
   }
