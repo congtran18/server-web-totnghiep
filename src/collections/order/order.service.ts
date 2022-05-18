@@ -65,10 +65,11 @@ export class OrderService {
       .skip((pageNumber - 1) * limitNumber);
 
     let total = await this.orderModel.countDocuments(orderFilter)
+    let totalpage = total
 
     total = Math.ceil(total / limitNumber);
 
-    return { 'order': result, 'total': total };
+    return { 'order': result, 'total': total, 'totalpage': totalpage };
   }
 
   async getAllRestoreOrder(page?: string, limit?: string, sort?: string, realname?: string): Promise<any> {
@@ -106,6 +107,8 @@ export class OrderService {
       .skip((pageNumber - 1) * limitNumber);
 
     let total = await this.orderModel.countDocuments(orderFilter)
+
+    console.log("total",total)
 
     total = Math.ceil(total / limitNumber);
 
