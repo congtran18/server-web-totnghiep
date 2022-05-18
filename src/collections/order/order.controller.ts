@@ -95,6 +95,7 @@ export class OrderController {
   // @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all order' })
   @Get(':email')
+  @ApiQuery({ name: 'sort', required: false })
   @ApiQuery({ name: 'page', required: false })
   @ApiQuery({ name: 'limit', required: false })
   @ApiQuery({ name: 'realname', required: false })
@@ -104,10 +105,11 @@ export class OrderController {
     @Query('page') page: string,
     @Query('limit') limit: string,
     @Query('realname') realname: string,
+    @Query('sort') sort: string,
     @Param('email') email: string,
   ): Promise<BaseResponse<Order>> {
     const response: BaseResponse<Order> = {};
-    const order = await this.orderService.getAllOrder(page, limit, realname, email);
+    const order = await this.orderService.getAllOrder(page, limit, realname, email, sort);
     if (!order) {
       response.error = {
         code: HttpStatus.BAD_REQUEST,
