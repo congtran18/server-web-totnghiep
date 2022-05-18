@@ -89,6 +89,7 @@ export class StripeService {
             metadata: {
                 realname: JSON.stringify(items.map((item) => item.realname)),
                 mainImage: JSON.stringify(items.map((item) => item.mainImage)),
+                type: JSON.stringify(items.map((item) => item.type)),
                 category: JSON.stringify(items.map((item) => item.category)),
             },
             line_items: transformedItems,
@@ -135,6 +136,7 @@ export class StripeService {
             if (items && address && total_details && dataProduct) {
                 const realname = dataProduct?.realname ? JSON.parse(dataProduct.realname) : ''
                 const mainImage = dataProduct?.mainImage ? JSON.parse(dataProduct.mainImage) : ''
+                const type = dataProduct?.type ? JSON.parse(dataProduct.type) : ''
                 const category = dataProduct?.category ? JSON.parse(dataProduct.category) : ''
                 const createOrderDto: CreateOrderDto = {
                     status: 'Hoàn thành',
@@ -145,6 +147,7 @@ export class StripeService {
                         return {
                             realname: realname ? realname[index] : '',
                             mainImage: mainImage ? mainImage[index] : '',
+                            type: type ? type[index] : '',
                             category: category ? category[index] : '',
                             subtotal: item.amount_total,
                             unit_price: item.price.unit_amount,
