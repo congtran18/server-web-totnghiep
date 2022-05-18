@@ -102,13 +102,14 @@ export class OrderController {
   // @UseGuards(JwtAuthGuard, RolesGuard)
   async getAllOrder(
     // @AuthJwt() payload: JwtPayload,
+    @Query('sort') sort: string,
     @Query('page') page: string,
     @Query('limit') limit: string,
     @Query('realname') realname: string,
-    @Query('sort') sort: string,
     @Param('email') email: string,
   ): Promise<BaseResponse<Order>> {
     const response: BaseResponse<Order> = {};
+    console.log("sortnek", sort)
     const order = await this.orderService.getAllOrder(page, limit, realname, email, sort);
     if (!order) {
       response.error = {

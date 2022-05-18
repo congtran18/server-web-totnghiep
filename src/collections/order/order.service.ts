@@ -26,7 +26,7 @@ export class OrderService {
   }
 
 
-  async getAllOrder(page?: string, limit?: string, sort?: string, realname?: string, email?: string): Promise<any> {
+  async getAllOrder(page?: string, limit?: string,  realname?: string, email?: string, sort?: string): Promise<any> {
     let pageNumber = 1;
     let limitNumber = 100;
     if (page) {
