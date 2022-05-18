@@ -87,10 +87,7 @@ export class StripeService {
                 },
             ],
             metadata: {
-                realname: JSON.stringify(items.map((item) => item.realname)),
-                mainImage: JSON.stringify(items.map((item) => item.mainImage)),
-                type: JSON.stringify(items.map((item) => item.type)),
-                category: JSON.stringify(items.map((item) => item.category)),
+                idProduct: JSON.stringify(items.map((item) => item.idProduct)),
             },
             line_items: transformedItems,
             mode: 'payment',
@@ -134,10 +131,7 @@ export class StripeService {
 
 
             if (items && address && total_details && dataProduct) {
-                const realname = dataProduct?.realname ? JSON.parse(dataProduct.realname) : ''
-                const mainImage = dataProduct?.mainImage ? JSON.parse(dataProduct.mainImage) : ''
-                const type = dataProduct?.type ? JSON.parse(dataProduct.type) : ''
-                const category = dataProduct?.category ? JSON.parse(dataProduct.category) : ''
+                const idProducts = dataProduct?.idProduct ? JSON.parse(dataProduct.idProduct) : ''
                 const createOrderDto: CreateOrderDto = {
                     status: 'Hoàn thành',
                     user: customer?.email ? customer?.email : '',
@@ -145,10 +139,7 @@ export class StripeService {
                     shippingPrice: total_details?.amount_shipping ? total_details?.amount_shipping : 0,
                     orderItems: items.map((item: any, index: number) => {
                         return {
-                            realname: realname ? realname[index] : '',
-                            mainImage: mainImage ? mainImage[index] : '',
-                            type: type ? type[index] : '',
-                            category: category ? category[index] : '',
+                            productId: idProducts ? idProducts[index] : '',
                             subtotal: item.amount_total,
                             unit_price: item.price.unit_amount,
                             qty: item.quantity,
