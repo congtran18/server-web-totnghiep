@@ -39,7 +39,7 @@ export class OrderService {
 
     var orderFilter = {}
     var orderSort = {}
-    orderSort = { 'create_at': -1, ...orderSort }
+    orderSort = { ...orderSort, 'create_at': -1 }
 
     if (realname) {
       orderFilter = { "user": new RegExp(realname, 'i'), ...orderFilter };
