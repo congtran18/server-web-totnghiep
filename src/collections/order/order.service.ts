@@ -50,13 +50,12 @@ export class OrderService {
     }
 
     console.log("sort", sort)
-    if (sort) {
-      console.log("vo sort")
+    if (sort !== undefined) {
       if (sort === "high") {
         orderSort = { "totalPrice": -1, ...orderSort };
       } else if (sort === "low"){
         orderSort = { "totalPrice": 1, ...orderSort };
-      }else{
+      }else if (sort === "old"){
         orderSort = {  ...orderSort, 'create_at': 1 }
       }
     }
