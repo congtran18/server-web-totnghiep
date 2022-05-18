@@ -57,7 +57,7 @@ export class OrderService {
       } else if (sort === "low"){
         orderSort = { "totalPrice": 1, ...orderSort };
       }else{
-        orderSort = { 'create_at': 1, ...orderSort }
+        orderSort = {  ...orderSort, 'create_at': 1 }
       }
     }
 
