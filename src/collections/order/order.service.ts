@@ -51,9 +51,11 @@ export class OrderService {
 
     if (sort) {
       if (sort === "high") {
-        orderSort = { "cost": -1, ...orderSort };
-      } else {
-        orderSort = { "cost": 1, ...orderSort };
+        orderSort = { "totalPrice": -1, ...orderSort };
+      } else if (sort === "low"){
+        orderSort = { "totalPrice": 1, ...orderSort };
+      }else{
+        orderSort = { 'create_at': 1, ...orderSort }
       }
     }
 

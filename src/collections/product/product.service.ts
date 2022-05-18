@@ -69,7 +69,6 @@ export class ProductService {
       productfilter = { "realname": new RegExp(realname, 'i'), ...productfilter };
     }
     if (type) {
-      console.log(type)
       productfilter = { "type": type, ...productfilter };
     }
     if (category) {
