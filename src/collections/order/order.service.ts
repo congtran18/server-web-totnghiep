@@ -26,7 +26,7 @@ export class OrderService {
   }
 
 
-  async getAllOrder(page?: string, limit?: string,  realname?: string, email?: string, sort?: string): Promise<any> {
+  async getAllOrder(page?: string, limit?: string,  realname?: string, sort?: string, email?: string): Promise<any> {
     let pageNumber = 1;
     let limitNumber = 100;
     if (page) {
@@ -45,7 +45,7 @@ export class OrderService {
       orderFilter = { "user": new RegExp(realname, 'i'), ...orderFilter };
     }
 
-    if(email){
+    if(email !== "all"){
       orderFilter = { "user": email };
     }
 

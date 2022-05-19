@@ -95,21 +95,21 @@ export class OrderController {
   // @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all order' })
   @Get(':email')
-  @ApiQuery({ name: 'sort', required: false })
   @ApiQuery({ name: 'page', required: false })
   @ApiQuery({ name: 'limit', required: false })
   @ApiQuery({ name: 'realname', required: false })
+  @ApiQuery({ name: 'sort', required: false })
   // @UseGuards(JwtAuthGuard, RolesGuard)
   async getAllOrder(
     // @AuthJwt() payload: JwtPayload,
-    @Query('sort') sort: string,
     @Query('page') page: string,
     @Query('limit') limit: string,
     @Query('realname') realname: string,
+    @Query('sort') sort: string,
     @Param('email') email: string,
   ): Promise<BaseResponse<Order>> {
     const response: BaseResponse<Order> = {};
-    const order = await this.orderService.getAllOrder(page, limit, realname, email, sort);
+    const order = await this.orderService.getAllOrder(page, limit, realname, sort, email);
     if (!order) {
       response.error = {
         code: HttpStatus.BAD_REQUEST,
