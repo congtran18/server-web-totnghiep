@@ -59,14 +59,14 @@ export class UsersService {
           from: "admins",
           localField: "uid",
           foreignField: "uid",
-          as: "role-user"
+          as: "role_user"
         }
       },
       {
         $match: {
           $and: [
             email ? { 'email': new RegExp('^' + email, 'i') } : {},
-            role ? { "role-user.role": role } : {}
+            role ? { "role_user.role": role } : {}
             // { 'isMobileVerified': false}
           ]
         }
@@ -74,9 +74,9 @@ export class UsersService {
       { $sort: userSort },
       {
         $facet: {
-          'role-user':
+          'role_user':
             [
-              { $unwind: '$role-user' },
+              { $unwind: '$role_user' },
               { $skip: (pageNumber - 1) * limitNumber },
               { $limit: limitNumber },
             ],
