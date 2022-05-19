@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Connection, Model } from "mongoose";
 import { User } from "./schemas/user.schema";
-import {Admin} from "../admins/schemas/admin.schema";
+import { Admin } from "../admins/schemas/admin.schema";
 import { ROLE_USER, ROLE_TUTOR } from "../../collections/admins/dto/admin.roles";
 import { InjectConnection, InjectModel } from "@nestjs/mongoose";
 import { UpdateUserDto } from "./dto/update-user.dto";
@@ -29,23 +29,30 @@ export class UsersService {
   // Search users
   // Input: username
   // If input is undefined, return all
-  async getUsers(input?: string, fromIndex?: number, toIndex?: number): Promise<any> {
-    const MAX_ITEMS_PAGING = 50;
-    const from = Math.abs(fromIndex ?? 0);
-    const to = Math.abs(toIndex ?? MAX_ITEMS_PAGING);
-    const skip = Math.min(from, to);
-    const limit = Math.min(MAX_ITEMS_PAGING, Math.abs(to - from));
-    // return await this.userModel.find(input ? {
-    //     $or: [
-    //       {username: new RegExp('^' + input, 'i')},
-    //     ]
-    //   } : {},
-    //   defaultProjection,
-    //   {
-    //     skip: skip,
-    //     limit: limit,
-    //     sort: {created_at: -1}
-    //   }).exec();
+  async getUsers(page?: string, limit?: string, email?: string, role?: string, sort?: string): Promise<any> {
+    // const MAX_ITEMS_PAGING = 50;
+    // const from = Math.abs(fromIndex ?? 0);
+    // const to = Math.abs(toIndex ?? MAX_ITEMS_PAGING);
+    // const skip = Math.min(from, to);
+    // const limit = Math.min(MAX_ITEMS_PAGING, Math.abs(to - from));
+    let pageNumber = 1;
+    let limitNumber = 100;
+
+    var userSort = {}
+    userSort = { ...userSort, 'create_at': -1 }
+
+    if (page) {
+      pageNumber = parseInt(page);
+    }
+
+    if (limit) {
+      limitNumber = parseInt(limit);
+    }
+
+    if (sort === "old") {
+      userSort = { ...userSort, 'create_at': 1 }
+    }
+
     const result = await this.userModel.aggregate([
       {
         $lookup: {
@@ -58,19 +65,20 @@ export class UsersService {
       {
         $match: {
           $and: [
-            input ? { 'username': new RegExp('^' + input, 'i') } : {}
+            email ? { 'email': new RegExp('^' + email, 'i') } : {},
+            { "role-user.role": role }
             // { 'isMobileVerified': false}
           ]
         }
       },
-      { $sort: { createdAt: -1 } },
+      { $sort: userSort },
       {
         $facet: {
           'role-user':
             [
               { $unwind: '$role-user' },
-              { $skip: skip },
-              { $limit: limit },
+              { $skip: (pageNumber - 1) * limitNumber },
+              { $limit: limitNumber },
             ],
           'count':
             [
@@ -115,7 +123,7 @@ export class UsersService {
     if (user) {
       const obj = user.toObject<User>();
 
-      const adminModel = new this.adminModel({"uid": uid, "role": ROLE_USER})
+      const adminModel = new this.adminModel({ "uid": uid, "role": ROLE_USER })
 
       await adminModel.save();
 

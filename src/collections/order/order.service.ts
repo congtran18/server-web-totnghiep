@@ -49,7 +49,6 @@ export class OrderService {
       orderFilter = { "user": email };
     }
 
-    console.log("sort", sort)
     if (sort !== undefined) {
       if (sort === "high") {
         orderSort = { "totalPrice": -1, ...orderSort };

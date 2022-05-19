@@ -39,20 +39,27 @@ export class UsersController {
     description: 'List of user',
     type: [User],
   })
-  @ApiImplicitQuery({ name: 'input', required: false })
-  @ApiImplicitQuery({ name: 'from', required: false })
-  @ApiImplicitQuery({ name: 'to', required: false })
+  // @ApiImplicitQuery({ name: 'input', required: false })
+  // @ApiImplicitQuery({ name: 'from', required: false })
+  // @ApiImplicitQuery({ name: 'to', required: false })
+  @ApiQuery({ name: 'page', required: false })
+  @ApiQuery({ name: 'limit', required: false })
+  @ApiQuery({ name: 'email', required: false })
+  @ApiQuery({ name: 'role', required: false })
+  @ApiQuery({ name: 'sort', required: false })
   // @ApiBearerAuth()
   @ApiOperation({ summary: 'Search by username. Leave empty to get all.' })
   @Get('search')
   // @UseGuards(JwtAuthGuard)
   async getUsers(
-    @Query('input') input: string,
-    @Query('from') from: number,
-    @Query('to') to: number,
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+    @Query('email') email: string,
+    @Query('role') role: string,
+    @Query('sort') sort: string,
     @AuthJwt() payload: JwtPayload): Promise<BaseResponse<User[]>> {
     const response: BaseResponse<User[]> = {}
-    response.data = await this.usersService.getUsers(input, from, to);
+    response.data = await this.usersService.getUsers(page, limit, email, role, sort);
     return response;
   }
 
@@ -92,7 +99,8 @@ export class UsersController {
   @Get('/check-email/email')
   @ApiQuery({ name: 'email', required: false })
   @ApiQuery({ name: 'name', required: false })
-  async getUserInfo2(@Query('email') email: string, @Query('name') name: string, @AuthJwt() payload: JwtPayload): Promise<any> {
+  @ApiQuery({ name: 'image', required: false })
+  async getUserInfo2(@Query('email') email: string, @Query('name') name: string, @Query('image') image: string,@AuthJwt() payload: JwtPayload): Promise<any> {
     const existUser = await this.usersService.getUserByEmail(email);
     let roleUser: any;
     let accessToken: any;
@@ -107,7 +115,7 @@ export class UsersController {
         accessToken = getAccessToken.accessToken
       }
     } else {
-      const createUser = await this.usersService.createUser({ "email": email, "fullName": name, "password": "1234" });
+      const createUser = await this.usersService.createUser({ "email": email, "fullName": name, "password": "1234", "imageUrl": image });
       if (createUser) {
         const dataLogin = await this.authService.login({"email": email,  "password": "1234"});
         if(dataLogin){

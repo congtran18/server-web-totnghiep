@@ -109,7 +109,6 @@ export class OrderController {
     @Param('email') email: string,
   ): Promise<BaseResponse<Order>> {
     const response: BaseResponse<Order> = {};
-    console.log("sortnek", sort)
     const order = await this.orderService.getAllOrder(page, limit, realname, email, sort);
     if (!order) {
       response.error = {
