@@ -51,9 +51,12 @@ export class UsersService {
 
     if (sort !== undefined) {
       if (sort === "old") {
+        console.log("vo old")
         userSort = { ...userSort, 'create_at': 1 }
       }
     }
+
+    console.log("userSort", userSort)
 
     const result = await this.userModel.aggregate([
       {
