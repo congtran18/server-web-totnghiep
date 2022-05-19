@@ -49,7 +49,7 @@ export class UsersService {
       limitNumber = parseInt(limit);
     }
 
-    if (sort) {
+    if (sort !== undefined) {
       if (sort === "old") {
         userSort = { ...userSort, 'create_at': 1 }
       }
@@ -74,7 +74,7 @@ export class UsersService {
           ]
         }
       },
-      { $sort: userSort },
+      { $sort: { ...userSort } },
       {
         $facet: {
           'role_user':

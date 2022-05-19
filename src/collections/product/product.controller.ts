@@ -219,6 +219,7 @@ export class ProductController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Remove product' })
   @Delete(':id')
+  @RolesAllowed(ROLE_OWNER, ROLE_ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   async removeProduct(
     @Param('id') params: string,
