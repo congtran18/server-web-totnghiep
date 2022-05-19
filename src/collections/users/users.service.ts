@@ -29,7 +29,7 @@ export class UsersService {
   // Search users
   // Input: username
   // If input is undefined, return all
-  async getUsers(page?: string, limit?: string, email?: string, role?: string, sort?: string): Promise<any> {
+  async getUsers(page?: string, limit?: string, email?: string, role?: string, sort?: string, track?: string): Promise<any> {
     // const MAX_ITEMS_PAGING = 50;
     // const from = Math.abs(fromIndex ?? 0);
     // const to = Math.abs(toIndex ?? MAX_ITEMS_PAGING);
@@ -49,8 +49,10 @@ export class UsersService {
       limitNumber = parseInt(limit);
     }
 
-    if (sort === "old") {
-      userSort = { ...userSort, 'create_at': 1 }
+    if (sort) {
+      if (sort === "old") {
+        userSort = { ...userSort, 'create_at': 1 }
+      }
     }
 
     const result = await this.userModel.aggregate([
@@ -66,7 +68,8 @@ export class UsersService {
         $match: {
           $and: [
             email ? { 'email': new RegExp('^' + email, 'i') } : {},
-            role ? { "role_user.role": role } : {}
+            role ? { "role_user.role": role } : {},
+            track ? { "track": JSON.parse(track.toLowerCase()) } : {}
             // { 'isMobileVerified': false}
           ]
         }

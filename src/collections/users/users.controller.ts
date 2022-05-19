@@ -47,6 +47,7 @@ export class UsersController {
   @ApiQuery({ name: 'email', required: false })
   @ApiQuery({ name: 'role', required: false })
   @ApiQuery({ name: 'sort', required: false })
+  @ApiQuery({ name: 'track', required: false })
   // @ApiBearerAuth()
   @ApiOperation({ summary: 'Search by username. Leave empty to get all.' })
   @Get('search')
@@ -57,9 +58,10 @@ export class UsersController {
     @Query('email') email: string,
     @Query('role') role: string,
     @Query('sort') sort: string,
+    @Query('track') track: string,
     @AuthJwt() payload: JwtPayload): Promise<BaseResponse<User[]>> {
     const response: BaseResponse<User[]> = {}
-    response.data = await this.usersService.getUsers(page, limit, email, role, sort);
+    response.data = await this.usersService.getUsers(page, limit, email, role, sort, track);
     return response;
   }
 
@@ -100,7 +102,7 @@ export class UsersController {
   @ApiQuery({ name: 'email', required: false })
   @ApiQuery({ name: 'name', required: false })
   @ApiQuery({ name: 'image', required: false })
-  async getUserInfo2(@Query('email') email: string, @Query('name') name: string, @Query('image') image: string,@AuthJwt() payload: JwtPayload): Promise<any> {
+  async getUserInfo2(@Query('email') email: string, @Query('name') name: string, @Query('image') image: string, @AuthJwt() payload: JwtPayload): Promise<any> {
     const existUser = await this.usersService.getUserByEmail(email);
     let roleUser: any;
     let accessToken: any;
@@ -117,14 +119,14 @@ export class UsersController {
     } else {
       const createUser = await this.usersService.createUser({ "email": email, "fullName": name, "password": "1234", "imageUrl": image });
       if (createUser) {
-        const dataLogin = await this.authService.login({"email": email,  "password": "1234"});
-        if(dataLogin){
-          const response = { "role": dataLogin.role, "accessToken": dataLogin.accessToken }; 
+        const dataLogin = await this.authService.login({ "email": email, "password": "1234" });
+        if (dataLogin) {
+          const response = { "role": dataLogin.role, "accessToken": dataLogin.accessToken };
           return response;
         }
       }
     }
-    const response = { "role": roleUser, "accessToken": accessToken }; 
+    const response = { "role": roleUser, "accessToken": accessToken };
     return response;
   }
 
@@ -188,7 +190,7 @@ export class UsersController {
         message: "username is empty"
       }
     }
-    console.log("response",response)
+    console.log("response", response)
     return response;
   }
 

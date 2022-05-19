@@ -24,6 +24,10 @@ export class User extends Document {
   imageUrl?: string;
 
   @ApiProperty()
+  @Prop({ default: false })
+  track: boolean;
+
+  @ApiProperty()
   @Prop({ type: Date, default: Date.now })
   createdAt: Date;
 
@@ -31,13 +35,14 @@ export class User extends Document {
   @Prop({ type: Date, default: Date.now })
   updatedAt: Date;
 
-  constructor(doc: any, uid: string, email: string, password: string, fullName: string, imageUrl: string, createdAt: Date, updatedAt: Date) {
+  constructor(doc: any, uid: string, email: string, password: string, fullName: string, imageUrl: string, track: boolean, createdAt: Date, updatedAt: Date) {
     super(doc);
     this.uid = uid;
     this.email = email;
     this.password = password;
     this.fullName = fullName;
     this.imageUrl = imageUrl;
+    this.track = track;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
