@@ -39,7 +39,7 @@ export class UsersService {
     let limitNumber = 100;
 
     var userSort = {}
-    userSort = { ...userSort, 'create_at': -1 }
+    userSort = { ...userSort, 'createdAt': -1 }
 
     if (page) {
       pageNumber = parseInt(page);
@@ -49,14 +49,11 @@ export class UsersService {
       limitNumber = parseInt(limit);
     }
 
-    if (sort !== undefined) {
+    if (sort) {
       if (sort === "old") {
-        console.log("vo old")
-        userSort = { ...userSort, 'create_at': 1 }
+        userSort = { ...userSort, 'createdAt': 1 }
       }
     }
-
-    console.log("userSort", userSort)
 
     const result = await this.userModel.aggregate([
       {
