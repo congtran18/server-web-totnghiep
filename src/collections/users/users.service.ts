@@ -66,7 +66,7 @@ export class UsersService {
         $match: {
           $and: [
             email ? { 'email': new RegExp('^' + email, 'i') } : {},
-            { "role-user.role": role }
+            role ? { "role-user.role": role } : {}
             // { 'isMobileVerified': false}
           ]
         }
