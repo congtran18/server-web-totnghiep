@@ -26,7 +26,7 @@ export class OrderService {
   }
 
 
-  async getAllOrder(page?: string, limit?: string, realname?: string, sort?: string, track?: string, email?: string): Promise<any> {
+  async getAllOrder(page?: string, limit?: string, realname?: string, sort?: string, track?: string, type?: string, email?: string): Promise<any> {
     let pageNumber = 1;
     let limitNumber = 100;
     if (page) {
@@ -47,9 +47,15 @@ export class OrderService {
 
     if (email !== "all") {
       orderFilter = { "user": email };
-    }else{
+    } else {
       //danh sach hoa don cua nguoi dung
       track = "false"
+    }
+
+    if (type === "Sách") {
+      orderFilter = { "paymentMethod": "Sách" };
+    } else if (type === "Khóa học") {
+      orderFilter = { "paymentMethod": "Khóa học" };
     }
 
     if (sort !== undefined) {

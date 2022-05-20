@@ -108,10 +108,11 @@ export class OrderController {
     @Query('realname') realname: string,
     @Query('sort') sort: string,
     @Query('track') track: string,
+    @Query('type') type: string,
     @Param('email') email: string,
   ): Promise<BaseResponse<Order>> {
     const response: BaseResponse<Order> = {};
-    const order = await this.orderService.getAllOrder(page, limit, realname, sort, track, email);
+    const order = await this.orderService.getAllOrder(page, limit, realname, sort, track, type, email);
     if (!order) {
       response.error = {
         code: HttpStatus.BAD_REQUEST,
