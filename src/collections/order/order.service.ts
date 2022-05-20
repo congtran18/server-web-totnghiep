@@ -62,7 +62,7 @@ export class OrderService {
     orderFilter = { "track": false, ...orderFilter };
 
     const result = await this.orderModel
-      .find(orderFilter).sort(orderSort).populate('orderItems.productId').populate('orderItems.productId.type')
+      .find(orderFilter).sort(orderSort).populate('orderItems.productId')
       .limit(limitNumber)
       .skip((pageNumber - 1) * limitNumber);
 
@@ -158,6 +158,25 @@ export class OrderService {
       },
       {
         track: !existOrder?.track,
+      },
+      {
+        new: true,
+        useFindAndModify: false,
+      },
+    );
+    return result;
+  }
+
+  async deliveryOrder(id: string): Promise<any> {
+
+    const existOrder = await this.orderModel.findOne({ _id: id })
+
+    const result = await this.orderModel.findOneAndUpdate(
+      {
+        _id: id,
+      },
+      {
+        isDelivered: !existOrder?.isDelivered,
       },
       {
         new: true,

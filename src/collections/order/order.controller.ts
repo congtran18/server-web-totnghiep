@@ -201,6 +201,31 @@ export class OrderController {
   }
 
   @ApiOkResponse({
+    description: 'Delivery order',
+    type: Order,
+  })
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Delivery order' })
+  @Get('/delivery/:id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async deliveryOrder(
+    @Param('id') params: string,
+    // @AuthJwt() payload: JwtPayload,
+  ): Promise<any> {
+    const response: BaseResponse<any> = {};
+    const order = await this.orderService.deliveryOrder(params);
+    if (!order) {
+      response.error = {
+        code: HttpStatus.BAD_REQUEST,
+        message: 'ERROR.',
+      };
+    } else {
+      response.data = order;
+    }
+    return response;
+  }
+
+  @ApiOkResponse({
     description: 'Remove order',
     type: Order,
   })
