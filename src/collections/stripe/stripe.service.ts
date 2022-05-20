@@ -107,7 +107,7 @@ export class StripeService {
             quantity: 1,
             price_data: {
                 currency: 'usd',
-                unit_amount: cost,
+                unit_amount: Math.round(cost * 100),
                 product_data: {
                     name: type,
                     images: ["https://topicanative.edu.vn/wp-content/uploads/2020/06/hoc-tieng-anh-online-o-dau-hieu-qua-2.jpg"],
