@@ -22,7 +22,7 @@ export class Order extends Document {
       }
     ]
   })
-  orderItems: { qty: number, productId: string, subtotal: number, unit_price: number }[];
+  orderItems?: { qty: number, productId: string, subtotal: number, unit_price: number }[];
 
   @ApiProperty()
   @Prop({
@@ -36,7 +36,7 @@ export class Order extends Document {
       }
     ]
   })
-  address: { city?: string, country?: string, address?: string, postal_code?: string, state?: string };
+  address?: { city?: string, country?: string, address?: string, postal_code?: string, state?: string };
 
   // @ApiProperty()
   // @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
@@ -56,8 +56,12 @@ export class Order extends Document {
   status: string;
 
   @ApiProperty()
-  @Prop({ default: 'Stripe' })
+  @Prop({ enum: ['Sách', 'Khóa học'], default: 'Sách' })
   paymentMethod: string;
+
+  @ApiProperty()
+  @Prop()
+  typeCourse?: string;
 
   @ApiProperty()
   @Prop({ default: false })
@@ -86,6 +90,7 @@ export class Order extends Document {
     totalPrice: number,
     status: string,
     paymentMethod: string,
+    typeCourse: string,
     track: boolean,
     shippingPrice: number,
     isDelivered: boolean,
@@ -99,6 +104,7 @@ export class Order extends Document {
     this.totalPrice = totalPrice;
     this.status = status;
     this.paymentMethod = paymentMethod;
+    this.typeCourse = typeCourse;
     this.track = track;
     this.shippingPrice = shippingPrice;
     this.isDelivered = isDelivered;

@@ -47,6 +47,9 @@ export class OrderService {
 
     if (email !== "all") {
       orderFilter = { "user": email };
+    }else{
+      //danh sach hoa don cua nguoi dung
+      track = "false"
     }
 
     if (sort !== undefined) {

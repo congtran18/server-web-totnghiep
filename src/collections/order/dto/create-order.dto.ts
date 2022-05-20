@@ -5,13 +5,16 @@ export class CreateOrderDto {
 
 
   @ApiProperty()
-  orderItems: { qty: number, productId: string, subtotal: number, unit_price: number }[];
+  orderItems?: { qty: number, productId: string, subtotal: number, unit_price: number }[];
 
   @ApiProperty()
-  address: { city?: string, country?: string, address?: string, postal_code?: string, state?: string };
+  address?: { city?: string, country?: string, address?: string, postal_code?: string, state?: string };
 
   @ApiProperty()
   user?: string;
+
+  @ApiProperty()
+  typeCourse?: string;
 
   @ApiProperty()
   totalPrice: number;
@@ -35,16 +38,18 @@ export class CreateOrderDto {
     address: { city: string, country: string, address: string, postal_code: string, state: string },
     totalPrice: number,
     status: string,
-    user?: string,
-    paymentMethod?: string,
-    shippingPrice?: number,
-    isDelivered?: boolean,
+    user: string,
+    typeCourse: string,
+    paymentMethod: string,
+    shippingPrice: number,
+    isDelivered: boolean,
   ) {
     this.orderItems = orderItems;
     this.address = address;
     this.user = user;
     this.totalPrice = totalPrice;
     this.status = status;
+    this.typeCourse = typeCourse;
     this.paymentMethod = paymentMethod;
     this.shippingPrice = shippingPrice;
     this.isDelivered = isDelivered;

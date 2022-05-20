@@ -2,15 +2,21 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, HttpStatus
 import { Request, Response } from 'express';
 import { StripeService } from './stripe.service';
 import Stripe from 'stripe';
-import { CheckoutDto } from './dto/checkout.dto';
+import { CheckoutOrderDto } from './dto/checkout-order.dto';
+import { CheckoutCourseDto } from './dto/checkout-course.dto';
 
 @Controller('stripe')
 export class StripeController {
     constructor(private readonly stripeService: StripeService) { }
 
-    @Post()
-    async create(@Body() checkoutDto: CheckoutDto): Promise<any> {
-        return this.stripeService.create(checkoutDto);
+    @Post('order')
+    async createCheckoutOrder(@Body() checkoutOrderDto: CheckoutOrderDto): Promise<any> {
+        return this.stripeService.createCheckoutOrder(checkoutOrderDto);
+    }
+
+    @Post('course')
+    async createCheckoutCourse(@Body() checkoutCourseDto: CheckoutCourseDto): Promise<any> {
+        return this.stripeService.createCheckoutCourse(checkoutCourseDto);
     }
 
     /**
@@ -40,9 +46,16 @@ export class StripeController {
 
             if (event.type === 'checkout.session.completed') {
                 const session = event.data.object as Stripe.Checkout.Session;
-
+                const result = session?.metadata
                 // Fulfill the purchase...
-                this.stripeService.fulfill(session);
+                if (result) {
+                    if (result.idProduct) {
+                        this.stripeService.fulfillOrder(session);
+                    } else {
+                        this.stripeService.fulfillCourse(session);
+                    }
+
+                }
             }
         }
 

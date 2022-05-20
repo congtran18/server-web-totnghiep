@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-export class CheckoutDto {
+export class CheckoutOrderDto {
 
     @ApiProperty()
     items: {
