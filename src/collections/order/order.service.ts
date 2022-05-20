@@ -26,7 +26,7 @@ export class OrderService {
   }
 
 
-  async getAllOrder(page?: string, limit?: string,  realname?: string, sort?: string, email?: string): Promise<any> {
+  async getAllOrder(page?: string, limit?: string, realname?: string, sort?: string, track?: string, email?: string): Promise<any> {
     let pageNumber = 1;
     let limitNumber = 100;
     if (page) {
@@ -45,21 +45,25 @@ export class OrderService {
       orderFilter = { "user": new RegExp(realname, 'i'), ...orderFilter };
     }
 
-    if(email !== "all"){
+    if (email !== "all") {
       orderFilter = { "user": email };
     }
 
     if (sort !== undefined) {
       if (sort === "high") {
         orderSort = { "totalPrice": -1, ...orderSort };
-      } else if (sort === "low"){
+      } else if (sort === "low") {
         orderSort = { "totalPrice": 1, ...orderSort };
-      }else if (sort === "old"){
-        orderSort = {  ...orderSort, 'create_at': 1 }
+      } else if (sort === "old") {
+        orderSort = { ...orderSort, 'create_at': 1 }
       }
     }
 
-    orderFilter = { "track": false, ...orderFilter };
+    if (track && JSON.parse(track.toLowerCase())) {
+      orderFilter = { "track": true, ...orderFilter };
+    } else {
+      orderFilter = { "track": false, ...orderFilter };
+    }
 
     const result = await this.orderModel
       .find(orderFilter).sort(orderSort).populate('orderItems.productId')
@@ -109,7 +113,7 @@ export class OrderService {
 
     let total = await this.orderModel.countDocuments(orderFilter)
 
-    console.log("total",total)
+    console.log("total", total)
 
     total = Math.ceil(total / limitNumber);
 
