@@ -52,9 +52,9 @@ export class OrderService {
       track = "false"
     }
 
-    if (type === "Sách") {
+    if (type === "book") {
       orderFilter = { "paymentMethod": "Sách" };
-    } else if (type === "Khóa học") {
+    } else if (type === "course") {
       orderFilter = { "paymentMethod": "Khóa học" };
     }
 
