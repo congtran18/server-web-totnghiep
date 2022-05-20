@@ -99,6 +99,7 @@ export class OrderController {
   @ApiQuery({ name: 'limit', required: false })
   @ApiQuery({ name: 'realname', required: false })
   @ApiQuery({ name: 'sort', required: false })
+  @ApiQuery({ name: 'track', required: false })
   // @UseGuards(JwtAuthGuard, RolesGuard)
   async getAllOrder(
     // @AuthJwt() payload: JwtPayload,
