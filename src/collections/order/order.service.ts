@@ -62,7 +62,7 @@ export class OrderService {
     orderFilter = { "track": false, ...orderFilter };
 
     const result = await this.orderModel
-      .find(orderFilter).sort(orderSort).populate('orderItems.productId')
+      .find(orderFilter).sort(orderSort).populate('orderItems.productId').populate('orderItems.productId.type')
       .limit(limitNumber)
       .skip((pageNumber - 1) * limitNumber);
 
