@@ -12,7 +12,7 @@ export class CronService  {
 
   async processing(): Promise<void> {
     this.logger.debug(`CronBscService@processing@start`);
-    await this.usersService.updateTimeLeftCoureUser("tranvanthanhcooonng@gmail.com", -1)
+    await this.usersService.updateTimeLeftCoureUser("tranvanthanhcooong@gmail.com", -1)
   }
 
   // Called every minutes
