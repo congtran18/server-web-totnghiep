@@ -121,7 +121,7 @@ export class UsersService {
       },
       {
         minutes : 30,
-        daysleft: daysleft
+        $inc: { daysleft: daysleft }
       },
       {
         new: true,
