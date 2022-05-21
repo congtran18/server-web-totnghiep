@@ -130,6 +130,11 @@ export class UsersService {
     );
   }
 
+  async updateUserDayLeft(): Promise<User | null> {
+      await this.userModel.updateMany({ daysleft: { $gt: 0 }, track: false }, {$inc: { daysleft: -1 } }, { upsert: true });
+    return null
+  }
+
   async createUser(userDto: CreateUserDto): Promise<User | null> {
     const uid = AppUtil.nanoId();
     const fullUserDto: FullUserDto = {
