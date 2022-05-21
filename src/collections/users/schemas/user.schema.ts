@@ -28,6 +28,14 @@ export class User extends Document {
   track: boolean;
 
   @ApiProperty()
+  @Prop({ default: 0 })
+  minutes?: number;
+
+  @ApiProperty()
+  @Prop({ default: 0 })
+  daysleft?: number;
+
+  @ApiProperty()
   @Prop({ type: Date, default: Date.now })
   createdAt: Date;
 
@@ -35,7 +43,7 @@ export class User extends Document {
   @Prop({ type: Date, default: Date.now })
   updatedAt: Date;
 
-  constructor(doc: any, uid: string, email: string, password: string, fullName: string, imageUrl: string, track: boolean, createdAt: Date, updatedAt: Date) {
+  constructor(doc: any, uid: string, email: string, password: string, fullName: string, imageUrl: string, track: boolean, minutes: number, daysleft: number, createdAt: Date, updatedAt: Date) {
     super(doc);
     this.uid = uid;
     this.email = email;
@@ -43,6 +51,8 @@ export class User extends Document {
     this.fullName = fullName;
     this.imageUrl = imageUrl;
     this.track = track;
+    this.minutes = minutes;
+    this.daysleft = daysleft;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }

@@ -122,8 +122,6 @@ export class OrderService {
 
     let total = await this.orderModel.countDocuments(orderFilter)
 
-    console.log("total", total)
-
     total = Math.ceil(total / limitNumber);
 
     return { 'order': result, 'total': total };

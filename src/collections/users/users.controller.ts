@@ -174,9 +174,7 @@ export class UsersController {
     // Check user available
     if (user.email) {
       const exist = await this.usersService.getUserByEmail(user.email);
-      console.log("exist", exist)
       if (!exist) {
-        console.log("exist", exist)
         response.data = await this.usersService.createUser(user);
       } else {
         response.error = {
@@ -190,7 +188,6 @@ export class UsersController {
         message: "username is empty"
       }
     }
-    console.log("response", response)
     return response;
   }
 

@@ -29,10 +29,8 @@ export class UploadController {
   async single(
     @UploadedFile() file: Express.Multer.File
   ) {
-    console.log(file)
     const { originalname } = file;
     const bucketS3 = process.env.AWS_S3_BUCKET_NAME;
-    console.log('bucketS3', bucketS3);
     const res: any = await this.uploadS3(file.buffer, bucketS3, originalname);
     return { "data": res?.Location };
   }

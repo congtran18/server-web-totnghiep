@@ -6,6 +6,7 @@ import { CreateOrderDto } from '../order/dto/create-order.dto';
 import { Order } from '../order/schemas/order.schema';
 import { CheckoutOrderDto } from './dto/checkout-order.dto';
 import { CheckoutCourseDto } from './dto/checkout-course.dto';
+import { UsersService } from "../users/users.service";
 
 @Injectable()
 export class StripeService {
@@ -17,7 +18,10 @@ export class StripeService {
         return this._stripe;
     }
 
-    constructor(@InjectModel(Order.name) private readonly orderModel: Model<Order>) {
+    constructor(@InjectModel(Order.name)
+    private readonly orderModel: Model<Order>,
+        private readonly usersService: UsersService,
+    ) {
         this._stripe = new Stripe(process.env.STRIPE_TEST_KEY || "", { apiVersion: '2020-08-27' });
     }
 
@@ -69,7 +73,7 @@ export class StripeService {
                     shipping_rate_data: {
                         type: 'fixed_amount',
                         fixed_amount: {
-                            amount: 1500,
+                            amount: 150,
                             currency: 'usd',
                         },
                         display_name: 'Next day air',
@@ -100,7 +104,7 @@ export class StripeService {
     }
 
     async createCheckoutCourse(checkoutCourseDto: CheckoutCourseDto) {
-        const { type , cost, email } = checkoutCourseDto;
+        const { type, cost, email } = checkoutCourseDto;
 
         const transformedItems = [{
             description: "Khóa học",
@@ -174,7 +178,16 @@ export class StripeService {
                 }
                 const newOrder = new this.orderModel({ ...createOrderDto });
                 const data = await newOrder.save();
-                return;
+                if (data && customer?.email && dataProduct?.type) {
+                    if (dataProduct?.type === "6 month") {
+                        await this.usersService.updateTimeLeftCoureUser(customer?.email, 180)
+                    }else if(dataProduct?.type === "3 month"){
+                        await this.usersService.updateTimeLeftCoureUser(customer?.email, 90)
+                    }else{
+                        await this.usersService.updateTimeLeftCoureUser(customer?.email, 30)
+                    }
+                }
+                return data;
             }
 
         }
@@ -230,7 +243,7 @@ export class StripeService {
                 }
                 const newOrder = new this.orderModel({ ...createOrderDto });
                 const data = await newOrder.save();
-                return;
+                return data;
             }
 
         }

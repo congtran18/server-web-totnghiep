@@ -114,6 +114,22 @@ export class UsersService {
     return await this.userModel.findOne({ email: email }, defaultProjection).exec();
   }
 
+  async updateTimeLeftCoureUser(email: string, daysleft: number): Promise<User | null> {
+    return await this.userModel.findOneAndUpdate(
+      {
+        email: email
+      },
+      {
+        minutes : 30,
+        daysleft: daysleft
+      },
+      {
+        new: true,
+        useFindAndModify: false,
+      },
+    );
+  }
+
   async createUser(userDto: CreateUserDto): Promise<User | null> {
     const uid = AppUtil.nanoId();
     const fullUserDto: FullUserDto = {
