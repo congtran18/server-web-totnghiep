@@ -24,6 +24,7 @@ import { ProjectsModule } from '../collections/projects/projects.module';
 import { UploadModule } from 'src/collections/upload/upload.module';
 import { StorageModule } from 'src/collections/storage/storage.module';
 import { StripeModule } from 'src/collections/stripe/stripe.module'
+import { CronModule } from '../packages/cron/cron.module';
 
 @Module({
   imports: [
@@ -57,6 +58,7 @@ import { StripeModule } from 'src/collections/stripe/stripe.module'
     UsersModule,
     StorageModule,
     // RealtimeModule,
+    CronModule,
     StripeModule,
     ProjectsModule,
     UploadModule
