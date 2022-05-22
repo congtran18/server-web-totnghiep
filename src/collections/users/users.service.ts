@@ -131,7 +131,7 @@ export class UsersService {
   }
 
   async updateUserDayLeft(): Promise<User | null> {
-      await this.userModel.updateMany({ daysleft: { $gt: 0 }, track: false }, {$inc: { daysleft: -1 } }, { upsert: true });
+      await this.userModel.updateMany({ daysleft: { $gt: 0 }, track: false }, {$inc: { daysleft: -1 } }, { upsert: false });
     return null
   }
 
