@@ -53,6 +53,7 @@ export class TutorController {
     // @AuthJwt() payload: JwtPayload,
   ): Promise<BaseResponse<Model<Tutor>>> {
     const response: BaseResponse<Model<Tutor>> = {};
+    console.log("createTutortDto",createTutortDto)
     const tutor = await this.tutorService.createTutor(createTutortDto);
     if (!tutor) {
       response.error = {
