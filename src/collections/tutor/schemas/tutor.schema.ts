@@ -23,12 +23,24 @@ export class Tutor extends Document {
   phone: number;
 
   @ApiProperty()
+  @Prop()
+  account: string;
+
+  @ApiProperty()
+  @Prop()
+  bank: string;
+
+  @ApiProperty()
   @Prop({ type: [String] })
   include: string[];
 
   @ApiProperty()
   @Prop()
-  video: string;
+  imageUrl: string;
+
+  @ApiProperty()
+  @Prop()
+  videoUrl: string;
 
   @ApiProperty()
   @Prop({ type: [String] })
@@ -99,8 +111,11 @@ export class Tutor extends Document {
     infomation: string,
     type: string,
     phone: number,
+    account: string,
+    bank: string,
     include: string[],
-    video: string,
+    imageUrl: string,
+    videoUrl: string,
     certificates: string[],
     questionone: string,
     questiontwo: string,
@@ -116,8 +131,11 @@ export class Tutor extends Document {
     this.infomation = infomation;
     this.type = type;
     this.phone = phone;
+    this.account = account;
+    this.bank = bank;
     this.include = include;
-    this.video = video;
+    this.imageUrl = imageUrl;
+    this.videoUrl = videoUrl;
     this.certificates = certificates;
     this.questionone = questionone;
     this.questiontwo = questiontwo;
