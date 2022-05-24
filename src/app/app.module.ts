@@ -21,6 +21,7 @@ import { CategoryProductModule } from '../collections/categoryProduct/categoryPr
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { ProjectsModule } from '../collections/projects/projects.module';
+import { TutorModule } from 'src/collections/tutor/tutor.module';
 import { UploadModule } from 'src/collections/upload/upload.module';
 import { StorageModule } from 'src/collections/storage/storage.module';
 import { StripeModule } from 'src/collections/stripe/stripe.module'
@@ -57,6 +58,7 @@ import { CronModule } from '../packages/cron/cron.module';
     CategoryProductModule,
     UsersModule,
     StorageModule,
+    TutorModule,
     // RealtimeModule,
     CronModule,
     StripeModule,

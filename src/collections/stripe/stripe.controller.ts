@@ -4,7 +4,11 @@ import { StripeService } from './stripe.service';
 import Stripe from 'stripe';
 import { CheckoutOrderDto } from './dto/checkout-order.dto';
 import { CheckoutCourseDto } from './dto/checkout-course.dto';
+import {
+    ApiTags,
+} from '@nestjs/swagger';
 
+@ApiTags('stripe')
 @Controller('stripe')
 export class StripeController {
     constructor(private readonly stripeService: StripeService) { }

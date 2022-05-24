@@ -9,6 +9,7 @@ export const uploadFileHelper = async (
   const fileName = `${Date.now()}-${uuid()}.${file.originalname
     .split('.')
     .pop()}`;
+    console.log("fileName",fileName)
   const blob = bucket.file(fileName);
   const blobStream = blob.createWriteStream();
   const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${blob.name}?alt=media`;
