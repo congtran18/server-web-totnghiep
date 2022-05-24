@@ -11,7 +11,7 @@ export const uploadFileHelper = async (
     .pop()}`;
     console.log("fileName",fileName)
   const blob = bucket.file(fileName);
-  const blobStream = blob.createWriteStream();
+  const blobStream = blob.createWriteStream({ resumable: false });
   const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${blob.name}?alt=media`;
   await blobStream.end(file.buffer);
   return publicUrl;
