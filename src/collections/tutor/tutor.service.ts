@@ -85,7 +85,7 @@ export class TutorService {
     tutorfilter = { "track": false, ...tutorfilter };
 
     const result = await this.tutorModel
-      .find(tutorfilter).sort(tutorSort).populate('type').populate('category')
+      .find(tutorfilter).sort(tutorSort)
       .limit(limitNumber)
       .skip((pageNumber - 1) * limitNumber);
 
