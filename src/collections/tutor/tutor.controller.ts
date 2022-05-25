@@ -195,7 +195,7 @@ export class TutorController {
   })
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Accept tutor' })
-  @Patch('/accept/:id')
+  @Get('/accept/:id')
   @RolesAllowed(ROLE_OWNER, ROLE_ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   async acceptTutor(
