@@ -121,12 +121,12 @@ export class UsersController {
       if (createUser) {
         const dataLogin = await this.authService.login({ "email": email, "password": "1234" });
         if (dataLogin) {
-          const response = { "role": dataLogin.role, "accessToken": dataLogin.accessToken, "daysleft": createUser.daysleft };
+          const response = { "role": dataLogin.role, "accessToken": dataLogin.accessToken, "daysleft": createUser.daysleft, "uid": createUser.uid };
           return response;
         }
       }
     }
-    const response = { "role": roleUser, "accessToken": accessToken, "daysleft": existUser?.daysleft }
+    const response = { "role": roleUser, "accessToken": accessToken, "daysleft": existUser?.daysleft, "uid": existUser?.uid }
     return response;
   }
 

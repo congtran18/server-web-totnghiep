@@ -7,6 +7,10 @@ export class CreateTutorDto {
   @ApiProperty()
   user: string;
 
+  @IsNotEmpty()
+  @ApiProperty()
+  uid: string;
+
   @ApiProperty()
   infomation: string;
 
@@ -28,8 +32,9 @@ export class CreateTutorDto {
   @ApiProperty()
   questiontwo: string;
 
-  constructor(user: string, infomation: string, phone: number, include: string[], videoUrl: string, certificates: string[], questionone: string, questiontwo: string) {
+  constructor(user: string, uid: string, infomation: string, phone: number, include: string[], videoUrl: string, certificates: string[], questionone: string, questiontwo: string) {
     this.user = user;
+    this.uid = uid;
     this.infomation = infomation;
     this.phone = phone;
     this.include = include;
