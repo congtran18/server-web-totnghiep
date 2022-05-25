@@ -190,6 +190,32 @@ export class TutorController {
   }
 
   @ApiOkResponse({
+    description: 'Accept tutor',
+    type: Tutor,
+  })
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Accept tutor' })
+  @Patch('/accept/:id')
+  @RolesAllowed(ROLE_OWNER, ROLE_ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async acceptTutor(
+    @Param('id') params: string,
+    // @AuthJwt() payload: JwtPayload,
+  ): Promise<any> {
+    const response: BaseResponse<any> = {};
+    const tutor = await this.tutorService.acceptTutor(params);
+    if (!tutor) {
+      response.error = {
+        code: HttpStatus.BAD_REQUEST,
+        message: 'ERROR.',
+      };
+    } else {
+      response.data = tutor;
+    }
+    return response;
+  }
+
+  @ApiOkResponse({
     description: 'Delete tutor',
     type: Tutor,
   })

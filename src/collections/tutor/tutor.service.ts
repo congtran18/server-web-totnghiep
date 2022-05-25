@@ -176,6 +176,25 @@ export class TutorService {
     return result;
   }
 
+  async acceptTutor(id: string): Promise<any> {
+
+    const existTutor = await this.tutorModel.findOne({ _id: id })
+
+    const result = await this.tutorModel.findOneAndUpdate(
+      {
+        _id: id,
+      },
+      {
+        accept: !existTutor?.accept,
+      },
+      {
+        new: true,
+        useFindAndModify: false,
+      },
+    );
+    return result;
+  }
+
   async deleteTutor(id: string): Promise<any> {
 
     const existTutor = await this.tutorModel.findOne({ _id: id })
