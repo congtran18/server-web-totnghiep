@@ -15,8 +15,8 @@ export class Tutor extends Document {
   infomation: string;
 
   @ApiProperty()
-  @Prop({ default: 'Mới gia nhập' })
-  type: string;
+  @Prop({ type: [String] ,default: ['Mới gia nhập'] })
+  status: string[];
 
   @ApiProperty()
   @Prop()
@@ -59,6 +59,14 @@ export class Tutor extends Document {
   numReviews: number;
 
   @ApiProperty()
+  @Prop({ default: 0 })
+  teachingMinutesMonth: number;
+
+  @ApiProperty()
+  @Prop({ default: 0 })
+  totalTeachingMinutes: number;
+
+  @ApiProperty()
   @Prop({ default: 5 })
   rating: number;
 
@@ -66,8 +74,24 @@ export class Tutor extends Document {
   @Prop({
     type: [
       {
+        total: { type: Number },
+        month: { type: Number },
+        year: { type: Number },
+      },
+    ]
+  })
+  revenues?: { total: number, month: number, year: number }[];
+
+  @ApiProperty()
+  @Prop({ default: 0 })
+  totalrevenue: number;
+
+  @ApiProperty()
+  @Prop({
+    type: [
+      {
         num: { type: Number },
-        message: { type: String},
+        message: { type: String },
       },
       {
         timestamps: true,
@@ -109,7 +133,7 @@ export class Tutor extends Document {
   constructor(
     user: string,
     infomation: string,
-    type: string,
+    status: string[],
     phone: number,
     account: string,
     bank: string,
@@ -120,7 +144,11 @@ export class Tutor extends Document {
     questionone: string,
     questiontwo: string,
     numReviews: number,
+    teachingMinutesMonth: number,
+    totalTeachingMinutes: number,
     rating: number,
+    revenues: { total: number, month: number, year: number }[],
+    totalrevenue: number,
     warning: { num: number, message: string }[],
     reviews: { rating: number, comment: string, user: string }[],
     accept: boolean,
@@ -129,7 +157,7 @@ export class Tutor extends Document {
     super();
     this.user = user;
     this.infomation = infomation;
-    this.type = type;
+    this.status = status;
     this.phone = phone;
     this.account = account;
     this.bank = bank;
@@ -140,7 +168,11 @@ export class Tutor extends Document {
     this.questionone = questionone;
     this.questiontwo = questiontwo;
     this.numReviews = numReviews;
+    this.teachingMinutesMonth = teachingMinutesMonth;
+    this.totalTeachingMinutes = totalTeachingMinutes;
     this.rating = rating;
+    this.revenues = revenues;
+    this.totalrevenue = totalrevenue;
     this.warning = warning;
     this.reviews = reviews;
     this.accept = accept;
