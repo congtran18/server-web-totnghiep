@@ -21,7 +21,7 @@ export class TutorService {
     const result = await this.tutorModel.findOne({
       _id: id,
       // isDeleted: false,
-    }).populate('type').populate('category');
+    });
     return result;
   }
 
