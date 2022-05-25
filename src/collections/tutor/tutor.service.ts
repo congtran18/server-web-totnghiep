@@ -48,7 +48,7 @@ export class TutorService {
     }
   }
 
-  async getAllTutor(page?: string, limit?: string, type?: string, warning?: string, realname?: string, totalTeachingMinutes?: string, totalrevenue?: string, sort?: string): Promise<any> {
+  async getAllTutor(page?: string, limit?: string, status?: string, warning?: string, realname?: string, sort?: string, accept?: string): Promise<any> {
     let pageNumber = 1;
     let limitNumber = 100;
     if (page) {
@@ -61,28 +61,38 @@ export class TutorService {
 
     var tutorfilter = {}
     var tutorSort = {}
-    tutorSort = { 'create_at': -1, ...tutorSort }
 
     if (realname) {
       tutorfilter = { "user": new RegExp(realname, 'i'), ...tutorfilter };
     }
-    if (type) {
-      tutorfilter = { "type": type, ...tutorfilter };
+    if (status) {
+      tutorfilter = { "status": { $elemMatch: {$eq: status} }, ...tutorfilter };
     }
     if (warning) {
       tutorfilter = { "warning": warning, ...tutorfilter };
     }
 
     if (sort) {
-      if (sort === "high") {
-        tutorSort = { "cost": -1, ...tutorSort };
-      } else {
-        tutorSort = { "cost": 1, ...tutorSort };
+      if (sort === "rating_high") {
+        tutorSort = { "rating": -1, ...tutorSort };
+      } else if (sort === "rating_low") {
+        tutorSort = { "rating": 1, ...tutorSort };
+      } else if (sort === "revenue_high") {
+        tutorSort = { "totalrevenue": -1, ...tutorSort };
+      } else if (sort === "revenue_low") {
+        tutorSort = { "totalrevenue": 1, ...tutorSort };
+      } else if (sort === "teaching_minutes_high") {
+        tutorSort = { "totalTeachingMinutes": -1, ...tutorSort };
+      } else if (sort === "teaching_minutes_low") {
+        tutorSort = { "totalTeachingMinutes": 1, ...tutorSort };
+      } else if (sort === "old") {
+        tutorSort = { "create_at": 1, ...tutorSort };
       }
+    } else {
+      tutorSort = { 'create_at': -1, ...tutorSort }
     }
 
-
-    tutorfilter = { "track": false, ...tutorfilter };
+    tutorfilter = { "accept": accept ? JSON.parse(accept?.toLowerCase()) : true, ...tutorfilter };
 
     const result = await this.tutorModel
       .find(tutorfilter).sort(tutorSort)

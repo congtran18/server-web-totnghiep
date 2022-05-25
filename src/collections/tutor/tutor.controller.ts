@@ -102,26 +102,24 @@ export class TutorController {
   @Get()
   @ApiQuery({ name: 'page', required: false })
   @ApiQuery({ name: 'limit', required: false })
-  @ApiQuery({ name: 'type', required: false })
+  @ApiQuery({ name: 'status', required: false })
   @ApiQuery({ name: 'warning', required: false })
   @ApiQuery({ name: 'realname', required: false })
-  @ApiQuery({ name: 'totalTeachingMinutes', required: false })
-  @ApiQuery({ name: 'totalrevenue', required: false })
   @ApiQuery({ name: 'sort', required: false })
+  @ApiQuery({ name: 'accept', required: false })
   // @UseGuards(JwtAuthGuard, RolesGuard)
   async getAllTutor(
     // @AuthJwt() payload: JwtPayload,
     @Query('page') page: string,
     @Query('limit') limit: string,
-    @Query('type') type: string,
+    @Query('status') status: string,
     @Query('warning') warning: string,
     @Query('realname') realname: string,
-    @Query('totalTeachingMinutes') totalTeachingMinutes: string,
-    @Query('totalrevenue') totalrevenue: string,
     @Query('sort') sort: string,
+    @Query('accept') accept: string,
   ): Promise<BaseResponse<Tutor>> {
     const response: BaseResponse<Tutor> = {};
-    const tutor = await this.tutorService.getAllTutor(page, limit, type, warning, realname, totalTeachingMinutes, totalrevenue, sort);
+    const tutor = await this.tutorService.getAllTutor(page, limit, status, warning, realname, sort, accept);
     if (!tutor) {
       response.error = {
         code: HttpStatus.BAD_REQUEST,
