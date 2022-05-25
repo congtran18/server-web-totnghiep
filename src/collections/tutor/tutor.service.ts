@@ -48,7 +48,7 @@ export class TutorService {
     }
   }
 
-  async getAllTutor(page?: string, limit?: string, type?: string, warning?: string, realname?: string, sort?: string): Promise<any> {
+  async getAllTutor(page?: string, limit?: string, type?: string, warning?: string, realname?: string, totalTeachingMinutes?: string, totalrevenue?: string, sort?: string): Promise<any> {
     let pageNumber = 1;
     let limitNumber = 100;
     if (page) {
@@ -61,10 +61,10 @@ export class TutorService {
 
     var tutorfilter = {}
     var tutorSort = {}
-    tutorSort = {'create_at': -1, ...tutorSort}
+    tutorSort = { 'create_at': -1, ...tutorSort }
 
     if (realname) {
-      tutorfilter = { "realname": new RegExp(realname, 'i'), ...tutorfilter };
+      tutorfilter = { "user": new RegExp(realname, 'i'), ...tutorfilter };
     }
     if (type) {
       tutorfilter = { "type": type, ...tutorfilter };
@@ -76,7 +76,7 @@ export class TutorService {
     if (sort) {
       if (sort === "high") {
         tutorSort = { "cost": -1, ...tutorSort };
-      }else{
+      } else {
         tutorSort = { "cost": 1, ...tutorSort };
       }
     }

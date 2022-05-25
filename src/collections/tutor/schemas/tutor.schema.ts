@@ -15,7 +15,7 @@ export class Tutor extends Document {
   infomation: string;
 
   @ApiProperty()
-  @Prop({ type: [String] ,default: ['Mới gia nhập'] })
+  @Prop({ type: [String] ,default: ['New'] })
   status: string[];
 
   @ApiProperty()

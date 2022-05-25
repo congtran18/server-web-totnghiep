@@ -53,7 +53,7 @@ export class TutorController {
     // @AuthJwt() payload: JwtPayload,
   ): Promise<BaseResponse<Model<Tutor>>> {
     const response: BaseResponse<Model<Tutor>> = {};
-    console.log("createTutortDto",createTutortDto)
+    console.log("createTutortDto", createTutortDto)
     const tutor = await this.tutorService.createTutor(createTutortDto);
     if (!tutor) {
       response.error = {
@@ -105,6 +105,8 @@ export class TutorController {
   @ApiQuery({ name: 'type', required: false })
   @ApiQuery({ name: 'warning', required: false })
   @ApiQuery({ name: 'realname', required: false })
+  @ApiQuery({ name: 'totalTeachingMinutes', required: false })
+  @ApiQuery({ name: 'totalrevenue', required: false })
   @ApiQuery({ name: 'sort', required: false })
   // @UseGuards(JwtAuthGuard, RolesGuard)
   async getAllTutor(
@@ -114,10 +116,12 @@ export class TutorController {
     @Query('type') type: string,
     @Query('warning') warning: string,
     @Query('realname') realname: string,
+    @Query('totalTeachingMinutes') totalTeachingMinutes: string,
+    @Query('totalrevenue') totalrevenue: string,
     @Query('sort') sort: string,
   ): Promise<BaseResponse<Tutor>> {
     const response: BaseResponse<Tutor> = {};
-    const tutor = await this.tutorService.getAllTutor(page, limit, type, warning, realname, sort);
+    const tutor = await this.tutorService.getAllTutor(page, limit, type, warning, realname, totalTeachingMinutes, totalrevenue, sort);
     if (!tutor) {
       response.error = {
         code: HttpStatus.BAD_REQUEST,
