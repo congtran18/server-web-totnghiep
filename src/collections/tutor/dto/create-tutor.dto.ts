@@ -24,7 +24,7 @@ export class CreateTutorDto {
   videoUrl: string;
 
   @ApiProperty()
-  certificates: string[];
+  certificates: { dataUrl: string, name: string }[];
 
   @ApiProperty()
   questionone: string;
@@ -32,7 +32,7 @@ export class CreateTutorDto {
   @ApiProperty()
   questiontwo: string;
 
-  constructor(user: string, uid: string, infomation: string, phone: number, include: string[], videoUrl: string, certificates: string[], questionone: string, questiontwo: string) {
+  constructor(user: string, uid: string, infomation: string, phone: number, include: string[], videoUrl: string, certificates: { dataUrl: string, name: string }[], questionone: string, questiontwo: string) {
     this.user = user;
     this.uid = uid;
     this.infomation = infomation;
