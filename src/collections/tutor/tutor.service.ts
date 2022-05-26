@@ -5,12 +5,14 @@ import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Tutor } from './schemas/tutor.schema';
 import { CreateTutorDto } from './dto/create-tutor.dto';
 import { UpdateTutorDto } from './dto/update-tutor.dto';
+import { AdminsService } from "../admins/admins.service";
 
 @Injectable()
 export class TutorService {
   constructor(
     @InjectConnection() private connection: Connection,
     @InjectModel(Tutor.name) private tutorModel: Model<Tutor>,
+    private readonly adminsService: AdminsService,
   ) { }
 
   async isEmpty(): Promise<boolean> {
@@ -66,7 +68,7 @@ export class TutorService {
       tutorfilter = { "user": new RegExp(realname, 'i'), ...tutorfilter };
     }
     if (status) {
-      tutorfilter = { "status": { $elemMatch: {$eq: status} }, ...tutorfilter };
+      tutorfilter = { "status": { $elemMatch: { $eq: status } }, ...tutorfilter };
     }
     if (warning) {
       tutorfilter = { "warning": warning, ...tutorfilter };
@@ -180,19 +182,28 @@ export class TutorService {
 
     const existTutor = await this.tutorModel.findOne({ _id: id })
 
-    const result = await this.tutorModel.findOneAndUpdate(
-      {
-        _id: id,
-      },
-      {
-        accept: !existTutor?.accept,
-      },
-      {
-        new: true,
-        useFindAndModify: false,
-      },
-    );
-    return result;
+    if (existTutor) {
+      if (existTutor.accept === true) {
+        await this.adminsService.updateAdmin({ "uid": existTutor.uid, "role": "waitingtutor" })
+      } else if (existTutor.accept === false) {
+        await this.adminsService.updateAdmin({ "uid": existTutor.uid, "role": "tutor" })
+      }
+
+      const result = await this.tutorModel.findOneAndUpdate(
+        {
+          _id: id,
+        },
+        {
+          accept: !existTutor?.accept,
+        },
+        {
+          new: true,
+          useFindAndModify: false,
+        },
+      );
+      return result;
+    }
+    return null;
   }
 
   async deleteTutor(id: string): Promise<any> {
