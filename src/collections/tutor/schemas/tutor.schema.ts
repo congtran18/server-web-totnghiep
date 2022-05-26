@@ -50,7 +50,7 @@ export class Tutor extends Document {
   @Prop({
     type: [
       {
-        data: { type: String },
+        dataUrl: { type: String },
         name: { type: String },
       },
     ]
