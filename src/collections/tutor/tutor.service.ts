@@ -74,7 +74,7 @@ export class TutorService {
       tutorfilter = { "warning": warning, ...tutorfilter };
     }
 
-    if (sort) {
+    if (sort !== undefined) {
       if (sort === "rating_high") {
         tutorSort = { "rating": -1, ...tutorSort };
       } else if (sort === "rating_low") {
@@ -154,9 +154,12 @@ export class TutorService {
     });
     const modelRes = await model.save();
     if (modelRes) {
+      await this.adminsService.updateAdmin({ "uid": modelRes?.uid, "role": "waitingtutor" })
+      console.log("modelRes", modelRes)
       const obj = modelRes.toObject<Model<Tutor>>();
       // delete obj._id;
       // delete obj.__v;
+      console.log("obj", obj)
       return obj;
     }
     return null;
