@@ -16,6 +16,10 @@ export class Tutor extends Document {
 
   @ApiProperty()
   @Prop()
+  realname: string;
+
+  @ApiProperty()
+  @Prop()
   infomation: string;
 
   @ApiProperty()
@@ -144,6 +148,7 @@ export class Tutor extends Document {
   constructor(
     user: string,
     uid: string,
+    realname: string,
     infomation: string,
     status: string[],
     phone: number,
@@ -169,6 +174,7 @@ export class Tutor extends Document {
     super();
     this.user = user;
     this.uid = uid;
+    this.realname = realname;
     this.infomation = infomation;
     this.status = status;
     this.phone = phone;
