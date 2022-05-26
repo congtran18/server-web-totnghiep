@@ -16,7 +16,7 @@ import {
   ApiBearerAuth,
   ApiOkResponse,
   ApiOperation,
-  ApiQuery,
+  ApiQuery, 
   ApiTags,
 } from '@nestjs/swagger';
 import { Model } from 'mongoose';
@@ -30,7 +30,7 @@ import { CreateTutorDto } from './dto/create-tutor.dto';
 import { UpdateTutorDto } from './dto/update-tutor.dto';
 import { Tutor } from './schemas/tutor.schema';
 import { TutorService } from './tutor.service';
-import { ROLE_OWNER, ROLE_ADMIN } from "../admins/dto/admin.roles";
+import { ROLE_OWNER, ROLE_ADMIN, ROLE_TUTOR } from "../admins/dto/admin.roles";
 
 @ApiTags('tutor')
 @Controller('tutor')
@@ -72,7 +72,7 @@ export class TutorController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update tutor' })
   @Patch(':id')
-  @RolesAllowed(ROLE_OWNER, ROLE_ADMIN)
+  @RolesAllowed(ROLE_OWNER, ROLE_ADMIN, ROLE_TUTOR)
   @UseGuards(JwtAuthGuard, RolesGuard)
   async updateTutor(
     @Param('id') id: string,
@@ -80,6 +80,9 @@ export class TutorController {
     // @AuthJwt() payload: JwtPayload,
   ): Promise<BaseResponse<Model<Tutor>>> {
     const response: BaseResponse<Model<Tutor>> = {};
+
+    console.log("id", id)
+    console.log("updateTutortDto", updateTutortDto)
     const tutor = await this.tutorService.updateTutor(id, updateTutortDto);
     if (!tutor) {
       response.error = {
