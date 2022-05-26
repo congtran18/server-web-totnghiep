@@ -21,7 +21,7 @@ export class TutorService {
 
   async getTutorById(id: string): Promise<any> {
     const result = await this.tutorModel.findOne({
-      _id: id,
+      uid: id,
       // isDeleted: false,
     });
     return result;
