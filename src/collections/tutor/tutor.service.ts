@@ -194,7 +194,7 @@ export class TutorService {
 
       const result = await this.tutorModel.findOneAndUpdate(
         {
-          _id: id,
+          uid: id,
         },
         {
           accept: !existTutor?.accept,
