@@ -19,7 +19,7 @@ export class Tutor extends Document {
   infomation: string;
 
   @ApiProperty()
-  @Prop({ type: [String] ,default: ['New'] })
+  @Prop({ type: [String], default: ['New'] })
   status: string[];
 
   @ApiProperty()
@@ -47,8 +47,15 @@ export class Tutor extends Document {
   videoUrl: string;
 
   @ApiProperty()
-  @Prop({ type: [String] })
-  certificates: string[];
+  @Prop({
+    type: [
+      {
+        data: { type: String },
+        name: { type: String },
+      },
+    ]
+  })
+  certificates: { dataUrl: string, name: string }[];
 
   @ApiProperty()
   @Prop()
@@ -145,7 +152,7 @@ export class Tutor extends Document {
     include: string[],
     imageUrl: string,
     videoUrl: string,
-    certificates: string[],
+    certificates: { dataUrl: string, name: string }[],
     questionone: string,
     questiontwo: string,
     numReviews: number,
