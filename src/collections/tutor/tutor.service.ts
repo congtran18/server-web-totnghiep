@@ -170,7 +170,7 @@ export class TutorService {
 
     const result = await this.tutorModel.findOneAndUpdate(
       {
-        _id: id,
+        uid: id,
       },
       updateTutortDto,
       {
@@ -183,7 +183,7 @@ export class TutorService {
 
   async acceptTutor(id: string): Promise<any> {
 
-    const existTutor = await this.tutorModel.findOne({ _id: id })
+    const existTutor = await this.tutorModel.findOne({ uid: id })
 
     if (existTutor) {
       if (existTutor.accept === true) {
@@ -211,11 +211,11 @@ export class TutorService {
 
   async deleteTutor(id: string): Promise<any> {
 
-    const existTutor = await this.tutorModel.findOne({ _id: id })
+    const existTutor = await this.tutorModel.findOne({ uid: id })
 
     const result = await this.tutorModel.findOneAndUpdate(
       {
-        _id: id,
+        uid: id,
       },
       {
         track: !existTutor?.accept,
@@ -230,7 +230,7 @@ export class TutorService {
 
   async removeTutor(id: string): Promise<any> {
     try {
-      await this.tutorModel.findOneAndRemove({ _id: id });
+      await this.tutorModel.findOneAndRemove({ uid: id });
       return 'successfully removed tutor';
     } catch (err) {
       throw new NotFoundException('Do not find data'); //Return which when not find?
