@@ -81,8 +81,6 @@ export class TutorController {
   ): Promise<BaseResponse<Model<Tutor>>> {
     const response: BaseResponse<Model<Tutor>> = {};
 
-    console.log("id", id)
-    console.log("updateTutortDto", updateTutortDto)
     const tutor = await this.tutorService.updateTutor(id, updateTutortDto);
     if (!tutor) {
       response.error = {
