@@ -43,11 +43,11 @@ export class CalendarController {
     description: 'Create calendar',
     type: Calendar,
   })
-  // @ApiBearerAuth()
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Create calendar' })
   @Post()
-  // @RolesAllowed(ROLE_OWNER,ROLE_ADMIN)
-  // @UseGuards(JwtAuthGuard, RolesGuard)
+  @RolesAllowed(ROLE_OWNER,ROLE_ADMIN, ROLE_TUTOR)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   async createCalendar(
     @Body() createCalendartDto: CreateCalendarDto,
     // @AuthJwt() payload: JwtPayload,
@@ -129,10 +129,10 @@ export class CalendarController {
   // @ApiBearerAuth()
   @ApiOperation({ summary: 'Get tutor calendar' })
   @Get(':id')
-  // @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   async getCalendarById(
     @Param('id') params: string,
-    // @AuthJwt() payload: JwtPayload,
+    @AuthJwt() payload: JwtPayload,
   ): Promise<BaseResponse<Calendar>> {
     const response: BaseResponse<Calendar> = {};
     const calendar = await this.calendarService.getCalendarById(params);
@@ -154,7 +154,7 @@ export class CalendarController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Remove calendar' })
   @Delete(':id')
-  @RolesAllowed(ROLE_OWNER, ROLE_ADMIN)
+  @RolesAllowed(ROLE_OWNER, ROLE_ADMIN, ROLE_TUTOR)
   @UseGuards(JwtAuthGuard, RolesGuard)
   async removeCalendar(
     @Param('id') params: string,
