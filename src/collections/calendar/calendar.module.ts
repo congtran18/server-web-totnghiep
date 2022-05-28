@@ -10,7 +10,6 @@ import {UsersModule} from "../users/users.module";
     MongooseModule.forFeature([
       {name: Calendar.name, schema: CalendarSchema},
     ]),
-    forwardRef(() => UsersModule),
   ],
   controllers: [CalendarController],
   providers: [CalendarService],

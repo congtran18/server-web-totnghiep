@@ -39,35 +39,35 @@ export class CalendarService {
     var calendarfilter = {}
     var calendarSort = {}
 
-    if (realname) {
-      calendarfilter = { "user": new RegExp(realname, 'i'), ...calendarfilter };
-    }
-    if (status) {
-      calendarfilter = { "status": { $elemMatch: { $eq: status } }, ...calendarfilter };
-    }
-    if (warning) {
-      calendarfilter = { "warning": warning, ...calendarfilter };
-    }
+    // if (realname) {
+    //   calendarfilter = { "user": new RegExp(realname, 'i'), ...calendarfilter };
+    // }
+    // if (status) {
+    //   calendarfilter = { "status": { $elemMatch: { $eq: status } }, ...calendarfilter };
+    // }
+    // if (warning) {
+    //   calendarfilter = { "warning": warning, ...calendarfilter };
+    // }
 
-    if (sort !== undefined) {
-      if (sort === "rating_high") {
-        calendarSort = { "rating": -1, ...calendarSort };
-      } else if (sort === "rating_low") {
-        calendarSort = { "rating": 1, ...calendarSort };
-      } else if (sort === "revenue_high") {
-        calendarSort = { "totalrevenue": -1, ...calendarSort };
-      } else if (sort === "revenue_low") {
-        calendarSort = { "totalrevenue": 1, ...calendarSort };
-      } else if (sort === "teaching_minutes_high") {
-        calendarSort = { "totalTeachingMinutes": -1, ...calendarSort };
-      } else if (sort === "teaching_minutes_low") {
-        calendarSort = { "totalTeachingMinutes": 1, ...calendarSort };
-      } else if (sort === "old") {
-        calendarSort = { "create_at": 1, ...calendarSort };
-      }
-    } else {
-      calendarSort = { 'create_at': -1, ...calendarSort }
-    }
+    // if (sort !== undefined) {
+    //   if (sort === "rating_high") {
+    //     calendarSort = { "rating": -1, ...calendarSort };
+    //   } else if (sort === "rating_low") {
+    //     calendarSort = { "rating": 1, ...calendarSort };
+    //   } else if (sort === "revenue_high") {
+    //     calendarSort = { "totalrevenue": -1, ...calendarSort };
+    //   } else if (sort === "revenue_low") {
+    //     calendarSort = { "totalrevenue": 1, ...calendarSort };
+    //   } else if (sort === "teaching_minutes_high") {
+    //     calendarSort = { "totalTeachingMinutes": -1, ...calendarSort };
+    //   } else if (sort === "teaching_minutes_low") {
+    //     calendarSort = { "totalTeachingMinutes": 1, ...calendarSort };
+    //   } else if (sort === "old") {
+    //     calendarSort = { "create_at": 1, ...calendarSort };
+    //   }
+    // } else {
+    //   calendarSort = { 'create_at': -1, ...calendarSort }
+    // }
 
     calendarfilter = { "accept": accept ? JSON.parse(accept?.toLowerCase()) : true, ...calendarfilter };
 

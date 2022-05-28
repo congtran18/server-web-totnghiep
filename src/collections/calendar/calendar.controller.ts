@@ -43,16 +43,17 @@ export class CalendarController {
     description: 'Create calendar',
     type: Calendar,
   })
-  @ApiBearerAuth()
+  // @ApiBearerAuth()
   @ApiOperation({ summary: 'Create calendar' })
   @Post()
   // @RolesAllowed(ROLE_OWNER,ROLE_ADMIN)
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
   async createCalendar(
     @Body() createCalendartDto: CreateCalendarDto,
     // @AuthJwt() payload: JwtPayload,
   ): Promise<BaseResponse<Model<Calendar>>> {
     const response: BaseResponse<Model<Calendar>> = {};
+    console.log("vo day")
     const calendar = await this.calendarService.createCalendar(createCalendartDto);
     if (!calendar) {
       response.error = {
