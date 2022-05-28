@@ -5,6 +5,7 @@ import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Calendar } from './schemas/calendar.schema';
 import { CreateCalendarDto } from './dto/create-calendar.dto';
 import { UpdateCalendarDto } from './dto/update-calendar.dto';
+import { Boolean } from 'aws-sdk/clients/apigateway';
 
 @Injectable()
 export class CalendarService {
@@ -51,9 +52,31 @@ export class CalendarService {
     return { 'calendar': result, 'total': total };
   }
 
+  async modifyDateTime(start: Date, end: Date): Promise<Boolean> {
+    var query = {
+      $and: [
+        { start: { $lte: end } },
+        { end: { $gte: start } }
+      ]
+    };
+    const result = await this.calendarModel.findOne(query).exec()
+    if (result) {
+      return false
+    }
+    return true
+  }
+
   async createCalendar(
     createCalendartDto: CreateCalendarDto,
   ): Promise<any> {
+
+    const { start, end } =  createCalendartDto
+
+    const check = await this.modifyDateTime(start , end)
+
+    if(!check){
+      return null
+    }
 
     const model = new this.calendarModel({
       ...createCalendartDto
