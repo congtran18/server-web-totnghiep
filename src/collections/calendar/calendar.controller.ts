@@ -53,12 +53,11 @@ export class CalendarController {
     // @AuthJwt() payload: JwtPayload,
   ): Promise<BaseResponse<Model<Calendar>>> {
     const response: BaseResponse<Model<Calendar>> = {};
-    console.log("vo day")
     const calendar = await this.calendarService.createCalendar(createCalendartDto);
     if (!calendar) {
       response.error = {
         code: HttpStatus.BAD_REQUEST,
-        message: 'Có lỗi khi đăng ký!',
+        message: 'Lịch bị trùng!',
       };
     } else {
       response.data = calendar;
