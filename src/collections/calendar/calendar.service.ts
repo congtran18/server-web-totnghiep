@@ -25,7 +25,7 @@ export class CalendarService {
     return result;
   }
 
-  async getAllCalendar(page?: string, limit?: string, status?: string, warning?: string, realname?: string, sort?: string, accept?: string): Promise<any> {
+  async getAllCalendar(page?: string, limit?: string): Promise<any> {
     let pageNumber = 1;
     let limitNumber = 100;
     if (page) {
@@ -38,38 +38,6 @@ export class CalendarService {
 
     var calendarfilter = {}
     var calendarSort = {}
-
-    // if (realname) {
-    //   calendarfilter = { "user": new RegExp(realname, 'i'), ...calendarfilter };
-    // }
-    // if (status) {
-    //   calendarfilter = { "status": { $elemMatch: { $eq: status } }, ...calendarfilter };
-    // }
-    // if (warning) {
-    //   calendarfilter = { "warning": warning, ...calendarfilter };
-    // }
-
-    // if (sort !== undefined) {
-    //   if (sort === "rating_high") {
-    //     calendarSort = { "rating": -1, ...calendarSort };
-    //   } else if (sort === "rating_low") {
-    //     calendarSort = { "rating": 1, ...calendarSort };
-    //   } else if (sort === "revenue_high") {
-    //     calendarSort = { "totalrevenue": -1, ...calendarSort };
-    //   } else if (sort === "revenue_low") {
-    //     calendarSort = { "totalrevenue": 1, ...calendarSort };
-    //   } else if (sort === "teaching_minutes_high") {
-    //     calendarSort = { "totalTeachingMinutes": -1, ...calendarSort };
-    //   } else if (sort === "teaching_minutes_low") {
-    //     calendarSort = { "totalTeachingMinutes": 1, ...calendarSort };
-    //   } else if (sort === "old") {
-    //     calendarSort = { "create_at": 1, ...calendarSort };
-    //   }
-    // } else {
-    //   calendarSort = { 'create_at': -1, ...calendarSort }
-    // }
-
-    calendarfilter = { "accept": accept ? JSON.parse(accept?.toLowerCase()) : true, ...calendarfilter };
 
     const result = await this.calendarModel
       .find(calendarfilter).sort(calendarSort)
@@ -106,7 +74,7 @@ export class CalendarService {
 
     const result = await this.calendarModel.findOneAndUpdate(
       {
-        tutoruid: id,
+        _id: id,
       },
       updateCalendartDto,
       {
@@ -119,7 +87,7 @@ export class CalendarService {
 
   async removeCalendar(id: string): Promise<any> {
     try {
-      await this.calendarModel.findOneAndRemove({ tutoruid: id });
+      await this.calendarModel.findOneAndRemove({ _id: id });
       return 'successfully removed calendar';
     } catch (err) {
       throw new NotFoundException('Do not find data'); //Return which when not find?

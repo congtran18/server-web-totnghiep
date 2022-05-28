@@ -103,24 +103,14 @@ export class CalendarController {
   @Get()
   @ApiQuery({ name: 'page', required: false })
   @ApiQuery({ name: 'limit', required: false })
-  @ApiQuery({ name: 'status', required: false })
-  @ApiQuery({ name: 'warning', required: false })
-  @ApiQuery({ name: 'realname', required: false })
-  @ApiQuery({ name: 'sort', required: false })
-  @ApiQuery({ name: 'accept', required: false })
   // @UseGuards(JwtAuthGuard, RolesGuard)
   async getAllCalendar(
     // @AuthJwt() payload: JwtPayload,
     @Query('page') page: string,
     @Query('limit') limit: string,
-    @Query('status') status: string,
-    @Query('warning') warning: string,
-    @Query('realname') realname: string,
-    @Query('sort') sort: string,
-    @Query('accept') accept: string,
   ): Promise<BaseResponse<Calendar>> {
     const response: BaseResponse<Calendar> = {};
-    const calendar = await this.calendarService.getAllCalendar(page, limit, status, warning, realname, sort, accept);
+    const calendar = await this.calendarService.getAllCalendar(page, limit);
     if (!calendar) {
       response.error = {
         code: HttpStatus.BAD_REQUEST,
