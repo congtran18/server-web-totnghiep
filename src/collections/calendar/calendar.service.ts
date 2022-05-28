@@ -5,14 +5,12 @@ import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Calendar } from './schemas/calendar.schema';
 import { CreateCalendarDto } from './dto/create-calendar.dto';
 import { UpdateCalendarDto } from './dto/update-calendar.dto';
-import { AdminsService } from "../admins/admins.service";
 
 @Injectable()
 export class CalendarService {
   constructor(
     @InjectConnection() private connection: Connection,
     @InjectModel(Calendar.name) private calendarModel: Model<Calendar>,
-    private readonly adminsService: AdminsService,
   ) { }
 
   async isEmpty(): Promise<boolean> {
@@ -94,7 +92,7 @@ export class CalendarService {
     });
     const modelRes = await model.save();
     if (modelRes) {
-      await this.adminsService.updateAdmin({ "uid": modelRes?.uid, "role": "waitingcalendar" })
+      // await this.adminsService.updateAdmin({ "uid": modelRes?.uid, "role": "waitingcalendar" })
       const obj = modelRes.toObject<Model<Calendar>>();
       // delete obj._id;
       // delete obj.__v;
