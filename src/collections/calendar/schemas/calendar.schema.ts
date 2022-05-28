@@ -5,7 +5,7 @@ import { ApiProperty } from "@nestjs/swagger";
 @Schema()
 export class Calendar extends Document {
   @ApiProperty()
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true })
   user: string;
 
   @ApiProperty()
