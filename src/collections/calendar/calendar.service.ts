@@ -70,11 +70,11 @@ export class CalendarService {
     createCalendartDto: CreateCalendarDto,
   ): Promise<any> {
 
-    const { start, end } =  createCalendartDto
+    const { start, end } = createCalendartDto
 
-    const check = await this.modifyDateTime(start , end)
+    const check = await this.modifyDateTime(start, end)
 
-    if(!check){
+    if (!check) {
       return null
     }
 
@@ -94,6 +94,13 @@ export class CalendarService {
 
   async updateCalendar(id: string, updateCalendartDto: UpdateCalendarDto): Promise<any> {
 
+    const { start, end } = updateCalendartDto
+
+    const check = await this.modifyDateTime(start, end)
+
+    if (!check) {
+      return null
+    }
 
     const result = await this.calendarModel.findOneAndUpdate(
       {

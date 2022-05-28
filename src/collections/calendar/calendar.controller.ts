@@ -85,7 +85,7 @@ export class CalendarController {
     if (!calendar) {
       response.error = {
         code: HttpStatus.BAD_REQUEST,
-        message: 'ERROR.',
+        message: 'Lịch bị trùng!',
       };
     } else {
       response.data = calendar;

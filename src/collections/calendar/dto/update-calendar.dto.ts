@@ -4,9 +4,6 @@ import { ApiProperty } from "@nestjs/swagger";
 export class UpdateCalendarDto {
 
   @ApiProperty()
-  tutoruid: string;
-
-  @ApiProperty()
   start: Date;
 
   @ApiProperty()
@@ -15,8 +12,7 @@ export class UpdateCalendarDto {
   @ApiProperty()
   notes: string;
 
-  constructor( tutoruid: string, start: Date, end: Date, notes: string) {
-    this.tutoruid = tutoruid;
+  constructor( start: Date, end: Date, notes: string) {
     this.start = start;
     this.end = end;
     this.notes = notes;
