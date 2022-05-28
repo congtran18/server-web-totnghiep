@@ -26,6 +26,7 @@ import { UploadModule } from 'src/collections/upload/upload.module';
 import { StorageModule } from 'src/collections/storage/storage.module';
 import { StripeModule } from 'src/collections/stripe/stripe.module'
 import { CronModule } from '../packages/cron/cron.module';
+import { CalendarModule } from 'src/collections/calendar/calendar.module'
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { CronModule } from '../packages/cron/cron.module';
     StorageModule,
     TutorModule,
     // RealtimeModule,
+    CalendarModule,
     CronModule,
     StripeModule,
     ProjectsModule,
@@ -74,4 +76,4 @@ import { CronModule } from '../packages/cron/cron.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }
