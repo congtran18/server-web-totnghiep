@@ -9,7 +9,7 @@ export class CreateCalendarDto {
 
   @IsNotEmpty()
   @ApiProperty()
-  uid: string;
+  tutoruid: string;
 
   @ApiProperty()
   start: Date;
@@ -20,9 +20,9 @@ export class CreateCalendarDto {
   @ApiProperty()
   notes: string;
 
-  constructor(user: string, uid: string, start: Date, end: Date, notes: string) {
+  constructor(user: string, tutoruid: string, start: Date, end: Date, notes: string) {
     this.user = user;
-    this.uid = uid;
+    this.tutoruid = tutoruid;
     this.start = start;
     this.end = end;
     this.notes = notes;

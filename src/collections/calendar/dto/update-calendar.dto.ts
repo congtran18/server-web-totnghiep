@@ -3,13 +3,8 @@ import { ApiProperty } from "@nestjs/swagger";
 
 export class UpdateCalendarDto {
 
-  @IsNotEmpty()
   @ApiProperty()
-  user: string;
-
-  @IsNotEmpty()
-  @ApiProperty()
-  uid: string;
+  tutoruid: string;
 
   @ApiProperty()
   start: Date;
@@ -20,9 +15,8 @@ export class UpdateCalendarDto {
   @ApiProperty()
   notes: string;
 
-  constructor(user: string, uid: string, start: Date, end: Date, notes: string) {
-    this.user = user;
-    this.uid = uid;
+  constructor( tutoruid: string, start: Date, end: Date, notes: string) {
+    this.tutoruid = tutoruid;
     this.start = start;
     this.end = end;
     this.notes = notes;

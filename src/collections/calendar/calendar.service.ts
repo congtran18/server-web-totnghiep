@@ -19,7 +19,7 @@ export class CalendarService {
 
   async getCalendarById(id: string): Promise<any> {
     const result = await this.calendarModel.find({
-      uid: id,
+      tutoruid: id,
       // isDeleted: false,
     });
     return result;
@@ -106,7 +106,7 @@ export class CalendarService {
 
     const result = await this.calendarModel.findOneAndUpdate(
       {
-        uid: id,
+        tutoruid: id,
       },
       updateCalendartDto,
       {
@@ -119,7 +119,7 @@ export class CalendarService {
 
   async removeCalendar(id: string): Promise<any> {
     try {
-      await this.calendarModel.findOneAndRemove({ uid: id });
+      await this.calendarModel.findOneAndRemove({ tutoruid: id });
       return 'successfully removed calendar';
     } catch (err) {
       throw new NotFoundException('Do not find data'); //Return which when not find?

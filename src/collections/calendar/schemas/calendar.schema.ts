@@ -9,8 +9,8 @@ export class Calendar extends Document {
   user: string;
 
   @ApiProperty()
-  @Prop({ required: true, unique: true })
-  uid: string;
+  @Prop({ required: true })
+  tutoruid: string;
 
   @ApiProperty()
   @Prop({ type: Date, required: true })
@@ -26,14 +26,14 @@ export class Calendar extends Document {
 
   constructor(
     user: string,
-    uid: string,
+    tutoruid: string,
     start: Date,
     end: Date,
     notes: string,
     ) {
     super();
     this.user = user;
-    this.uid = uid;
+    this.tutoruid = tutoruid;
     this.start = start;
     this.end = end;
     this.notes = notes;
