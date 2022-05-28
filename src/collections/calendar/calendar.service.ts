@@ -110,8 +110,8 @@ export class CalendarService {
 
   async removeCalendar(id: string): Promise<any> {
     try {
-      await this.calendarModel.findOneAndRemove({ _id: id });
-      return 'successfully removed calendar';
+      const result = await this.calendarModel.findOneAndRemove({ _id: id });
+      return result;
     } catch (err) {
       throw new NotFoundException('Do not find data'); //Return which when not find?
     }
