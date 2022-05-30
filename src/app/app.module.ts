@@ -27,6 +27,8 @@ import { StorageModule } from 'src/collections/storage/storage.module';
 import { StripeModule } from 'src/collections/stripe/stripe.module'
 import { CronModule } from '../packages/cron/cron.module';
 import { CalendarModule } from 'src/collections/calendar/calendar.module'
+import { MessageModule } from 'src/packages/message/message.module';
+import { ChatModule } from 'src/packages/chat/chat.module';
 
 @Module({
   imports: [
@@ -60,6 +62,8 @@ import { CalendarModule } from 'src/collections/calendar/calendar.module'
     UsersModule,
     StorageModule,
     TutorModule,
+    MessageModule,
+    ChatModule,
     // RealtimeModule,
     CalendarModule,
     CronModule,

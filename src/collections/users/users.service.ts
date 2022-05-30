@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Connection, Model } from "mongoose";
+import { Connection, Model, FilterQuery } from "mongoose";
 import { User } from "./schemas/user.schema";
 import { Admin } from "../admins/schemas/admin.schema";
 import { ROLE_USER, ROLE_TUTOR } from "../../collections/admins/dto/admin.roles";
@@ -99,7 +99,7 @@ export class UsersService {
   }
 
   // Get user information by uid
-  async getUserByUid(uid: string): Promise<User | null> {
+  async getUserByUid(uid: string | any): Promise<User | null> {
     return await this.userModel.findOne({ uid: uid }, defaultProjection).exec();
   }
 
@@ -120,7 +120,7 @@ export class UsersService {
         email: email
       },
       {
-        minutes : 30,
+        minutes: 30,
         $inc: { daysleft: daysleft }
       },
       {
@@ -131,7 +131,7 @@ export class UsersService {
   }
 
   async updateUserDayLeft(): Promise<User | null> {
-      await this.userModel.updateMany({ daysleft: { $gt: 0 }, track: false }, {$inc: { daysleft: -1 } }, { upsert: false });
+    await this.userModel.updateMany({ daysleft: { $gt: 0 }, track: false }, { $inc: { daysleft: -1 } }, { upsert: false });
     return null
   }
 
@@ -177,6 +177,30 @@ export class UsersService {
     } else {
       return null;
     }
+  }
+
+  async updateStatusUser(uid?: string, online?: Boolean): Promise<User | null> {
+    return await this.userModel.findOneAndUpdate(
+      {
+        uid: uid
+      },
+      {
+        online: online,
+      },
+      {
+        new: true,
+        useFindAndModify: false,
+      },
+    );
+  }
+
+  findAll(params: FilterQuery<User> = {}) {
+    return this.userModel
+      .find({
+        ...params,
+      })
+      // .sort('-online')
+      .exec();
   }
 
   async deleteUser(uid: string): Promise<boolean> {

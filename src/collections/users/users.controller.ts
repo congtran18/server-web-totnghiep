@@ -17,7 +17,6 @@ import { JwtPayload } from "../auth/jwt.payload";
 import { User } from "./schemas/user.schema";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { UsersService } from "./users.service";
-import { ApiImplicitQuery } from "@nestjs/swagger/dist/decorators/api-implicit-query.decorator";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { AuthService } from "../auth/auth.service";
 import { AdminsService } from "../admins/admins.service";

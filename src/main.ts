@@ -13,6 +13,7 @@ import * as bodyParser from 'body-parser';
 import { ServiceAccount } from 'firebase-admin';
 import * as serviceAccount from './serviceAccountKey.json';
 import { IncomingMessage, ServerResponse } from 'http';
+import { RedisIoAdapter } from 'src/adapters/redis-io.adapter';
 declare const module: any;
 
 async function bootstrap() {
@@ -47,8 +48,10 @@ async function bootstrap() {
     }
   };
 
+  app.useWebSocketAdapter(new RedisIoAdapter(app));
   app.use(bodyParser.urlencoded({ verify: rawBodyBuffer, extended: true }));
   app.use(bodyParser.json({ verify: rawBodyBuffer }));
+  
 
   //------Web Applications------//
   // For nginx proxy forward
