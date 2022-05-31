@@ -16,7 +16,7 @@ interface SocketWithUserData extends Socket {
   user: Partial<User> | null;
 }
 
-@WebSocketGateway(3002, { namespace: 'chat' })
+@WebSocketGateway({origins: 'https://server-web-totnghiep.herokuapp.com', path: 'chat'})
 export class ChatGateway {
   @WebSocketServer()
   private readonly server: Server | undefined;
