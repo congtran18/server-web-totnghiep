@@ -16,7 +16,11 @@ interface SocketWithUserData extends Socket {
   user: Partial<User> | null;
 }
 
-@WebSocketGateway({origins: 'https://server-web-totnghiep.herokuapp.com', path: 'chat'})
+@WebSocketGateway({
+  cors: {
+    origin: '*',
+  },
+})
 export class ChatGateway {
   @WebSocketServer()
   private readonly server: Server | undefined;
