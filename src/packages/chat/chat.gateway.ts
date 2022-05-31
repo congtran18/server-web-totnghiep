@@ -39,12 +39,13 @@ export class ChatGateway {
       // const userFromSocket = await this.wsAuthStrategy.validate(
       //   getUserFromWSToken(socket.handshake),
       // );
+
       const validateUser = await this.authService.getUserFromWSToken(socket.handshake)
       // console.log("validateUser",validateUser)
       const userFromSocket = await this.usersService.getUserByUid(validateUser.uid)
       // update user online status
       if (userFromSocket) {
-        // const updatedUser = await this.usersService.updateStatusUser(userFromSocket.uid, true);
+        const updatedUser = await this.usersService.updateStatusUser(userFromSocket.uid, true);
         const updatedTutor = await this.tutorService.updateStatusTutor(userFromSocket.uid, true);
         // set user on socket
         socket.tutor = updatedTutor;
@@ -73,6 +74,7 @@ export class ChatGateway {
     try {
       // update user online status to false
       const tutor = client.tutor;
+      await this.usersService.updateStatusUser(tutor?.uid, false);
       await this.tutorService.updateStatusTutor(tutor?.uid, false);
       // retrieve connected users
       const connectedTutors = await this.tutorService.findAllTutor();

@@ -125,7 +125,7 @@ export class UsersController {
         }
       }
     }
-    const response = { "role": roleUser, "accessToken": accessToken, "daysleft": existUser?.daysleft, "uid": existUser?.uid }
+    const response = { "role": roleUser, "accessToken": accessToken, "daysleft": existUser?.daysleft, "uid": existUser?.uid, "online": existUser?.online }
     return response;
   }
 
