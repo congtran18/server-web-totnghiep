@@ -45,7 +45,7 @@ export class ChatGateway {
       const userFromSocket = await this.usersService.getUserByUid(validateUser.uid)
       // update user online status
       if (userFromSocket) {
-        const updatedUser = await this.usersService.updateStatusUser(userFromSocket.uid, true);
+        await this.usersService.updateStatusUser(userFromSocket.uid, true);
         const updatedTutor = await this.tutorService.updateStatusTutor(userFromSocket.uid, true);
         // set user on socket
         socket.tutor = updatedTutor;
