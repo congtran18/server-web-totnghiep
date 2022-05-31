@@ -194,13 +194,14 @@ export class UsersService {
     );
   }
 
-  findAll(params: FilterQuery<User> = {}) {
-    return this.userModel
+  async findAll(params: FilterQuery<User> = {}) {
+    const result = await this.userModel
       .find({
         ...params,
       })
       .sort('-online')
       .exec();
+    return result
   }
 
   async deleteUser(uid: string): Promise<boolean> {

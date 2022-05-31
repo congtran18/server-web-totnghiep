@@ -17,9 +17,7 @@ interface SocketWithUserData extends Socket {
 }
 
 @WebSocketGateway({
-  cors: {
-    origin: '*',
-  },
+  namespace: 'chat'
 })
 export class ChatGateway {
   @WebSocketServer()
