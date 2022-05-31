@@ -12,7 +12,7 @@ export class CreateTutorDto {
   uid: string;
 
   @ApiProperty()
-  realname: string;
+  fullName: string;
 
   @ApiProperty()
   infomation: string;
@@ -44,10 +44,10 @@ export class CreateTutorDto {
   @ApiProperty()
   questiontwo: string;
 
-  constructor(user: string, uid: string, realname: string, infomation: string, phone: number, account: string, bank: string, include: string[], imageUrl: string, videoUrl: string, certificates: { dataUrl: string, name: string }[], questionone: string, questiontwo: string) {
+  constructor(user: string, uid: string, fullName: string, infomation: string, phone: number, account: string, bank: string, include: string[], imageUrl: string, videoUrl: string, certificates: { dataUrl: string, name: string }[], questionone: string, questiontwo: string) {
     this.user = user;
     this.uid = uid;
-    this.realname = realname;
+    this.fullName = fullName;
     this.infomation = infomation;
     this.phone = phone;
     this.account = account;

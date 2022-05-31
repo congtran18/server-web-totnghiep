@@ -4,7 +4,7 @@ import { ApiProperty } from "@nestjs/swagger";
 export class UpdateTutorDto {
 
   @ApiProperty()
-  realname: string;
+  fullName: string;
 
   @ApiProperty()
   infomation: string;
@@ -33,8 +33,8 @@ export class UpdateTutorDto {
   @ApiProperty()
   questiontwo: string;
 
-  constructor(realname: string ,infomation: string, phone: number, status: string[], include: string[], imageUrl: string, videoUrl: string, certificates: { dataUrl: string, name: string }[], questionone: string, questiontwo: string) {
-    this.realname = realname;
+  constructor(fullName: string ,infomation: string, phone: number, status: string[], include: string[], imageUrl: string, videoUrl: string, certificates: { dataUrl: string, name: string }[], questionone: string, questiontwo: string) {
+    this.fullName = fullName;
     this.infomation = infomation;
     this.phone = phone;
     this.status = status;

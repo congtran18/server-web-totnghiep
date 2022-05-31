@@ -50,7 +50,7 @@ export class TutorService {
     }
   }
 
-  async getAllTutor(page?: string, limit?: string, status?: string, warning?: string, realname?: string, sort?: string, accept?: string): Promise<any> {
+  async getAllTutor(page?: string, limit?: string, status?: string, warning?: string, fullName?: string, sort?: string, accept?: string): Promise<any> {
     let pageNumber = 1;
     let limitNumber = 100;
     if (page) {
@@ -64,8 +64,8 @@ export class TutorService {
     var tutorfilter = {}
     var tutorSort = {}
 
-    if (realname) {
-      tutorfilter = { "user": new RegExp(realname, 'i'), ...tutorfilter };
+    if (fullName) {
+      tutorfilter = { "user": new RegExp(fullName, 'i'), ...tutorfilter };
     }
     if (status) {
       tutorfilter = { "status": { $elemMatch: { $eq: status } }, ...tutorfilter };
@@ -108,7 +108,7 @@ export class TutorService {
     return { 'tutor': result, 'total': total };
   }
 
-  async getAllRestoreTutor(page?: string, limit?: string, type?: string, category?: string, realname?: string): Promise<any> {
+  async getAllRestoreTutor(page?: string, limit?: string, type?: string, category?: string, fullName?: string): Promise<any> {
     let pageNumber = 1;
     let limitNumber = 100;
     if (page) {
@@ -121,8 +121,8 @@ export class TutorService {
 
     var tutorfilter = {}
 
-    if (realname) {
-      tutorfilter = { "realname": new RegExp(realname, 'i'), ...tutorfilter };
+    if (fullName) {
+      tutorfilter = { "fullName": new RegExp(fullName, 'i'), ...tutorfilter };
     }
     if (type) {
       tutorfilter = { "type": type, ...tutorfilter };

@@ -104,7 +104,7 @@ export class TutorController {
   @ApiQuery({ name: 'limit', required: false })
   @ApiQuery({ name: 'status', required: false })
   @ApiQuery({ name: 'warning', required: false })
-  @ApiQuery({ name: 'realname', required: false })
+  @ApiQuery({ name: 'fullName', required: false })
   @ApiQuery({ name: 'sort', required: false })
   @ApiQuery({ name: 'accept', required: false })
   // @UseGuards(JwtAuthGuard, RolesGuard)
@@ -114,12 +114,12 @@ export class TutorController {
     @Query('limit') limit: string,
     @Query('status') status: string,
     @Query('warning') warning: string,
-    @Query('realname') realname: string,
+    @Query('fullName') fullName: string,
     @Query('sort') sort: string,
     @Query('accept') accept: string,
   ): Promise<BaseResponse<Tutor>> {
     const response: BaseResponse<Tutor> = {};
-    const tutor = await this.tutorService.getAllTutor(page, limit, status, warning, realname, sort, accept);
+    const tutor = await this.tutorService.getAllTutor(page, limit, status, warning, fullName, sort, accept);
     if (!tutor) {
       response.error = {
         code: HttpStatus.BAD_REQUEST,
@@ -142,17 +142,17 @@ export class TutorController {
   @ApiQuery({ name: 'limit', required: false })
   @ApiQuery({ name: 'type', required: false })
   @ApiQuery({ name: 'category', required: false })
-  @ApiQuery({ name: 'realname', required: false })
+  @ApiQuery({ name: 'fullName', required: false })
   async getAllRestoreTutor(
     // @AuthJwt() payload: JwtPayload,
     @Query('page') page: string,
     @Query('limit') limit: string,
     @Query('type') type: string,
     @Query('category') category: string,
-    @Query('realname') realname: string,
+    @Query('fullName') fullName: string,
   ): Promise<BaseResponse<Tutor>> {
     const response: BaseResponse<Tutor> = {};
-    const tutor = await this.tutorService.getAllRestoreTutor(page, limit, type, category, realname);
+    const tutor = await this.tutorService.getAllRestoreTutor(page, limit, type, category, fullName);
     if (!tutor) {
       response.error = {
         code: HttpStatus.BAD_REQUEST,
