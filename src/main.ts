@@ -48,10 +48,9 @@ async function bootstrap() {
     }
   };
 
-  app.useWebSocketAdapter(new RedisIoAdapter(app));
   app.use(bodyParser.urlencoded({ verify: rawBodyBuffer, extended: true }));
   app.use(bodyParser.json({ verify: rawBodyBuffer }));
-  
+
 
   //------Web Applications------//
   // For nginx proxy forward
@@ -65,6 +64,7 @@ async function bootstrap() {
   app.use(morgan(morganFormat));
   app.enableCors();
   app.setGlobalPrefix('api');
+  // app.useWebSocketAdapter(new RedisIoAdapter(app));
   app.useGlobalFilters(new AllExceptionFilter());
   app.useGlobalPipes(new ValidationPipe());
   // Enable Swagger api docs module

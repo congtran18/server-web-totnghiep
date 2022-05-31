@@ -1,5 +1,6 @@
 import { MessageService } from './../message/message.service';
 import { UsersService } from 'src/collections/users/users.service';
+import { AuthService } from 'src/collections/auth/auth.service';
 import { User } from 'src/collections/users/schemas/user.schema';
 import { Logger } from '@nestjs/common';
 import {
@@ -23,6 +24,7 @@ export class ChatGateway {
   constructor(
     private readonly usersService: UsersService,
     private readonly messageService: MessageService,
+    private readonly authService: AuthService,
   ) { }
 
   async handleConnection(socket: SocketWithUserData): Promise<void> {
@@ -32,7 +34,9 @@ export class ChatGateway {
       // const userFromSocket = await this.wsAuthStrategy.validate(
       //   getUserFromWSToken(socket.handshake),
       // );
-      const userFromSocket = await this.usersService.getUserByUid(socket.handshake)
+      const validateUser = await this.authService.getUserFromWSToken(socket.handshake)
+      // console.log("validateUser",validateUser)
+      const userFromSocket = await this.usersService.getUserByUid(validateUser.uid)
       // update user online status
       if (userFromSocket) {
         const updatedUser = await this.usersService.updateStatusUser(userFromSocket.uid, true);
@@ -42,7 +46,9 @@ export class ChatGateway {
         // retrieve connected users
         const connectedUsers = await this.usersService.findAll();
         // join user to a chat room (private)
-        socket.join(updatedUser?.id);
+        if (updatedUser) {
+          socket.join(updatedUser?.uid);
+        }
         this.server?.emit('online-users', connectedUsers);
       }
     } catch (e) {

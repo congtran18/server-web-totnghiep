@@ -199,7 +199,7 @@ export class UsersService {
       .find({
         ...params,
       })
-      // .sort('-online')
+      .sort('-online')
       .exec();
   }
 
