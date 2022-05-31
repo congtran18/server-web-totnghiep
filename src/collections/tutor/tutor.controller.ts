@@ -132,39 +132,6 @@ export class TutorController {
   }
 
   @ApiOkResponse({
-    description: 'Get all restore tutor',
-    type: Tutor,
-  })
-  // @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get all restore tutor' })
-  @Get("/restore")
-  @ApiQuery({ name: 'page', required: false })
-  @ApiQuery({ name: 'limit', required: false })
-  @ApiQuery({ name: 'type', required: false })
-  @ApiQuery({ name: 'category', required: false })
-  @ApiQuery({ name: 'fullName', required: false })
-  async getAllRestoreTutor(
-    // @AuthJwt() payload: JwtPayload,
-    @Query('page') page: string,
-    @Query('limit') limit: string,
-    @Query('type') type: string,
-    @Query('category') category: string,
-    @Query('fullName') fullName: string,
-  ): Promise<BaseResponse<Tutor>> {
-    const response: BaseResponse<Tutor> = {};
-    const tutor = await this.tutorService.getAllRestoreTutor(page, limit, type, category, fullName);
-    if (!tutor) {
-      response.error = {
-        code: HttpStatus.BAD_REQUEST,
-        message: 'ERROR.',
-      };
-    } else {
-      response.data = tutor
-    }
-    return response;
-  }
-
-  @ApiOkResponse({
     description: 'Get single tutor',
     type: Tutor,
   })

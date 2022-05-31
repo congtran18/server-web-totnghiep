@@ -194,11 +194,9 @@ export class UsersService {
     );
   }
 
-  async findAll(params: FilterQuery<User> = {}) {
+  async findAllTutor() {
     const result = await this.userModel
-      .find({
-        ...params,
-      })
+      .find()
       .sort('-online')
       .exec();
     return result

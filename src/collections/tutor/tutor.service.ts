@@ -108,43 +108,6 @@ export class TutorService {
     return { 'tutor': result, 'total': total };
   }
 
-  async getAllRestoreTutor(page?: string, limit?: string, type?: string, category?: string, fullName?: string): Promise<any> {
-    let pageNumber = 1;
-    let limitNumber = 100;
-    if (page) {
-      pageNumber = parseInt(page);
-    }
-
-    if (limit) {
-      limitNumber = parseInt(limit);
-    }
-
-    var tutorfilter = {}
-
-    if (fullName) {
-      tutorfilter = { "fullName": new RegExp(fullName, 'i'), ...tutorfilter };
-    }
-    if (type) {
-      tutorfilter = { "type": type, ...tutorfilter };
-    }
-    if (category) {
-      tutorfilter = { "category": category, ...tutorfilter };
-    }
-
-    tutorfilter = { "track": true, ...tutorfilter };
-
-    const result = await this.tutorModel
-      .find(tutorfilter).sort([['create_at', 'descending']]).populate('type').populate('category')
-      .limit(limitNumber)
-      .skip((pageNumber - 1) * limitNumber);
-
-    let total = await this.tutorModel.countDocuments(tutorfilter)
-
-    total = Math.ceil(total / limitNumber);
-
-    return { 'tutor': result, 'total': total };
-  }
-
   async createTutor(
     createTutortDto: CreateTutorDto,
   ): Promise<any> {
@@ -205,6 +168,32 @@ export class TutorService {
       return result;
     }
     return null;
+  }
+
+  async updateStatusTutor(uid?: string, online?: Boolean): Promise<Tutor | null> {
+    return await this.tutorModel.findOneAndUpdate(
+      {
+        uid: uid
+      },
+      {
+        online: online,
+      },
+      {
+        new: true,
+        useFindAndModify: false,
+      },
+    );
+  }
+
+  async findAllTutor() {
+    const result = await this.tutorModel
+      .find({
+        accept: true,
+      })
+      .sort('-online')
+      .exec();
+
+      return result;
   }
 
   async deleteTutor(id: string): Promise<any> {

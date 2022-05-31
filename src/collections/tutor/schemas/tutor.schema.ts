@@ -138,6 +138,10 @@ export class Tutor extends Document {
   accept: boolean;
 
   @ApiProperty()
+  @Prop({ default: false })
+  online: boolean;
+
+  @ApiProperty()
   @Prop({ type: Date, default: Date.now })
   createdAt: Date;
 
@@ -169,6 +173,7 @@ export class Tutor extends Document {
     warning: { num: number, message: string }[],
     reviews: { rating: number, comment: string, user: string }[],
     accept: boolean,
+    online: boolean,
     createdAt: Date,
     updatedAt: Date) {
     super();
@@ -195,6 +200,7 @@ export class Tutor extends Document {
     this.warning = warning;
     this.reviews = reviews;
     this.accept = accept;
+    this.online= online;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
