@@ -129,7 +129,7 @@ export class CalendarController {
   // @ApiBearerAuth()
   @ApiOperation({ summary: 'Get tutor calendar' })
   @Get(':id')
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
   async getCalendarById(
     @Param('id') params: string,
     @AuthJwt() payload: JwtPayload,
