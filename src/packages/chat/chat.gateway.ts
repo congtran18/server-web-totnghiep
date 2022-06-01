@@ -76,8 +76,8 @@ export class ChatGateway {
     const logger = new Logger();
     try {
       // update user online status to false
+      console.log("tutor", client)
       const tutor = client.user;
-      console.log("tutor", tutor)
       await this.usersService.updateStatusUser(tutor?.uid, false);
       // await this.tutorService.updateStatusTutor(tutor?.uid, false);
       // retrieve connected users
