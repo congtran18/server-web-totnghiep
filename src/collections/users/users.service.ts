@@ -201,23 +201,22 @@ export class UsersService {
           from: "tutors",
           localField: "uid",
           foreignField: "uid",
-          as: "all_tutor"
+          as: "user_tutor"
         }
       },
       {
         $match: {
           $and: [
-            { "all_tutor.accept": true },
-            { "track": false}
+            { "user_tutor.accept": true },
           ]
         }
       },
       { $sort: { 'online': -1 } },
       {
         $facet: {
-          'all_tutor':
+          'user_tutor':
             [
-              { $unwind: '$all_tutor' },
+              { $unwind: '$user_tutor' },
             ],
           'count':
             [

@@ -55,9 +55,11 @@ export class ChatGateway {
         // const connectedTutors = await this.usersService.findAllTutor()
         // join user to a chat room (private)
         if (updatedUser) {
+          console.log("vo day")
           socket.join(updatedUser?.uid);
         }
         this.server?.emit('online-tutors', connectedUsers);
+        console.log("vo day2")
       }
     } catch (e) {
       logger.error(
