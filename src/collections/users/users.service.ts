@@ -195,11 +195,38 @@ export class UsersService {
   }
 
   async findAllTutor() {
-    const result = await this.userModel
-      .find()
-      .sort('-online')
-      .exec();
-    return result
+    const result = await this.userModel.aggregate([
+      {
+        $lookup: {
+          from: "tutors",
+          localField: "uid",
+          foreignField: "uid",
+          as: "all_tutor"
+        }
+      },
+      {
+        $match: {
+          $and: [
+            { "all_tutor.accept": true },
+            { "track": false}
+          ]
+        }
+      },
+      { $sort: { 'online': -1 } },
+      {
+        $facet: {
+          'all_tutor':
+            [
+              { $unwind: '$all_tutor' },
+            ],
+          'count':
+            [
+              { $count: "totalCount" },
+            ],
+        }
+      }
+    ])
+    return result;
   }
 
   async deleteUser(uid: string): Promise<boolean> {

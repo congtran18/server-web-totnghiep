@@ -15,7 +15,7 @@ import { Server, Socket } from 'socket.io';
 import { CreateMessageDto } from '../message/dto/create-message.dto';
 
 interface SocketWithUserData extends Socket {
-  tutor: Partial<Tutor> | null;
+  user: Partial<User> | null;
 }
 
 @WebSocketGateway({
@@ -45,19 +45,19 @@ export class ChatGateway {
       const userFromSocket = await this.usersService.getUserByUid(validateUser.uid)
       // update user online status
       if (userFromSocket) {
-        await this.usersService.updateStatusUser(userFromSocket.uid, true);
-        const updatedTutor = await this.tutorService.updateStatusTutor(userFromSocket.uid, true);
+        const updatedUser = await this.usersService.updateStatusUser(userFromSocket.uid, true);
+        // const updatedTutor = await this.tutorService.updateStatusTutor(userFromSocket.uid, true);
         // set user on socket
-        socket.tutor = updatedTutor;
+        socket.user = updatedUser;
         logger.verbose('Client connected to chat');
         // retrieve connected users
-        // const connectedUsers = await this.usersService.findAllTutor();
-        const connectedTutors = await this.tutorService.findAllTutor()
+        const connectedUsers = await this.usersService.findAllTutor();
+        // const connectedTutors = await this.usersService.findAllTutor()
         // join user to a chat room (private)
-        if (updatedTutor) {
-          socket.join(updatedTutor?.uid);
+        if (updatedUser) {
+          socket.join(updatedUser?.uid);
         }
-        this.server?.emit('online-tutors', connectedTutors);
+        this.server?.emit('online-tutors', connectedUsers);
       }
     } catch (e) {
       logger.error(
@@ -73,12 +73,12 @@ export class ChatGateway {
     const logger = new Logger();
     try {
       // update user online status to false
-      const tutor = client.tutor;
+      const tutor = client.user;
       await this.usersService.updateStatusUser(tutor?.uid, false);
-      await this.tutorService.updateStatusTutor(tutor?.uid, false);
+      // await this.tutorService.updateStatusTutor(tutor?.uid, false);
       // retrieve connected users
-      const connectedTutors = await this.tutorService.findAllTutor();
-      this.server?.emit('online-tutors', connectedTutors);
+      const connectedUsers = await this.usersService.findAllTutor();
+      this.server?.emit('online-tutors', connectedUsers);
       logger.warn('Client disconnected: chat');
     } catch (error) {
       logger.error('Disconection with errors');
