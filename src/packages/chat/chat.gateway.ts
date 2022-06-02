@@ -4,13 +4,8 @@ import { AuthService } from 'src/collections/auth/auth.service';
 import { TutorService } from 'src/collections/tutor/tutor.service';
 import { User } from 'src/collections/users/schemas/user.schema';
 import { Tutor } from 'src/collections/tutor/schemas/tutor.schema';
-import { Logger } from '@nestjs/common';
-import {
-  MessageBody,
-  SubscribeMessage,
-  WebSocketGateway,
-  WebSocketServer,
-} from '@nestjs/websockets';
+import { Logger, ValidationPipe } from '@nestjs/common';
+import { SubscribeMessage, WebSocketGateway, WebSocketServer, MessageBody } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { CreateMessageDto } from '../message/dto/create-message.dto';
 
@@ -22,6 +17,8 @@ interface SocketWithUserData extends Socket {
   namespace: 'chat'
 })
 export class ChatGateway {
+  private readonly logger = new Logger(ChatGateway.name);
+
   @WebSocketServer()
   private readonly server: Server | undefined;
 
@@ -33,7 +30,6 @@ export class ChatGateway {
   ) { }
 
   async handleConnection(socket: SocketWithUserData): Promise<void> {
-    const logger = new Logger();
     try {
       // get user from token
       // const userFromSocket = await this.wsAuthStrategy.validate(
@@ -49,7 +45,7 @@ export class ChatGateway {
         // const updatedTutor = await this.tutorService.updateStatusTutor(userFromSocket.uid, true);
         // set user on socket
         socket.user = updatedUser;
-        logger.verbose('Client connected to chat');
+        this.logger.verbose('Client connected to chat');
         // retrieve connected users
         const connectedUsers = await this.usersService.findAllTutor();
         console.log("connectedUsers", connectedUsers[0].user_tutor)
@@ -61,7 +57,7 @@ export class ChatGateway {
         this.server?.emit('online-tutors', connectedUsers);
       }
     } catch (e) {
-      logger.error(
+      this.logger.error(
         'Socket disconnected within handleConnection() in AppGateway:',
         e,
       );
@@ -71,7 +67,6 @@ export class ChatGateway {
   }
 
   async handleDisconnect(client: SocketWithUserData) {
-    const logger = new Logger();
     try {
       // update user online status to false
       console.log("tutor", client)
@@ -82,9 +77,9 @@ export class ChatGateway {
       console.log("vo disconect")
       const connectedUsers = await this.usersService.findAllTutor();
       this.server?.emit('online-tutors', connectedUsers);
-      logger.warn('Client disconnected: chat');
+      this.logger.warn('Client disconnected: chat');
     } catch (error) {
-      logger.error('Disconection with errors');
+      this.logger.error('Disconection with errors');
     }
   }
 
