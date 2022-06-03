@@ -24,9 +24,7 @@ export class VideoChatGateway implements OnGatewayConnection, OnGatewayDisconnec
 
   async handleConnection(socket: Socket) {
     const validateUser = await this.authService.getUserFromWSToken(socket.handshake)
-    console.log("validateUser",validateUser)
     const userFromSocket = await this.usersService.getUserByUid(validateUser.uid)
-    console.log("userFromSocket", userFromSocket)
     if (userFromSocket) {
       const id = userFromSocket.uid
       this.users[id] = socket.id
@@ -48,7 +46,6 @@ export class VideoChatGateway implements OnGatewayConnection, OnGatewayDisconnec
   @SubscribeMessage('call.user')
   callUser(@MessageBody(ValidationPipe) data: CallUserEventDto) {
     this.logger.log(`Call User Event `)
-    this.logger.log(`Emitting User Calling Event`)
     this.server?.to(this.users[data.user_to_call]).emit('user.calling', { signal: data.signal, from: data.from })
   }
 
@@ -56,28 +53,26 @@ export class VideoChatGateway implements OnGatewayConnection, OnGatewayDisconnec
   @SubscribeMessage('answer.call')
   answerCall(@MessageBody(ValidationPipe) data: AnswerCallDto) {
     this.logger.log(`Answer Call Event `)
-    this.logger.log(`Emitting Call Accepted Event`)
     this.server?.to(this.users[data.to]).emit('call.accepted', { signal: data.signal })
   }
 
   @SubscribeMessage('reject.call')
   rejectCall(@MessageBody(ValidationPipe) data: RejectCallEventDto) {
     this.logger.log(`Reject Call Event Event `)
-    this.logger.log(`Emitting Call Rejected Event`)
     this.server?.to(this.users[data.to]).emit('call.rejected', { from: data.from })
   }
 
   @SubscribeMessage('cancel.call')
   cancelCall(@MessageBody(ValidationPipe) data: RejectCallEventDto) {
     this.logger.log(`Cancel Call Event  `)
-    this.logger.log(`Emitting Call Cancelled Event`)
+    console.log("data.to", data.to)
+    console.log("data.from", data.from)
     this.server?.to(this.users[data.to]).emit('call.cancelled', { from: data.from })
   }
 
   @SubscribeMessage('end.call')
   endCall(@MessageBody(ValidationPipe) data: RejectCallEventDto) {
     this.logger.log(`End Call Event `)
-    this.logger.log(`Emitting Call Ended Event`)
     this.server?.to(this.users[data.to]).emit('call.ended', { from: data.from })
   }
 }
