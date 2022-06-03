@@ -59,6 +59,7 @@ export class VideoChatGateway implements OnGatewayConnection, OnGatewayDisconnec
   @SubscribeMessage('reject.call')
   rejectCall(@MessageBody(ValidationPipe) data: RejectCallEventDto) {
     this.logger.log(`Reject Call Event Event `)
+    console.log("data.from", data.from)
     this.server?.to(this.users[data.to]).emit('call.rejected', { from: data.from })
   }
 
