@@ -194,6 +194,21 @@ export class UsersService {
     );
   }
 
+  async updateCallingUser(uidTo?: string, uidFrom?: string, calling?: Boolean): Promise<any> {
+    return await this.userModel.updateMany(
+      {
+        uid: { $in: [uidTo, uidFrom] }
+      },
+      {
+        calling: calling,
+      },
+      {
+        new: true,
+        useFindAndModify: false,
+      },
+    );
+  }
+
   async findAllTutor() {
     const result = await this.userModel.aggregate([
       {

@@ -44,8 +44,9 @@ export class VideoChatGateway implements OnGatewayConnection, OnGatewayDisconnec
   }
 
   @SubscribeMessage('call.user')
-  callUser(@MessageBody(ValidationPipe) data: CallUserEventDto) {
+  async callUser(@MessageBody(ValidationPipe) data: CallUserEventDto) {
     this.logger.log(`Call User Event `)
+    await this.usersService.updateCallingUser(data.from.socket_id, data.user_to_call, true);
     this.server?.to(this.users[data.user_to_call]).emit('user.calling', { signal: data.signal, from: data.from })
   }
 
@@ -57,25 +58,28 @@ export class VideoChatGateway implements OnGatewayConnection, OnGatewayDisconnec
   }
 
   @SubscribeMessage('reject.call')
-  rejectCall(@MessageBody(ValidationPipe) data: RejectCallEventDto) {
+  async rejectCall(@MessageBody(ValidationPipe) data: RejectCallEventDto) {
     this.logger.log(`Reject Call Event Event `)
+    await this.usersService.updateCallingUser(data.from.socket_id, data.to, false);
     this.server?.to(this.users[data.to]).emit('call.rejected', { from: data.from })
   }
 
   @SubscribeMessage('cancel.call')
-  cancelCall(@MessageBody(ValidationPipe) data: RejectCallEventDto) {
+  async cancelCall(@MessageBody(ValidationPipe) data: RejectCallEventDto) {
     this.logger.log(`Cancel Call Event  `)
+    await this.usersService.updateCallingUser(data.from.socket_id, data.to, false);
     this.server?.to(this.users[data.to]).emit('call.cancelled', { from: data.from })
   }
 
   @SubscribeMessage('end.call')
-  endCall(@MessageBody(ValidationPipe) data: RejectCallEventDto) {
+  async endCall(@MessageBody(ValidationPipe) data: RejectCallEventDto) {
     this.logger.log(`End Call Event `)
+    await this.usersService.updateCallingUser(data.from.socket_id, data.to, false);
     this.server?.to(this.users[data.to]).emit('call.ended', { from: data.from })
   }
 
   @SubscribeMessage('updateMyMedia')
-  updateMedia(socket: Socket, @MessageBody(ValidationPipe) data: { type: any , currentMediaStatus: any }) {
+  updateMedia(socket: Socket, @MessageBody(ValidationPipe) data: { type: any, currentMediaStatus: any }) {
     this.logger.log(`Update My Media `)
     socket.broadcast.emit("updateUserMedia", { type: data.type, currentMediaStatus: data.currentMediaStatus });
   }
