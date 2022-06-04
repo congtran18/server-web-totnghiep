@@ -7,12 +7,9 @@ export class RejectCallEventDto {
     to: string
 
     @IsDefined()
-    from: {
-        socket_id: string
-        name: string
-    }
+    from: string
 
-    constructor(to: string, from: { socket_id: string, name: string}) {
+    constructor(to: string, from: string) {
         this.to = to;
         this.from = from;
     }
