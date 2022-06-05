@@ -194,11 +194,10 @@ export class UsersService {
     );
   }
 
-  async updateCallingUser(uid?: string, calling?: Boolean): Promise<any> {
-    return await this.userModel.findOneAndUpdate(
+  async updateCallingUser(uidTo?: string, uidFrom?: string, calling?: Boolean): Promise<any> {
+    return await this.userModel.updateMany(
       {
-        // uid: { $in: [uidTo, uidFrom] }
-        uid: uid,
+        uid: { $in: [uidTo, uidFrom] }
       },
       {
         calling: calling,
