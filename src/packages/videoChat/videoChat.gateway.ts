@@ -50,7 +50,7 @@ export class VideoChatGateway implements OnGatewayConnection, OnGatewayDisconnec
   @SubscribeMessage('call.user')
   async callUser(@MessageBody(ValidationPipe) data: CallUserEventDto) {
     this.logger.log(`Call User Event `)
-    await this.usersService.updateCallingUser(data.from.socket_id, data.user_to_call, true);
+    await this.usersService.updateCallingUser( data.user_to_call, true);
     this.server?.to(this.users[data.user_to_call]).emit('user.calling', { signal: data.signal, from: data.from })
   }
 
@@ -64,21 +64,21 @@ export class VideoChatGateway implements OnGatewayConnection, OnGatewayDisconnec
   @SubscribeMessage('reject.call')
   async rejectCall(@MessageBody(ValidationPipe) data: RejectCallEventDto) {
     this.logger.log(`Reject Call Event Event `)
-    await this.usersService.updateCallingUser(data.from, data.to, false);
+    await this.usersService.updateCallingUser(data.from, false);
     this.server?.to(this.users[data.to]).emit('call.rejected', { from: data.from })
   }
 
   @SubscribeMessage('cancel.call')
   async cancelCall(@MessageBody(ValidationPipe) data: RejectCallEventDto) {
     this.logger.log(`Cancel Call Event  `)
-    await this.usersService.updateCallingUser(data.from, data.to, false);
+    await this.usersService.updateCallingUser(data.to, false);
     this.server?.to(this.users[data.to]).emit('call.cancelled', { from: data.from })
   }
 
   @SubscribeMessage('end.call')
   async endCall(@MessageBody(ValidationPipe) data: RejectCallEventDto) {
     this.logger.log(`End Call Event `)
-    await this.usersService.updateCallingUser(data.from, data.to, false);
+    await this.usersService.updateCallingUser( data.to, false);
     this.server?.to(this.users[data.to]).emit('call.ended', { from: data.from })
   }
 
