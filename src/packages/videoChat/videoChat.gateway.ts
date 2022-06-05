@@ -30,6 +30,10 @@ export class VideoChatGateway implements OnGatewayConnection, OnGatewayDisconnec
       this.users[id] = socket.id
       socket.emit('me', id)
       this.server?.to(socket.id).emit('hey', 'Helloo')
+      socket.on("updateMyMedia", ({ type, currentMediaStatus }) => {
+        console.log("updateMyMedia");
+        socket.broadcast.emit("updateUserMedia", { type, currentMediaStatus });
+      });
       this.logger.log(`New Socket >> ${socket.id}`)
     }
   }
@@ -78,9 +82,9 @@ export class VideoChatGateway implements OnGatewayConnection, OnGatewayDisconnec
     this.server?.to(this.users[data.to]).emit('call.ended', { from: data.from })
   }
 
-  @SubscribeMessage('updateMyMedia')
-  updateMedia(socket: Socket, @MessageBody(ValidationPipe) data: { type: any, currentMediaStatus: any }) {
-    this.logger.log(`Update My Media `)
-    socket.emit("updateUserMedia", { type: data.type, currentMediaStatus: data.currentMediaStatus });
-  }
+  // @SubscribeMessage('updateMyMedia')
+  // updateMedia(socket: Socket, @MessageBody(ValidationPipe) data: { type: any, currentMediaStatus: any }) {
+  //   this.logger.log(`Update My Media `)
+  //   socket.emit("updateUserMedia", { type: data.type, currentMediaStatus: data.currentMediaStatus });
+  // }
 }
