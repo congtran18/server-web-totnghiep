@@ -51,6 +51,8 @@ export class VideoChatGateway implements OnGatewayConnection, OnGatewayDisconnec
   async callUser(@MessageBody(ValidationPipe) data: CallUserEventDto) {
     this.logger.log(`Call User Event `)
     await this.usersService.updateCallingUser(data.from.socket_id, data.user_to_call, true);
+    const connectedUsers = await this.usersService.findAllTutor();
+    this.server?.emit('online-tutors', connectedUsers);
     this.server?.to(this.users[data.user_to_call]).emit('user.calling', { signal: data.signal, from: data.from })
   }
 
