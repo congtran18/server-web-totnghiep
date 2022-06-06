@@ -63,7 +63,7 @@ export class VideocallService {
         $match: {
           $and: [
             { "user": uid },
-            realname !== undefined  ? { "user_videocall.tutor.fullName": new RegExp(realname, 'i') } : {},
+            realname ? { "user_videocall.user_videocall.fullName": new RegExp(realname, 'i') } : {},
           ]
         }
       },
