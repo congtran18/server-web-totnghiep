@@ -56,23 +56,23 @@ export class VideocallService {
           from: "tutors",
           localField: "tutor",
           foreignField: "uid",
-          as: "user_tutor"
+          as: "user_videocall"
         }
       },
       {
         $match: {
           $and: [
             { "user": uid },
-            realname ? { "user_tutor.fullName": new RegExp(realname, 'i') } : {},
+            realname ? { "user_videocall.tutor.fullName": new RegExp(realname, 'i') } : {},
           ]
         }
       },
       { $sort: videocallSort },
       {
         $facet: {
-          'user_tutor':
+          'user_videocall':
             [
-              { $unwind: '$user_tutor' },
+              { $unwind: '$user_videocall' },
               { $skip: (pageNumber - 1) * limitNumber },
               { $limit: limitNumber },
             ],
