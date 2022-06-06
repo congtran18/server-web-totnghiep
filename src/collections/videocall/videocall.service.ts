@@ -45,7 +45,7 @@ export class VideocallService {
     }
 
     if (sort !== undefined) {
-      if (sort === "high") {
+      if (sort === "old") {
         videocallSort = { ...videocallSort, 'create_at': 1 }
       }
     }
@@ -63,7 +63,7 @@ export class VideocallService {
         $match: {
           $and: [
             { "user": uid },
-            realname ? { "user_videocall.tutor.fullName": new RegExp(realname, 'i') } : {},
+            realname !== undefined  ? { "user_videocall.tutor.fullName": new RegExp(realname, 'i') } : {},
           ]
         }
       },
