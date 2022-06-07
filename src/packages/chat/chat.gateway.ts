@@ -53,7 +53,7 @@ export class ChatGateway {
         if (updatedUser) {
           socket.join(updatedUser?.uid);
         }
-        this.server?.emit('online-tutors', connectedUsers);
+        this.server?.emit('online-users', connectedUsers);
       }
     } catch (e) {
       this.logger.error(
@@ -73,7 +73,7 @@ export class ChatGateway {
       // await this.tutorService.updateStatusTutor(tutor?.uid, false);
       // retrieve connected users
       const connectedUsers = await this.usersService.findAllTutor();
-      this.server?.emit('online-tutors', connectedUsers);
+      this.server?.emit('online-users', connectedUsers);
       this.logger.warn('Client disconnected: chat');
     } catch (error) {
       this.logger.error('Disconection with errors');
