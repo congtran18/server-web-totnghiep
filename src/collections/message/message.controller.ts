@@ -38,22 +38,42 @@ export class MessageController {
     return this.messageService.create(createMessageDto);
   }
 
+  // @ApiOkResponse({
+  //   description: 'List of message',
+  //   type: [Message],
+  // })
+  // @ApiBearerAuth()
+  // @ApiOperation({ summary: 'Get Messages' })
+  // @Get(':targetUser')
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // findMessages(
+  //   @AuthJwt() payload: JwtPayload,
+  //   @Param('targetUser') targetUser: string,
+  // ): Promise<any> {
+  //   return this.messageService.findAll({
+  //     $or: [
+  //       { from: targetUser, to: payload.uid },
+  //       { from: payload.uid, to: targetUser },
+  //     ],
+  //   });
+  // }
+
   @ApiOkResponse({
-    description: 'List of user',
-    type: [User],
+    description: 'List of message',
+    type: [Message],
   })
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get Messages' })
+  @ApiOperation({ summary: 'Get all Messages of User' })
   @Get(':targetUser')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  findMessages(
+  findAllMessages(
     @AuthJwt() payload: JwtPayload,
-    @Param('targetUser') targetUser: string,
+    // @Param('targetUser') targetUser: string,
   ): Promise<any> {
     return this.messageService.findAll({
       $or: [
-        { from: targetUser, to: payload.uid },
-        { from: payload.uid, to: targetUser },
+        { to: payload.uid },
+        { from: payload.uid },
       ],
     });
   }
