@@ -6,6 +6,7 @@ import { CreateMessageDto } from './dto/create-message.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AuthJwt } from "../auth/auth.decorator";
 import { JwtPayload } from "../auth/jwt.payload";
+import { RolesGuard } from '../auth/roles.guard';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -28,10 +29,10 @@ export class MessageController {
     type: Message,
   })
   @ApiBody({ type: CreateMessageDto })
-  @ApiBearerAuth()
+  // @ApiBearerAuth()
   @ApiOperation({ summary: 'Create message' })
   @Post()
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
   create(@AuthJwt() payload: JwtPayload, @Body() createMessageDto: CreateMessageDto) {
     createMessageDto.from = payload.uid;
     return this.messageService.create(createMessageDto);
@@ -42,12 +43,14 @@ export class MessageController {
     type: [User],
   })
   @ApiBearerAuth()
-  @Get('history/:targetUser')
-  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Get Messages' })
+  @Get(':targetUser')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   findMessages(
     @AuthJwt() payload: JwtPayload,
     @Param('targetUser') targetUser: string,
-  ) {
+  ): Promise<any> {
+    console.log("payload.uid", payload.uid)
     return this.messageService.findAll({
       $or: [
         { from: targetUser, to: payload.uid },
