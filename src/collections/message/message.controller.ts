@@ -64,7 +64,7 @@ export class MessageController {
   })
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all Messages of User' })
-  @Get(':targetUser')
+  @Get()
   @UseGuards(JwtAuthGuard, RolesGuard)
   findAllMessages(
     @AuthJwt() payload: JwtPayload,
