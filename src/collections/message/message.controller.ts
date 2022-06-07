@@ -1,5 +1,5 @@
 import { User } from "src/collections/users/schemas/user.schema";
-import { Message } from "src/packages/message/schemas/message.schema";
+import { Message } from "src/collections/message/schemas/message.schema";
 import { Body, Controller, Delete, Get, HttpStatus, Logger, Param, Post, Put, Query, UseGuards, Req } from '@nestjs/common';
 import { MessageService } from './message.service';
 import { CreateMessageDto } from './dto/create-message.dto';
@@ -29,10 +29,10 @@ export class MessageController {
     type: Message,
   })
   @ApiBody({ type: CreateMessageDto })
-  // @ApiBearerAuth()
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Create message' })
   @Post()
-  // @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   create(@AuthJwt() payload: JwtPayload, @Body() createMessageDto: CreateMessageDto) {
     createMessageDto.from = payload.uid;
     return this.messageService.create(createMessageDto);
@@ -50,7 +50,6 @@ export class MessageController {
     @AuthJwt() payload: JwtPayload,
     @Param('targetUser') targetUser: string,
   ): Promise<any> {
-    console.log("payload.uid", payload.uid)
     return this.messageService.findAll({
       $or: [
         { from: targetUser, to: payload.uid },

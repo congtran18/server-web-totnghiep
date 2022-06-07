@@ -1,4 +1,4 @@
-import { MessageService } from './../message/message.service';
+import { MessageService } from 'src/collections/message/message.service';
 import { UsersService } from 'src/collections/users/users.service';
 import { AuthService } from 'src/collections/auth/auth.service';
 import { TutorService } from 'src/collections/tutor/tutor.service';
@@ -7,7 +7,7 @@ import { Tutor } from 'src/collections/tutor/schemas/tutor.schema';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { SubscribeMessage, WebSocketGateway, WebSocketServer, MessageBody } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { CreateMessageDto } from '../message/dto/create-message.dto';
+import { CreateMessageDto } from 'src/collections/message/dto/create-message.dto';
 
 interface SocketWithUserData extends Socket {
   user: Partial<User> | null;
