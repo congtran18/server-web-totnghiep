@@ -30,7 +30,7 @@ import { CalendarModule } from 'src/collections/calendar/calendar.module'
 import { VideocallModule } from 'src/collections/videocall/videocall.module';
 
 import { CronModule } from 'src/packages/cron/cron.module';
-import { MessageModule } from 'src/packages/message/message.module';
+import { MessageModule } from 'src/collections/message/message.module';
 import { ChatModule } from 'src/packages/chat/chat.module';
 import { VideoChatModule } from 'src/packages/videoChat/videoChat.module';
 
