@@ -47,7 +47,7 @@ export class ChatGateway {
         socket.user = updatedUser;
         this.logger.verbose('Client connected to chat');
         // retrieve connected users
-        const connectedUsers = await this.usersService.findAllTutor();
+        const connectedUsers = await this.usersService.findAll();
         // const connectedTutors = await this.usersService.findAllTutor()
         // join user to a chat room (private)
         if (updatedUser) {
@@ -72,7 +72,7 @@ export class ChatGateway {
       await this.usersService.updateStatusUser(tutor?.uid, false);
       // await this.tutorService.updateStatusTutor(tutor?.uid, false);
       // retrieve connected users
-      const connectedUsers = await this.usersService.findAllTutor();
+      const connectedUsers = await this.usersService.findAll();
       this.server?.emit('online-users', connectedUsers);
       this.logger.warn('Client disconnected: chat');
     } catch (error) {

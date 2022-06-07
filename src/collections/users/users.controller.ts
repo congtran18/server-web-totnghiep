@@ -235,4 +235,19 @@ export class UsersController {
     return response;
   }
 
+
+  @ApiOkResponse({
+    description: 'List of user',
+    type: [User],
+  })
+  @ApiOperation({ summary: 'testgettutor' })
+  @Get('testgettuto/test')
+  // @UseGuards(JwtAuthGuard)
+  async getalltutor(): Promise<BaseResponse<User[]>> {
+    const response: BaseResponse<User[]> = {}
+    response.data = await this.usersService.findAll();
+    return response;
+  }
+
 }
+

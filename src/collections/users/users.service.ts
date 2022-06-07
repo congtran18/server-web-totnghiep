@@ -209,29 +209,30 @@ export class UsersService {
     );
   }
 
-  async findAllTutor() {
+  async findAll() {
     const result = await this.userModel.aggregate([
       {
         $lookup: {
           from: "tutors",
           localField: "uid",
           foreignField: "uid",
+          pipeline: [],
           as: "user_tutor"
         }
       },
       // {
       //   $match: {
-      //     $and: [
-      //       // { "user_tutor.accept": true },
-      //     ]
+      //     // $and: [
+      //     //   // { "user_tutor.accept": true },
+      //     // ]
       //   }
       // },
       { $sort: { 'online': -1 } },
       {
         $facet: {
-          'user_tutor':
+          'users':
             [
-              { $unwind: '$user_tutor' },
+              // { $unwind: '$user_tutor' },
             ],
           'count':
             [
