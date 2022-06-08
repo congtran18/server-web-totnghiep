@@ -13,16 +13,16 @@ export class CreateWarningTutorDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  rating: number;
+  videoUrl: string;
 
   @ApiProperty()
   @IsNotEmpty()
   comment: string;
 
-  constructor( to: string, from: string, rating: number, comment: string) {
+  constructor( to: string, from: string, videoUrl: string, comment: string) {
     this.to = to;
     this.from = from;
-    this.rating = rating;
+    this.videoUrl = videoUrl;
     this.comment = comment;
   }
 }

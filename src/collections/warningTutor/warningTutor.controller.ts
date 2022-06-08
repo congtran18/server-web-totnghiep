@@ -43,7 +43,7 @@ export class WarningTutorController {
     if (!reviewCreate) {
       response.error = {
         code: HttpStatus.BAD_REQUEST,
-        message: 'Bạn đã đánh giá gia sư này rồi',
+        message: 'Bạn đã tố cáo gia sư này rồi',
       };
     } else {
       response.data = reviewCreate;

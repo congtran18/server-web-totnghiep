@@ -29,6 +29,7 @@ import { StripeModule } from 'src/collections/stripe/stripe.module'
 import { CalendarModule } from 'src/collections/calendar/calendar.module'
 import { VideocallModule } from 'src/collections/videocall/videocall.module';
 import { ReviewTutorModule } from 'src/collections/reviewTutor/reviewTutor.module'
+import { WarningTutorModule } from 'src/collections/warningTutor/warningTutor.module'
 
 import { CronModule } from 'src/packages/cron/cron.module';
 import { MessageModule } from 'src/collections/message/message.module';
@@ -71,6 +72,7 @@ import { VideoChatModule } from 'src/packages/videoChat/videoChat.module';
     ChatModule,
     VideoChatModule,
     ReviewTutorModule,
+    WarningTutorModule,
     // RealtimeModule,
     CalendarModule,
     VideocallModule,

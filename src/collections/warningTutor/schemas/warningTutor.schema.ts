@@ -21,7 +21,7 @@ export class WarningTutor extends Document {
   to: string;
 
   @Prop({ required: true, type: Number })
-  rating: number;
+  videoUrl: string;
 
   @Prop({ required: true, type: String })
   comment: string;
@@ -30,11 +30,11 @@ export class WarningTutor extends Document {
   @Prop({ type: Date, default: Date.now })
   createdAt: Date;
 
-  constructor(from: string, to: string, rating: number, comment: string, createdAt: Date) {
+  constructor(from: string, to: string, videoUrl: string, comment: string, createdAt: Date) {
     super();
     this.from = from;
     this.to = to;
-    this.rating = rating;
+    this.videoUrl = videoUrl;
     this.comment = comment;
     this.createdAt = createdAt;
   }
