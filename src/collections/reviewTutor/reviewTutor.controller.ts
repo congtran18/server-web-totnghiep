@@ -34,13 +34,11 @@ export class ReviewTutorController {
   @ApiOperation({ summary: 'Create reviewTutor' })
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  create(@AuthJwt() payload: JwtPayload, @Body() createMessageDto: CreateReviewTutorDto) {
+  async create(@AuthJwt() payload: JwtPayload, @Body() createMessageDto: CreateReviewTutorDto) {
     const response: any = {};
     createMessageDto.from = payload.uid;
     
-    const reviewCreate = this.reviewTutorService.create(createMessageDto);
-
-    console.log("reviewCreate", reviewCreate)
+    const reviewCreate = await this.reviewTutorService.create(createMessageDto);
 
     if (!reviewCreate) {
 
