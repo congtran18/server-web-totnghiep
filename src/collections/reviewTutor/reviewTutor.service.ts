@@ -20,8 +20,6 @@ export class ReviewTutorService {
       // isDeleted: false,
     });
 
-    console.log("existReview", existReview)
-
     if(existReview){
       return null
     }

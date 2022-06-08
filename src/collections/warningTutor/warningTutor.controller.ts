@@ -8,6 +8,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AuthJwt } from "../auth/auth.decorator";
 import { JwtPayload } from "../auth/jwt.payload";
 import { RolesGuard } from '../auth/roles.guard';
+import { StorageService } from "../storage/storage.service";
 import {
   ApiBearerAuth,
   ApiBody,
@@ -23,7 +24,10 @@ import {
 @ApiTags('warningTutor')
 @Controller('warningTutor')
 export class WarningTutorController {
-  constructor(private readonly warningTutorService: WarningTutorService) { }
+  constructor(
+    private readonly warningTutorService: WarningTutorService,
+    private readonly storageService: StorageService,
+  ) { }
 
   @ApiCreatedResponse({
     description: 'WarningTutor info',
@@ -34,13 +38,18 @@ export class WarningTutorController {
   @ApiOperation({ summary: 'Create warningTutor' })
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  create(@AuthJwt() payload: JwtPayload, @Body() createMessageDto: CreateWarningTutorDto) {
+  async create(@AuthJwt() payload: JwtPayload, @Body() createWarningTutorDto: CreateWarningTutorDto) {
     const response: any = {};
-    createMessageDto.from = payload.uid;
-    
-    const reviewCreate = this.warningTutorService.create(createMessageDto);
+    createWarningTutorDto.from = payload.uid;
+
+    const reviewCreate = await this.warningTutorService.create(createWarningTutorDto);
 
     if (!reviewCreate) {
+
+      const videoUrl = createWarningTutorDto.videoUrl.split("/", 8)[7].split("?")[0]
+      console.log("videoUrl", videoUrl)
+      await this.storageService.deleteFile(videoUrl)
+
       response.error = {
         code: HttpStatus.BAD_REQUEST,
         message: 'Bạn đã tố cáo gia sư này rồi',
