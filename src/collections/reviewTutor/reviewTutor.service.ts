@@ -12,7 +12,16 @@ export class ReviewTutorService {
     private readonly reviewTutorModel: Model<ReviewTutor>,
   ) { }
 
-  create(createReviewTutorDto: CreateReviewTutorDto): Promise<ReviewTutor> {
+  async create(createReviewTutorDto: CreateReviewTutorDto): Promise<ReviewTutor | null> {
+    const { to , from } = createReviewTutorDto
+    const existReview = await this.reviewTutorModel.findOne({
+      from: from,
+      to : to
+      // isDeleted: false,
+    });
+    if(existReview){
+      return null
+    }
     const createdReviewTutor = new this.reviewTutorModel(createReviewTutorDto);
     return createdReviewTutor.save();
   }

@@ -35,8 +35,20 @@ export class ReviewTutorController {
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   create(@AuthJwt() payload: JwtPayload, @Body() createMessageDto: CreateReviewTutorDto) {
+    const response: any = {};
     createMessageDto.from = payload.uid;
-    return this.reviewTutorService.create(createMessageDto);
+    
+    const reviewCreate = this.reviewTutorService.create(createMessageDto);
+
+    if (!reviewCreate) {
+      response.error = {
+        code: HttpStatus.BAD_REQUEST,
+        message: 'Bạn đã đánh giá gia sư này rồi',
+      };
+    } else {
+      response.data = reviewCreate;
+    }
+    return response;
   }
 
   @ApiOkResponse({
