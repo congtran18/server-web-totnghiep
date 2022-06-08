@@ -19,9 +19,13 @@ export class ReviewTutorService {
       to : to
       // isDeleted: false,
     });
+
+    console.log("existReview", existReview)
+    
     if(existReview){
       return null
     }
+
     const createdReviewTutor = new this.reviewTutorModel(createReviewTutorDto);
     return createdReviewTutor.save();
   }
