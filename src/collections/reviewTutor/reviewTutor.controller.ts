@@ -34,18 +34,17 @@ export class ReviewTutorController {
   @ApiOperation({ summary: 'Create reviewTutor' })
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  create(@Body() createReviewTutorDto: CreateReviewTutorDto) {
-    return this.reviewTutorService.create(createReviewTutorDto);
+  create(@AuthJwt() payload: JwtPayload, @Body() createMessageDto: CreateReviewTutorDto) {
+    createMessageDto.from = payload.uid;
+    return this.reviewTutorService.create(createMessageDto);
   }
 
   @ApiOkResponse({
     description: 'List of reviewTutor',
     type: [ReviewTutor],
   })
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'Get ReviewTutors' })
   @Get(':targetUser')
-  @UseGuards(JwtAuthGuard, RolesGuard)
   findReviewTutors(
     @AuthJwt() payload: JwtPayload,
     @Param('targetUser') targetUser: string,
