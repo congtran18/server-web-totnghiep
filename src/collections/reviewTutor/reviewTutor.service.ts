@@ -13,14 +13,14 @@ export class ReviewTutorService {
   ) { }
 
   async create(createReviewTutorDto: CreateReviewTutorDto): Promise<ReviewTutor | null> {
-    const { to , from } = createReviewTutorDto
+    const { to, from } = createReviewTutorDto
     const existReview = await this.reviewTutorModel.findOne({
       from: from,
-      to : to
+      to: to
       // isDeleted: false,
     });
 
-    if(existReview){
+    if (existReview) {
       return null
     }
 
@@ -28,14 +28,47 @@ export class ReviewTutorService {
     return createdReviewTutor.save();
   }
 
-  findAll(
+  async findAll(
     params: FilterQuery<ReviewTutor> = {},
   ): Promise<ReviewTutor[]> {
-    return this.reviewTutorModel
-      .find({
-        ...params,
-      })
-      .exec();
+    // return this.reviewTutorModel
+    //   .find({
+    //     ...params,
+    //   })
+    //   .exec();
+
+    const result = await this.reviewTutorModel.aggregate([
+      {
+        $lookup: {
+          from: "users",
+          localField: "from",
+          foreignField: "uid",
+          as: "user_vote"
+        }
+      },
+      {
+        $match: {
+          $and: [
+            { ...params },
+          ]
+        }
+      },
+      { $sort: { createdAt : -1} },
+      {
+        $facet: {
+          'all_review':
+            [
+              { $unwind: '$user_vote' },
+            ],
+          'count':
+            [
+              { $count: "totalCount" },
+            ],
+        }
+      }
+    ])
+    return result;
+
   }
 
   findOne(id: string): Promise<any> {

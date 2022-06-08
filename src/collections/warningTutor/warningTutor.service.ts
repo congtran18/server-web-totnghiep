@@ -13,20 +13,20 @@ export class WarningTutorService {
   ) { }
 
   async create(createWarningTutorDto: CreateWarningTutorDto): Promise<WarningTutor | null> {
-    const { to , from } = createWarningTutorDto
+    const { to, from } = createWarningTutorDto
     const existReview = await this.warningTutorModel.findOne({
       from: from,
-      to : to
+      to: to
       // isDeleted: false,
     });
-    if(existReview){
+    if (existReview) {
       return null
     }
     const createdWarningTutor = new this.warningTutorModel(createWarningTutorDto);
     return createdWarningTutor.save();
   }
 
-  findAll(
+  async findAll(
     params: FilterQuery<WarningTutor> = {},
   ): Promise<WarningTutor[]> {
     return this.warningTutorModel
@@ -34,6 +34,7 @@ export class WarningTutorService {
         ...params,
       })
       .exec();
+
   }
 
   findOne(id: string): Promise<any> {
