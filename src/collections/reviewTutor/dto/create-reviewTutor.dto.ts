@@ -16,7 +16,7 @@ export class CreateReviewTutorDto {
   rating: number;
 
   @ApiProperty()
-  @IsEmpty()
+  @IsNotEmpty()
   comment: string;
 
   constructor( to: string, from: string, rating: number, comment: string) {
