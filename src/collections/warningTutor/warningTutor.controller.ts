@@ -46,9 +46,9 @@ export class WarningTutorController {
 
     if (!reviewCreate) {
 
-      const videoUrl = createWarningTutorDto.videoUrl.split("/", 8)[7].split("?")[0]
-      console.log("videoUrl", videoUrl)
-      await this.storageService.deleteFile(videoUrl)
+      // const videoUrl = createWarningTutorDto.videoUrl.split("/", 8)[7].split("?")[0]
+      // console.log("videoUrl", videoUrl)
+      // await this.storageService.deleteFile(videoUrl)
 
       response.error = {
         code: HttpStatus.BAD_REQUEST,
