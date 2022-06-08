@@ -20,7 +20,7 @@ export class WarningTutor extends Document {
   })
   to: string;
 
-  @Prop({ required: true, type: Number })
+  @Prop({ required: true, type: String })
   videoUrl: string;
 
   @Prop({ required: true, type: String })
