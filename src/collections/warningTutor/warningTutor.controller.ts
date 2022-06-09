@@ -65,17 +65,9 @@ export class WarningTutorController {
     type: [WarningTutor],
   })
   @ApiOperation({ summary: 'Get WarningTutors' })
-  @Get(':targetUser')
-  findWarningTutors(
-    @AuthJwt() payload: JwtPayload,
-    @Param('targetUser') targetUser: string,
-  ): Promise<any> {
-    return this.warningTutorService.findAll({
-      $or: [
-        { to: targetUser },
-        // { from: payload.uid, to: targetUser },
-      ],
-    });
+  @Get()
+  async findWarningTutors(): Promise<any> {
+    return this.warningTutorService.findAll();
   }
 
   @ApiOkResponse({

@@ -30,10 +30,40 @@ export class WarningTutorService {
     params: FilterQuery<WarningTutor> = {},
   ): Promise<WarningTutor[]> {
     return this.warningTutorModel
-      .find({
-        ...params,
-      })
-      .exec();
+      .aggregate([
+        {
+          $lookup: {
+            from: "users",
+            let: {
+              firstUser: "$from",
+              secondUser: "$to"
+            },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      {
+                        $eq: [
+                          "$from",
+                          "$$firstUser"
+                        ]
+                      },
+                      {
+                        $eq: [
+                          "$to",
+                          "$$secondUser"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            as: "result"
+          }
+        }
+      ])
 
   }
 
