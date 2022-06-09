@@ -97,25 +97,19 @@ export class WarningTutorController {
     return response;
   }
 
-  // @ApiOkResponse({
-  //   description: 'List of warningTutor',
-  //   type: [WarningTutor],
-  // })
-  // @ApiBearerAuth()
-  // @ApiOperation({ summary: 'Get all WarningTutors of User' })
-  // @Get()
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // findAllWarningTutors(
-  //   @AuthJwt() payload: JwtPayload,
-  //   // @Param('targetUser') targetUser: string,
-  // ): Promise<any> {
-  //   return this.warningTutorService.findAll({
-  //     $or: [
-  //       { to: payload.uid },
-  //       { from: payload.uid },
-  //     ],
-  //   });
-  // }
+  @ApiOkResponse({
+    description: 'single warningTutor',
+    type: [WarningTutor],
+  })
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get WarningTutor by id' })
+  @Get(':targetUser')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  findAllWarningTutors(
+    @Param('targetUser') targetUser: string,
+  ): Promise<any> {
+    return this.warningTutorService.findOne(targetUser);
+  }
 
   @Delete(':id')
   remove(@Param('id') id: string) {

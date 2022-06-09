@@ -87,8 +87,9 @@ export class WarningTutorService {
 
   }
 
-  findOne(id: string): Promise<any> {
-    return this.warningTutorModel.findOne({ _id: id }).exec()
+  async findOne(id: string): Promise<any> {
+    const result = await this.warningTutorModel.findOne({ _id: id }).exec()
+    return result
   }
 
   update(
