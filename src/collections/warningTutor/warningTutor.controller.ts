@@ -121,7 +121,7 @@ export class WarningTutorController {
         message: 'ERROR.',
       };
     } else {
-      await this.tutorService.acceptTutor(warningTutor.uid)
+      await this.tutorService.acceptTutor(warningTutor.to)
       response.data = warningTutor;
     }
     return response;
