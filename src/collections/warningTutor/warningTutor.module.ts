@@ -5,6 +5,7 @@ import { WarningTutorController } from './warningTutor.controller';
 import { WarningTutor, WarningTutorSchema } from './schemas/warningTutor.schema';
 import { AuthModule } from 'src/collections/auth/auth.module';
 import {StorageModule} from 'src/collections/storage/storage.module'
+import {TutorModule} from 'src/collections/tutor/tutor.module'
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import {StorageModule} from 'src/collections/storage/storage.module'
     ]),
     AuthModule,
     StorageModule,
+    TutorModule
   ],
   controllers: [WarningTutorController],
   providers: [WarningTutorService],

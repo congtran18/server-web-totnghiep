@@ -9,6 +9,8 @@ import { AuthJwt } from "../auth/auth.decorator";
 import { JwtPayload } from "../auth/jwt.payload";
 import { RolesGuard } from '../auth/roles.guard';
 import { StorageService } from "../storage/storage.service";
+import { TutorService } from 'src/collections/tutor/tutor.service';
+import { BaseResponse } from '../../utils/base.response';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -27,6 +29,7 @@ export class WarningTutorController {
   constructor(
     private readonly warningTutorService: WarningTutorService,
     private readonly storageService: StorageService,
+    private readonly tutorService: TutorService,
   ) { }
 
   @ApiCreatedResponse({
@@ -93,6 +96,33 @@ export class WarningTutorController {
       };
     } else {
       response.data = review;
+    }
+    return response;
+  }
+
+  @ApiOkResponse({
+    description: 'Accept WarningTutor',
+    type: WarningTutor,
+  })
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Accept WarningTutor' })
+  @Get('/accept/:id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async acceptWarningTutor(
+    @Param('id') params: string,
+    // @AuthJwt() payload: JwtPayload,
+  ): Promise<any> {
+    const response: BaseResponse<any> = {};
+    
+    const warningTutor = await this.warningTutorService.acceptWarning(params);
+    if (!warningTutor) {
+      response.error = {
+        code: HttpStatus.BAD_REQUEST,
+        message: 'ERROR.',
+      };
+    } else {
+      await this.tutorService.acceptTutor(warningTutor.uid)
+      response.data = warningTutor;
     }
     return response;
   }

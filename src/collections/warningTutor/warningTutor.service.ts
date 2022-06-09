@@ -101,6 +101,29 @@ export class WarningTutorService {
       .exec();
   }
 
+  async acceptWarning(id: string): Promise<any> {
+
+    const existWarning = await this.warningTutorModel.findOne({ _id: id })
+
+    if (existWarning) {
+
+      const result = await this.warningTutorModel.findOneAndUpdate(
+        {
+          _id: id,
+        },
+        {
+          accept: !existWarning?.accept,
+        },
+        {
+          new: true,
+          useFindAndModify: false,
+        },
+      );
+      return result;
+    }
+    return null;
+  }
+
   remove(id: string): Promise<any> {
     return this.warningTutorModel.findOneAndRemove({ uid: id }).exec();
   }
