@@ -20,22 +20,29 @@ export class WarningTutor extends Document {
   })
   to: string;
 
+  @ApiProperty()
   @Prop({ required: true, type: String })
   videoUrl: string;
 
+  @ApiProperty()
   @Prop({ required: true, type: String })
   comment: string;
+
+  @ApiProperty()
+  @Prop({ default: false })
+  accept: boolean;
 
   @ApiProperty()
   @Prop({ type: Date, default: Date.now })
   createdAt: Date;
 
-  constructor(from: string, to: string, videoUrl: string, comment: string, createdAt: Date) {
+  constructor(from: string, to: string, videoUrl: string, comment: string, accept: boolean, createdAt: Date) {
     super();
     this.from = from;
     this.to = to;
     this.videoUrl = videoUrl;
     this.comment = comment;
+    this.accept = accept;
     this.createdAt = createdAt;
   }
 }
