@@ -47,13 +47,13 @@ export class WarningTutorService {
             "as": "tutor"
           }
         },
-        {
-          $unwind: "$user",
+        // {
+        //   $unwind: "$user",
 
-        },
-        {
-          $unwind: "$tutor"
-        },
+        // },
+        // {
+        //   $unwind: "$tutor"
+        // },
         // {
         //   $replaceWith: {
         //     $mergeObjects: [
@@ -68,6 +68,20 @@ export class WarningTutorService {
             "to",
             // "identifiers"
           ]
+        },
+        { $sort: { 'creatAt': -1 } },
+        {
+          $facet: {
+            'users':
+              [
+                { $unwind: '$user' },
+                { $unwind: '$tutor' },
+              ],
+            'count':
+              [
+                { $count: "totalCount" },
+              ],
+          }
         }
       ])
 
