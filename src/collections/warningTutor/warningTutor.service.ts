@@ -32,36 +32,42 @@ export class WarningTutorService {
     return this.warningTutorModel
       .aggregate([
         {
-          $lookup: {
-            from: "users",
-            let: {
-              firstUser: "$from",
-              secondUser: "$to"
-            },
-            pipeline: [
-              {
-                $match: {
-                  $expr: {
-                    $and: [
-                      {
-                        $eq: [
-                          "$from",
-                          "$$firstUser"
-                        ]
-                      },
-                      {
-                        $eq: [
-                          "$to",
-                          "$$secondUser"
-                        ]
-                      }
-                    ]
-                  }
-                }
-              }
-            ],
-            as: "result"
+          "$lookup": {
+            "from": "users",
+            "localField": "from",
+            "foreignField": "uid",
+            "as": "user"
           }
+        },
+        {
+          "$lookup": {
+            "from": "users",
+            "localField": "to",
+            "foreignField": "uid",
+            "as": "tutor"
+          }
+        },
+        {
+          $unwind: "$user",
+
+        },
+        {
+          $unwind: "$tutor"
+        },
+        // {
+        //   $replaceWith: {
+        //     $mergeObjects: [
+        //       "$$ROOT",
+        //       "$identifiers"
+        //     ]
+        //   }
+        // },
+        {
+          $unset: [
+            "from",
+            "to",
+            // "identifiers"
+          ]
         }
       ])
 
