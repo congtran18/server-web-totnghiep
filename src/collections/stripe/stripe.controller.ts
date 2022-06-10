@@ -54,9 +54,9 @@ export class StripeController {
                 // Fulfill the purchase...
                 if (result) {
                     if (result.idProduct) {
-                        this.stripeService.fulfillOrder(session);
+                        this.stripeService.fullfillBook(session);
                     } else {
-                        this.stripeService.fulfillCourse(session);
+                        this.stripeService.fullfillCourse(session);
                     }
 
                 }

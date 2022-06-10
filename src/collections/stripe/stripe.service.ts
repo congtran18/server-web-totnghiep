@@ -7,6 +7,7 @@ import { Order } from '../order/schemas/order.schema';
 import { CheckoutOrderDto } from './dto/checkout-order.dto';
 import { CheckoutCourseDto } from './dto/checkout-course.dto';
 import { UsersService } from "../users/users.service";
+import { MailService } from "src/packages/mail/mail.service";
 
 @Injectable()
 export class StripeService {
@@ -21,6 +22,7 @@ export class StripeService {
     constructor(@InjectModel(Order.name)
     private readonly orderModel: Model<Order>,
         private readonly usersService: UsersService,
+        private readonly mailService: MailService,
     ) {
         this._stripe = new Stripe(process.env.STRIPE_TEST_KEY || "", { apiVersion: '2020-08-27' });
     }
@@ -144,7 +146,7 @@ export class StripeService {
             .exec();
     }
 
-    async fulfillCourse(session: Stripe.Checkout.Session) {
+    async fullfillCourse(session: Stripe.Checkout.Session) {
         const expanded_session = await this._stripe.checkout.sessions.retrieve(
             session.id,
             {
@@ -181,9 +183,9 @@ export class StripeService {
                 if (data && customer?.email && dataProduct?.type) {
                     if (dataProduct?.type === "6 month") {
                         await this.usersService.updateTimeLeftCoureUser(customer?.email, 180)
-                    }else if(dataProduct?.type === "3 month"){
+                    } else if (dataProduct?.type === "3 month") {
                         await this.usersService.updateTimeLeftCoureUser(customer?.email, 90)
-                    }else{
+                    } else {
                         await this.usersService.updateTimeLeftCoureUser(customer?.email, 30)
                     }
                 }
@@ -194,7 +196,7 @@ export class StripeService {
 
     }
 
-    async fulfillOrder(session: Stripe.Checkout.Session) {
+    async fullfillBook(session: Stripe.Checkout.Session) {
         const expanded_session = await this._stripe.checkout.sessions.retrieve(
             session.id,
             {
@@ -217,6 +219,7 @@ export class StripeService {
 
 
             if (items && address && total_details && dataProduct) {
+                console.log("items nek", items)
                 const idProducts = dataProduct?.idProduct ? JSON.parse(dataProduct.idProduct) : ''
                 const createOrderDto: CreateOrderDto = {
                     status: 'Hoàn thành',
@@ -243,6 +246,10 @@ export class StripeService {
                 }
                 const newOrder = new this.orderModel({ ...createOrderDto });
                 const data = await newOrder.save();
+                console.log("data", data)
+                // if (customer?.email) {
+                //     await this.mailService.sendUserConfirmation(customer?.email)
+                // }
                 return data;
             }
 

@@ -35,6 +35,7 @@ import { CronModule } from 'src/packages/cron/cron.module';
 import { MessageModule } from 'src/collections/message/message.module';
 import { ChatModule } from 'src/packages/chat/chat.module';
 import { VideoChatModule } from 'src/packages/videoChat/videoChat.module';
+import { MailModule } from 'src/packages/mail/mail.module'
 
 @Module({
   imports: [
@@ -73,6 +74,7 @@ import { VideoChatModule } from 'src/packages/videoChat/videoChat.module';
     VideoChatModule,
     ReviewTutorModule,
     WarningTutorModule,
+    MailModule,
     // RealtimeModule,
     CalendarModule,
     VideocallModule,
