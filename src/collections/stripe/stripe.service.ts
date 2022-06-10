@@ -95,6 +95,7 @@ export class StripeService {
             ],
             metadata: {
                 idProduct: JSON.stringify(items.map((item) => item.idProduct)),
+                nameProduct: JSON.stringify(items.map((item) => item.realname)),
             },
             line_items: transformedItems,
             mode: 'payment',
@@ -221,6 +222,7 @@ export class StripeService {
             if (items && address && total_details && dataProduct) {
                 console.log("items nek", items)
                 const idProducts = dataProduct?.idProduct ? JSON.parse(dataProduct.idProduct) : ''
+                const nameProducts = dataProduct?.nameProduct ? JSON.parse(dataProduct.nameProduct) : ''
                 const createOrderDto: CreateOrderDto = {
                     status: 'Hoàn thành',
                     user: customer?.email ? customer?.email : '',
@@ -230,6 +232,7 @@ export class StripeService {
                     orderItems: items.map((item: any, index: number) => {
                         return {
                             productId: idProducts ? idProducts[index] : '',
+                            productName: nameProducts ? nameProducts[index] : '',
                             subtotal: item.amount_total,
                             unit_price: item.price.unit_amount,
                             qty: item.quantity,
