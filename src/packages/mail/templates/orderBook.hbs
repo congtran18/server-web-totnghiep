@@ -130,8 +130,8 @@
                 </div>
                 <div class='content-outside'><span class="text-content">Loại hóa đơn:</span> <span>{{ type }}</span></div>
                 <div class='content-outside'><span class="text-content">Ngày đặt:</span> <span>{{ createAt }}</span></div>
-                <div class='content-outside'><span class="text-content">Phí ship:</span> <span>{{ qty }}</span></div>
-                <div class='content-outside'><span class="text-content">Tổng giá trị:</span> <span>{{ unit_price }}đ</span></div>
+                <div class='content-outside'><span class="text-content">Phí ship:</span> <span>{{ shippingPrice }}</span></div>
+                <div class='content-outside'><span class="text-content">Tổng giá trị:</span> <span>{{ totalPrice }}đ</span></div>
                 <div class="order-text">Danh sách sản phẩm</div>
                 <div class="table-content">
                     <table class="table">
@@ -144,7 +144,7 @@
                                 <th scope="col">Đơn giá</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        {{!-- <tbody>
                             {{#each books}}
                             <tr>
                                 {{#each this}}
@@ -152,7 +152,7 @@
                                 {{/each}}
                             </tr>
                             {{/each}}
-                        </tbody>
+                        </tbody> --}}
                     </table>
                 </div>
                 <div class="thanks">Cảm ơn đã mua hàng!</div>
