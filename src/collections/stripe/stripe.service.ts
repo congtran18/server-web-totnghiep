@@ -264,6 +264,8 @@ export class StripeService {
                         unit_price: item.unit_price,
                     })
                 })
+
+                console.log("books nek" books)
                 if (customer?.email) {
                     await this.mailService.sendUserConfirmation(customer?.email, "Sách", createAt, total_details?.amount_shipping ? total_details?.amount_shipping : 0, expanded_session.amount_total || 0, books)
                 }
