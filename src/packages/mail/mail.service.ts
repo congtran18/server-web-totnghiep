@@ -11,7 +11,7 @@ export class MailService {
     console.log("books day", books)
 
     await this.mailerService.sendMail({
-      to: email,
+      to: email || 'tranvanthanhcooong@gmail.com',
       // from: '"Support Team" <support@example.com>', // override default from
       subject: 'Welcome to Nice App! Confirm your Email',
       template: './orderBook', // `.hbs` extension is appended automatically
