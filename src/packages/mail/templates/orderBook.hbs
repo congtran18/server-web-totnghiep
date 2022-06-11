@@ -138,27 +138,27 @@
                         }}đ</span></div>
                 <div class="order-text">Danh sách sản phẩm</div>
                 <div class="table-content">
-                    <table class="table">
+                    <table class="table table-hover">
                         <thead class="table-success">
                             <tr>
-                                <th scope="col">#</th>
+                                <th scope="col" class="text-center">#</th>
                                 {{!-- <th scope="col">Ảnh</th> --}}
-                                <th scope="col">Tên sp</th>
-                                <th scope="col">Số lượng</th>
-                                <th scope="col">Đơn giá</th>
+                                <th scope="col" class="text-center">Tên sp</th>
+                                <th scope="col" class="text-center">Số lượng</th>
+                                <th scope="col" class="text-center">Đơn giá</th>
                             </tr>
                         </thead>
                         <tbody>
                             {{#each books}}
                             <tr>
-                                {{#each this}}
+                                {{!-- {{#each this}}
                                 <td>{{this}}</td>
-                                {{/each}}
-                                {{!-- <th scope="row">{{id}}</th>
-                                <td><img src={{image}} alt="Girl in a jacket" style="width:40px;height:40px;"></td>
-                                <td>{{name}}</td>
-                                <td>{{qty }}</td>
-                                <td>{{unit_price}}</td> --}}
+                                {{/each}} --}}
+                                <th scope="row" class="text-center">{{id}}</th>
+                                {{!-- <td><img src={{image}} alt="Girl in a jacket" style="width:40px;height:40px;"></td> --}}
+                                <td class="text-center">{{name}}</td>
+                                <td class="text-center">{{qty }}</td>
+                                <td class="text-center">{{unit_price}}đ</td>
                             </tr>
                             {{/each}}
                         </tbody>

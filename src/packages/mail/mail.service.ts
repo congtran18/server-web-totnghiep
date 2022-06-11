@@ -5,7 +5,7 @@ import { Injectable } from '@nestjs/common';
 export class MailService {
   constructor(private mailerService: MailerService) { }
 
-  async sendUserConfirmation(email?: string, type?: string, createAt?: string, shippingPrice?: string, totalPrice?: string, books?: any[]) {
+  async sendUserConfirmation(email?: string, type?: string, createAt?: string, shippingPrice?: number, totalPrice?: number, books?: any[]) {
     // const url = `example.com/auth/confirm?token=${token}`;
 
     console.log("books totalPrice", totalPrice)
@@ -14,7 +14,7 @@ export class MailService {
     await this.mailerService.sendMail({
       to: email || 'tranvanthanhcooong@gmail.com',
       // from: '"Support Team" <support@example.com>', // override default from
-      subject: 'Welcome to Nice App! Confirm your Email',
+      subject: 'Đơn hàng của bạn',
       template: './orderBook', // `.hbs` extension is appended automatically
       context: {
         email,
@@ -22,7 +22,7 @@ export class MailService {
         createAt,
         shippingPrice,
         totalPrice,
-        books: books ? books : [{id: 2, name: 'Bộ sách toán thpt', qty: 1, unit_price: 100050}]
+        books: books ? books : [{ id: 2, name: 'Bộ sách toán thpt dung ngu dai', qty: 1, unit_price: 100050 }, { id: 2, name: 'Bộ sách toán thpt dung ngu dai', qty: 1, unit_price: 100050 }]
       },
     });
   }
