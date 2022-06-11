@@ -9,6 +9,7 @@ import { FullUserDto } from "./dto/full-user.dto";
 import moment from "moment";
 import { AppUtil } from "../../utils/app.util";
 import { CreateUserDto } from "./dto/create-user.dto";
+import { firstValueFrom } from 'rxjs';
 
 const defaultProjection = { '_id': 0, '__v': 0, 'password': 0 };
 
@@ -136,12 +137,13 @@ export class UsersService {
   }
 
   async updateUserMinutesLeft(uid: string, value: number): Promise<User | null> {
+    console.log("value", value)
     return await this.userModel.findOneAndUpdate(
       {
         uid: uid
       },
       {
-        $inc: { minutes: -value }
+        $inc: { minutes: -1 }
       },
       {
         new: true,

@@ -252,10 +252,10 @@ export class UsersController {
     type: User,
   })
   @ApiBody({ type: UpdateUserMinutesDto })
-  @ApiBearerAuth()
+  // @ApiBearerAuth()
   @ApiOperation({ summary: 'Update minutes left' })
   @Patch('/update-minutes/:id')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   async updateMinutesLeft(@Param('id') id: string, @Body() value: string): Promise<BaseResponse<User | null>> {
     const response: BaseResponse<any> = {};
 
