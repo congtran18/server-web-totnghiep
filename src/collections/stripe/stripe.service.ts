@@ -271,7 +271,6 @@ export class StripeService {
                 })
 
                 if (customer?.email) {
-                    console.log("books nek2", customer?.email)
                     await this.mailService.sendSuccessjBooksOrder(customer?.email || '', "Sách", createAt, total_details?.amount_shipping ? (total_details?.amount_shipping * 230) : 0, expanded_session.amount_total ? expanded_session.amount_total * 230 : 0, books)
                 }
                 return data;

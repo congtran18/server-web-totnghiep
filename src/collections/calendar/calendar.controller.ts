@@ -16,7 +16,7 @@ import {
   ApiBearerAuth,
   ApiOkResponse,
   ApiOperation,
-  ApiQuery, 
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import { Model } from 'mongoose';
@@ -46,7 +46,7 @@ export class CalendarController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Create calendar' })
   @Post()
-  @RolesAllowed(ROLE_OWNER,ROLE_ADMIN, ROLE_TUTOR)
+  @RolesAllowed(ROLE_OWNER, ROLE_ADMIN, ROLE_TUTOR)
   @UseGuards(JwtAuthGuard, RolesGuard)
   async createCalendar(
     @Body() createCalendartDto: CreateCalendarDto,
@@ -161,15 +161,15 @@ export class CalendarController {
     // @AuthJwt() payload: JwtPayload,
   ): Promise<any> {
     const response: BaseResponse<any> = {};
-    try {
-      const result = await this.calendarService.removeCalendar(params);
-      return result;
-    } catch (error) {
+    const resultDelete = await this.calendarService.removeCalendar(params);
+    if (!resultDelete) {
       response.error = {
         code: HttpStatus.NOT_ACCEPTABLE,
-        message: 'Something is missing',
-      };
-      return response;
+        message: 'Không được xóa lịch trong quá khứ',
+      }
+    } else {
+      response.data = resultDelete;
     }
+    return response;
   }
 }

@@ -6,6 +6,7 @@ import { Calendar } from './schemas/calendar.schema';
 import { CreateCalendarDto } from './dto/create-calendar.dto';
 import { UpdateCalendarDto } from './dto/update-calendar.dto';
 import { Boolean } from 'aws-sdk/clients/apigateway';
+import moment from "moment";
 
 @Injectable()
 export class CalendarService {
@@ -115,12 +116,20 @@ export class CalendarService {
     return result;
   }
 
+
+
   async removeCalendar(id: string): Promise<any> {
-    try {
-      const result = await this.calendarModel.findOneAndRemove({ _id: id });
-      return result;
-    } catch (err) {
-      throw new NotFoundException('Do not find data'); //Return which when not find?
+    const checkResult = await this.calendarModel.findOne({ _id: id, start: { "$gte": new Date(new Date().getTime() + 24 * 60 * 60 * 1000) } });
+
+    if (!checkResult){
+      return null
     }
+
+      try {
+        const result = await this.calendarModel.findOneAndRemove({ _id: id });
+        return result;
+      } catch (err) {
+        throw new NotFoundException('Do not find data'); //Return which when not find?
+      }
   }
 }
