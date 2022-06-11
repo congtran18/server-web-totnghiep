@@ -97,7 +97,6 @@ export class StripeService {
             metadata: {
                 idProduct: JSON.stringify(items.map((item) => item.idProduct)),
                 nameProduct: JSON.stringify(items.map((item) => item.realname)),
-                imageProduct: JSON.stringify(items.map((item) => item.mainImage)),
             },
             line_items: transformedItems,
             mode: 'payment',
@@ -225,7 +224,6 @@ export class StripeService {
                 console.log("items nek", items)
                 const idProducts = dataProduct?.idProduct ? JSON.parse(dataProduct.idProduct) : ''
                 const nameProducts = dataProduct?.nameProduct ? JSON.parse(dataProduct.nameProduct) : ''
-                const imageProducts = dataProduct?.imageProduct ? JSON.parse(dataProduct.imageProduct) : ''
                 const createOrderDto: CreateOrderDto = {
                     status: 'Hoàn thành',
                     user: customer?.email ? customer?.email : '',
@@ -236,7 +234,6 @@ export class StripeService {
                         return {
                             productId: idProducts ? idProducts[index] : '',
                             productName: nameProducts ? nameProducts[index] : '',
-                            productImage: imageProducts ? imageProducts[index] : '',
                             subtotal: item.amount_total,
                             unit_price: item.price.unit_amount,
                             qty: item.quantity,
@@ -258,7 +255,6 @@ export class StripeService {
                 createOrderDto.orderItems?.map((item, index) => {
                     books.push({
                         "id": index + 1,
-                        // "image": item.productImage,
                         "name": item.productName,
                         "qty": item.qty,
                         "unit_price": item.unit_price * 230,

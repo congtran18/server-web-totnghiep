@@ -5,7 +5,7 @@ export class CreateOrderDto {
 
 
   @ApiProperty()
-  orderItems?: { qty: number, productId: string, productName: string, productImage: string, subtotal: number, unit_price: number }[];
+  orderItems?: { qty: number, productId: string, productName: string, subtotal: number, unit_price: number }[];
 
   @ApiProperty()
   address?: { city?: string, country?: string, address?: string, postal_code?: string, state?: string };
@@ -34,7 +34,7 @@ export class CreateOrderDto {
 
 
   constructor(
-    orderItems: { qty: number, productId: string, productName: string, productImage: string, subtotal: number, unit_price: number }[],
+    orderItems: { qty: number, productId: string, productName: string, subtotal: number, unit_price: number }[],
     address: { city: string, country: string, address: string, postal_code: string, state: string },
     totalPrice: number,
     status: string,
