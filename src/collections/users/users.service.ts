@@ -137,7 +137,6 @@ export class UsersService {
   }
 
   async updateUserMinutesLeft(uid: string, value: number): Promise<User | null> {
-    console.log("value", value)
     return await this.userModel.findOneAndUpdate(
       {
         uid: uid
@@ -159,7 +158,7 @@ export class UsersService {
       },
     );
 
-    return result?.minutes
+    return result
   }
 
   async createUser(userDto: CreateUserDto): Promise<User | null> {

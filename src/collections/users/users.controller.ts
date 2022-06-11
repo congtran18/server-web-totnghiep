@@ -244,11 +244,15 @@ export class UsersController {
   async checkMinutes(
     @Param('id') id: string,
   ): Promise<any> {
-    return await this.usersService.checkUserMinutesLeft(id);
+    const response: BaseResponse<any> = {};
+    const data = await this.usersService.checkUserMinutesLeft(id)
+    response.data = { minutes: data.minutes, daysleft: data.daysleft }
+    
+    return response;
   }
 
   @ApiOkResponse({
-    description: 'User info', 
+    description: 'User info',
     type: User,
   })
   @ApiBody({ type: UpdateUserMinutesDto })
