@@ -258,7 +258,6 @@ export class StripeService {
                 createOrderDto.orderItems?.map((item, index) => {
                     books.push({
                         "id": index + 1,
-                        "image": 'oke',
                         "name": item.productName,
                         "qty": item.qty,
                         "unit_price": item.unit_price,

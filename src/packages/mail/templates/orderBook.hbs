@@ -142,7 +142,7 @@
                         <thead class="table-success">
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Ảnh</th>
+                                {{!-- <th scope="col">Ảnh</th> --}}
                                 <th scope="col">Tên sp</th>
                                 <th scope="col">Số lượng</th>
                                 <th scope="col">Đơn giá</th>
@@ -151,14 +151,13 @@
                         <tbody>
                             {{#each books}}
                             <tr>
-                                {{!-- {{#each this}}
+                                {{#each this}}
                                 <td>{{this}}</td>
-                                {{/each}} --}}
-                                <th scope="row">{{id}}</th>
-                                <td><img src={{image}} alt="Girl in a jacket" style="width:40px;height:40px;"></td>
+                                {{/each}}
+                                {{!-- <th scope="row">{{id}}</th>
                                 <td>{{name}}</td>
                                 <td>{{qty }}</td>
-                                <td>{{unit_price}}</td>
+                                <td>{{unit_price}}</td> --}}
                             </tr>
                             {{/each}}
                         </tbody>
