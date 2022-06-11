@@ -21,7 +21,7 @@ export class MailService {
         createAt,
         shippingPrice,
         totalPrice,
-        books: books
+        books: books ? books : []
       },
     });
   }
