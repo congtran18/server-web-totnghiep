@@ -235,19 +235,18 @@ export class UsersController {
     return response;
   }
 
-
   @ApiOkResponse({
-    description: 'List of user',
-    type: [User],
+    description: 'Check exist user email',
   })
-  @ApiOperation({ summary: 'testgettutor' })
-  @Get('testgettuto/test')
-  // @UseGuards(JwtAuthGuard)
-  async getalltutor(): Promise<BaseResponse<User[]>> {
-    const response: BaseResponse<User[]> = {}
-    response.data = await this.usersService.findAll();
-    return response;
+  @ApiOperation({ summary: 'Check exist user minutes' })
+  @Get('/check-minutes/:id')
+  async checkMinutes(
+    @Param('id') id: string,
+  ): Promise<any> {
+    return await this.usersService.checkUserMinutesLeft(id);
   }
+
+
 
 }
 

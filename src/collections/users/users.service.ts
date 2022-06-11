@@ -135,6 +135,31 @@ export class UsersService {
     return null
   }
 
+  async updateUserMinutesLeft(uid: string, value: number): Promise<User | null> {
+    return await this.userModel.findOneAndUpdate(
+      {
+        uid: uid
+      },
+      {
+        $inc: { minutes: -value }
+      },
+      {
+        new: true,
+        useFindAndModify: false,
+      },
+    );
+  }
+
+  async checkUserMinutesLeft(uid: string): Promise<any> {
+    const result = await this.userModel.findOne(
+      {
+        uid: uid
+      },
+    );
+
+    return result?.minutes
+  }
+
   async createUser(userDto: CreateUserDto): Promise<User | null> {
     const uid = AppUtil.nanoId();
     const fullUserDto: FullUserDto = {

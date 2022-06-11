@@ -10,8 +10,8 @@ export class CronService  {
 
   }
 
-  async processing(): Promise<void> {
-    this.logger.debug(`CronBscService@processing@start`);
+  async processingUpdateDayLeft(): Promise<void> {
+    this.logger.debug(`Cron update date left user start`);
     await this.usersService.updateUserDayLeft()
   }
 
@@ -22,8 +22,7 @@ export class CronService  {
   // Only refresh contract data to deal with user update lock outside FE UI Lock
   @Cron(CronExpression.EVERY_30_SECONDS)
   async crawlingContractDataDaily(): Promise<void> {
-    this.logger.debug('crawlingContractDataDaily');
-    return this.processing();
+    return this.processingUpdateDayLeft();
   }
 
 }
