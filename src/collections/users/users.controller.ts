@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, Logger, Param, Post, Put, Query, UseGuards, } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Logger, Param, Post, Put, Query, UseGuards, Patch } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -236,7 +236,7 @@ export class UsersController {
   }
 
   @ApiOkResponse({
-    description: 'Check exist user email',
+    description: 'Check exist user minutes',
   })
   @ApiOperation({ summary: 'Check exist user minutes' })
   @Get('/check-minutes/:id')
@@ -244,6 +244,32 @@ export class UsersController {
     @Param('id') id: string,
   ): Promise<any> {
     return await this.usersService.checkUserMinutesLeft(id);
+  }
+
+  @ApiOkResponse({
+    description: 'User info',
+    type: User,
+  })
+  @ApiBody({ type: User })
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Update minutes left' })
+  @Patch('/update-minutes/:id')
+  @UseGuards(JwtAuthGuard)
+  async updateMinutesLeft(@Param('id') id: string, @Body() value: string): Promise<BaseResponse<User | null>> {
+    const response: BaseResponse<any> = {};
+
+    // Username is available
+    try {
+      const user = await this.usersService.updateUserMinutesLeft(id, parseInt(value));
+      response.data = user;
+    } catch {
+      response.error = {
+        code: HttpStatus.NOT_ACCEPTABLE,
+        message: "username is not available."
+      }
+    }
+
+    return response;
   }
 
 
