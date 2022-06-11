@@ -261,7 +261,7 @@ export class StripeService {
                         "image": 'oke',
                         "name": item.productName,
                         "qty": item.qty,
-                        "unit_price": item.unit_price * 230,
+                        "unit_price": item.unit_price,
                     })
                 })
 
