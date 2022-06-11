@@ -39,6 +39,6 @@ export class MailController {
     // @AuthJwt() payload: JwtPayload,
   ): Promise<void> {
 
-    return this.mailService.sendUserConfirmation("tranvanthanhcooong@gmail.com", "sách");
+    return this.mailService.sendSuccessjBooksOrder("tranvanthanhcooong@gmail.com", "sách");
   }
 }
