@@ -128,10 +128,14 @@
                 <div class='content-outside'><span class="text-content"> Khách hàng:</span>
                     <span>{{ email }}</span>
                 </div>
-                <div class='content-outside'><span class="text-content">Loại hóa đơn:</span> <span>{{ type }}</span></div>
-                <div class='content-outside'><span class="text-content">Ngày đặt:</span> <span>{{ createAt }}</span></div>
-                <div class='content-outside'><span class="text-content">Phí ship:</span> <span>{{ shippingPrice }}</span></div>
-                <div class='content-outside'><span class="text-content">Tổng giá trị:</span> <span>{{ totalPrice }}đ</span></div>
+                <div class='content-outside'><span class="text-content">Loại hóa đơn:</span> <span>{{ type }}</span>
+                </div>
+                <div class='content-outside'><span class="text-content">Ngày đặt:</span> <span>{{ createAt }}</span>
+                </div>
+                <div class='content-outside'><span class="text-content">Phí ship:</span> <span>{{ shippingPrice
+                        }}</span></div>
+                <div class='content-outside'><span class="text-content">Tổng giá trị:</span> <span>{{ totalPrice
+                        }}đ</span></div>
                 <div class="order-text">Danh sách sản phẩm</div>
                 <div class="table-content">
                     <table class="table">
@@ -147,9 +151,14 @@
                         <tbody>
                             {{#each books}}
                             <tr>
-                                {{#each this}}
+                                {{!-- {{#each this}}
                                 <td>{{this}}</td>
-                                {{/each}}
+                                {{/each}} --}}
+                                <th scope="row">{{id}}</th>
+                                <td><img src={{image}} alt="Girl in a jacket" style="width:40px;height:40px;"></td>
+                                <td>{{name}}</td>
+                                <td>{{qty }}</td>
+                                <td>{{unit_price}}</td>
                             </tr>
                             {{/each}}
                         </tbody>

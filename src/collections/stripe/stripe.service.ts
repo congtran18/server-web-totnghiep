@@ -255,9 +255,9 @@ export class StripeService {
                 const data = await newOrder.save();
                 const createAt = moment(new Date(data.create_at)).format('DD/MM/YYYY, h:mm:ss a')
                 const books: any[] = []
-                createOrderDto.orderItems?.map((item) => {
+                createOrderDto.orderItems?.map((item, index) => {
                     books.push({
-                        "id": 1,
+                        "id": index + 1,
                         "image": 'oke',
                         "name": item.productName,
                         "qty": item.qty,
@@ -267,7 +267,7 @@ export class StripeService {
 
                 if (customer?.email) {
                     console.log("books nek2", customer?.email)
-                    await this.mailService.sendUserConfirmation(customer?.email || '', "Sách", createAt, total_details?.amount_shipping ? total_details?.amount_shipping.toString() : "0", expanded_session.amount_total?.toString() || "0", books)
+                    await this.mailService.sendUserConfirmation(customer?.email || '', "Sách", createAt, total_details?.amount_shipping ? (total_details?.amount_shipping * 230).toString() : "0", expanded_session.amount_total ? (expanded_session.amount_total * 230)?.toString() : "0", books)
                 }
                 return data;
             }
