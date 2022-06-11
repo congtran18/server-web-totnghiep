@@ -267,7 +267,7 @@ export class StripeService {
 
                 if (customer?.email) {
                     console.log("books nek2", customer?.email)
-                    await this.mailService.sendUserConfirmation(customer?.email || '', "Sách", createAt, total_details?.amount_shipping ? (total_details?.amount_shipping).toString() : "0", expanded_session.amount_total ? (expanded_session.amount_total).toString() : "0", books)
+                    await this.mailService.sendUserConfirmation(customer?.email || '', "Sách", createAt, total_details?.amount_shipping ? (total_details?.amount_shipping).toString() : "0", expanded_session.amount_total?.toString() || "0", books)
                 }
                 return data;
             }

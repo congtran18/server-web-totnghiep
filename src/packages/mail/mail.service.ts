@@ -8,7 +8,8 @@ export class MailService {
   async sendUserConfirmation(email?: string, type?: string, createAt?: string, shippingPrice?: string, totalPrice?: string, books?: any[]) {
     // const url = `example.com/auth/confirm?token=${token}`;
 
-    console.log("books day", books)
+    console.log("books totalPrice", totalPrice)
+    console.log("books shippingPrice", shippingPrice)
 
     await this.mailerService.sendMail({
       to: email || 'tranvanthanhcooong@gmail.com',
