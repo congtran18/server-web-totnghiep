@@ -18,6 +18,7 @@ import { User } from "./schemas/user.schema";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserMinutesDto } from "./dto/update-minutes.dto";
 import { AuthService } from "../auth/auth.service";
 import { AdminsService } from "../admins/admins.service";
 
@@ -247,10 +248,10 @@ export class UsersController {
   }
 
   @ApiOkResponse({
-    description: 'User info',
+    description: 'User info', 
     type: User,
   })
-  @ApiBody({ type: User })
+  @ApiBody({ type: UpdateUserMinutesDto })
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update minutes left' })
   @Patch('/update-minutes/:id')
