@@ -22,7 +22,7 @@ export class MailService {
         createAt,
         shippingPrice,
         totalPrice,
-        books: books ? books : []
+        books: books ? books : [{id: 2, name: 'Bộ sách toán thpt', qty: 1, unit_price: 100050}]
       },
     });
   }
