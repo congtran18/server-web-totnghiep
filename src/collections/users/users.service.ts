@@ -143,7 +143,7 @@ export class UsersService {
         uid: uid
       },
       {
-        $inc: { minutes: -1 }
+        $inc: { minutes: value }
       },
       {
         new: true,

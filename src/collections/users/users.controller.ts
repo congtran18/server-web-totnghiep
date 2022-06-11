@@ -256,12 +256,12 @@ export class UsersController {
   @ApiOperation({ summary: 'Update minutes left' })
   @Patch('/update-minutes/:id')
   // @UseGuards(JwtAuthGuard)
-  async updateMinutesLeft(@Param('id') id: string, @Body() value: string): Promise<BaseResponse<User | null>> {
+  async updateMinutesLeft(@Param('id') id: string, @Body() updateUserMinutesDto: UpdateUserMinutesDto): Promise<BaseResponse<User | null>> {
     const response: BaseResponse<any> = {};
 
     // Username is available
     try {
-      const user = await this.usersService.updateUserMinutesLeft(id, parseInt(value));
+      const user = await this.usersService.updateUserMinutesLeft(id, parseInt(updateUserMinutesDto.value));
       response.data = user;
     } catch {
       response.error = {
