@@ -58,6 +58,25 @@ export class MessageController {
     });
   }
 
+  @ApiOkResponse({
+    description: 'List of unread message',
+    type: [Message],
+  })
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get Unread Messages' })
+  @Get('unread')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  findUnreadMessages(
+    @AuthJwt() payload: JwtPayload,
+  ): Promise<any> {
+    return this.messageService.findAll({
+      $or: [
+        { read: false, to: payload.uid },
+        // { from: payload.uid, to: targetUser },
+      ],
+    });
+  }
+
   // @ApiOkResponse({
   //   description: 'List of message',
   //   type: [Message],

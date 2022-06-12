@@ -24,14 +24,19 @@ export class Message extends Document {
   text: string;
 
   @ApiProperty()
+  @Prop({ default: false })
+  read: boolean;
+
+  @ApiProperty()
   @Prop({ type: Date, default: Date.now })
   createdAt: Date;
 
-  constructor(from: string, to: string, text: string, createdAt: Date) {
+  constructor(from: string, to: string, text: string, read: boolean, createdAt: Date) {
     super();
     this.from = from;
     this.to = to;
     this.text = text;
+    this.read = read;
     this.createdAt = createdAt;
   }
 }
