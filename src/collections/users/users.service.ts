@@ -136,6 +136,11 @@ export class UsersService {
     return null
   }
 
+  async updateAllUserMinutesLeft(): Promise<User | null> {
+    await this.userModel.updateMany({ daysleft: { $gt: 0 }, track: false }, { minutes: 50000 }, { upsert: false });
+    return null
+  }
+
   async updateUserMinutesLeft(uid: string, value: number): Promise<User | null> {
     return await this.userModel.findOneAndUpdate(
       {
