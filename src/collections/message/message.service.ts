@@ -12,7 +12,11 @@ export class MessageService {
     private readonly messageModel: Model<Message>,
   ) { }
 
-  create(createMessageDto: CreateMessageDto): Promise<Message> {
+  async create(createMessageDto: CreateMessageDto): Promise<Message> {
+    //update da doc tin nhan nguoi khac gui den minh trc khi tao tin nhan minh gui den nguoi khac
+    await this.messageModel
+      .updateMany({ from: createMessageDto.to, to: createMessageDto.from }, { read: true }, { upsert: false })
+      .exec();
     const createdMessage = new this.messageModel(createMessageDto);
     return createdMessage.save();
   }
