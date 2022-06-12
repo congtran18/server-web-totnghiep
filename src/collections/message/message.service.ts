@@ -31,12 +31,20 @@ export class MessageService {
       .exec();
   }
 
-  countUnread(params: FilterQuery<Message> = {},): Promise<any> {
-    return this.messageModel
+  async countUnread(params: FilterQuery<Message> = {},): Promise<any> {
+    const num = await this.messageModel
       .countDocuments({
         ...params,
       })
       .exec();
+
+    const unreadData = await this.messageModel
+      .find({
+        ...params,
+      })
+      .exec();
+
+    return { unreads: unreadData, count: num }
   }
 
   findOne(id: string): Promise<any> {
