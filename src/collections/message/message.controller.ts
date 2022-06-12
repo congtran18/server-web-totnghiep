@@ -69,6 +69,7 @@ export class MessageController {
   findUnreadMessages(
     @AuthJwt() payload: JwtPayload,
   ): Promise<any> {
+    console.log(" payload.uid", payload.uid)
     return this.messageService.findAll({
       $or: [
         { read: false, to: payload.uid },
