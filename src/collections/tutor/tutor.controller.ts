@@ -14,11 +14,12 @@ import {
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiOkResponse,
   ApiOperation,
-  ApiQuery, 
   ApiTags,
-} from '@nestjs/swagger';
+  ApiQuery
+} from "@nestjs/swagger";
 import { Model } from 'mongoose';
 import { BaseResponse } from '../../utils/base.response';
 import { AuthJwt } from '../auth/auth.decorator';
@@ -31,6 +32,7 @@ import { UpdateTutorDto } from './dto/update-tutor.dto';
 import { Tutor } from './schemas/tutor.schema';
 import { TutorService } from './tutor.service';
 import { ROLE_OWNER, ROLE_ADMIN, ROLE_TUTOR } from "../admins/dto/admin.roles";
+import { UpdateTutorMinutesDto } from "./dto/update-minutes.dto";
 
 @ApiTags('tutor')
 @Controller('tutor')
@@ -179,6 +181,33 @@ export class TutorController {
     } else {
       response.data = tutor;
     }
+    return response;
+  }
+
+
+  @ApiOkResponse({
+    description: 'User info',
+    type: Tutor,
+  })
+  @ApiBody({ type: UpdateTutorMinutesDto })
+  // @ApiBearerAuth()
+  @ApiOperation({ summary: 'Update minutes left' })
+  @Patch('/update-tutor-minutes/:id')
+  // @UseGuards(JwtAuthGuard)
+  async updateMinutesLeft(@Param('id') id: string, @Body() updateTutorMinutesDto: UpdateTutorMinutesDto): Promise<BaseResponse<Tutor | null>> {
+    const response: BaseResponse<any> = {};
+
+    // Username is available
+    try {
+      const user = await this.tutorService.updateTutorMinutesCall(id, parseInt(updateTutorMinutesDto.value));
+      response.data = user;
+    } catch {
+      response.error = {
+        code: HttpStatus.NOT_ACCEPTABLE,
+        message: "tutor is not available."
+      }
+    }
+
     return response;
   }
 

@@ -247,7 +247,7 @@ export class UsersController {
     const response: BaseResponse<any> = {};
     const data = await this.usersService.checkUserMinutesLeft(id)
     response.data = { minutes: data.minutes, daysleft: data.daysleft }
-    
+
     return response;
   }
 
@@ -258,7 +258,7 @@ export class UsersController {
   @ApiBody({ type: UpdateUserMinutesDto })
   // @ApiBearerAuth()
   @ApiOperation({ summary: 'Update minutes left' })
-  @Patch('/update-minutes/:id')
+  @Patch('/update-user-minutes/:id')
   // @UseGuards(JwtAuthGuard)
   async updateMinutesLeft(@Param('id') id: string, @Body() updateUserMinutesDto: UpdateUserMinutesDto): Promise<BaseResponse<User | null>> {
     const response: BaseResponse<any> = {};

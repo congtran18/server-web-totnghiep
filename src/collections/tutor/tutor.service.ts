@@ -193,7 +193,22 @@ export class TutorService {
       .sort('-online')
       .exec();
 
-      return result;
+    return result;
+  }
+
+  async updateTutorMinutesCall(uid: string, value: number): Promise<Tutor | null> {
+    return await this.tutorModel.findOneAndUpdate(
+      {
+        uid: uid
+      },
+      {
+        $inc: { teachingMinutesMonth: value, totalTeachingMinutes: value }
+      },
+      {
+        new: true,
+        useFindAndModify: false,
+      },
+    );
   }
 
   async deleteTutor(id: string): Promise<any> {
