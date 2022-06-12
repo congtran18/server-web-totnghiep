@@ -46,10 +46,11 @@ export class MessageController {
   @ApiOperation({ summary: 'Get Messages' })
   @Get(':targetUser')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  findMessages(
+  async findMessages(
     @AuthJwt() payload: JwtPayload,
     @Param('targetUser') targetUser: string,
   ): Promise<any> {
+    await this.messageService.updateUnread(targetUser, payload.uid)
     return this.messageService.findAll({
       $or: [
         { from: targetUser, to: payload.uid },

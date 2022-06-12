@@ -39,6 +39,15 @@ export class MessageService {
     return this.messageModel.findOne({ _id: id }).exec()
   }
 
+  updateUnread(
+    targetUser: string,
+    id: string,
+  ): Promise<any> {
+    return this.messageModel
+      .updateMany({ from: targetUser, to: id }, { read: true }, { upsert: false })
+      .exec();
+  }
+
   update(
     id: string,
     updateMessageDto: UpdateMessageDto,
