@@ -64,7 +64,7 @@ export class MessageController {
   })
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get Unread Messages' })
-  @Get('unread')
+  @Get('/check')
   @UseGuards(JwtAuthGuard, RolesGuard)
   findUnreadMessages(
     @AuthJwt() payload: JwtPayload,
