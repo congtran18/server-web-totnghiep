@@ -70,7 +70,7 @@ export class MessageController {
     @AuthJwt() payload: JwtPayload,
   ): Promise<any> {
     console.log(" payload.uid", payload.uid)
-    return this.messageService.findAll({
+    return this.messageService.countUnread({
       $or: [
         { read: false, to: payload.uid },
         // { from: payload.uid, to: targetUser },

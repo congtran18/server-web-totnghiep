@@ -27,6 +27,14 @@ export class MessageService {
       .exec();
   }
 
+  countUnread(params: FilterQuery<Message> = {},): Promise<any> {
+    return this.messageModel
+      .countDocuments({
+        ...params,
+      })
+      .exec();
+  }
+
   findOne(id: string): Promise<any> {
     return this.messageModel.findOne({ _id: id }).exec()
   }
