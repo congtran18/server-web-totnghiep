@@ -1,3 +1,4 @@
+import { NotFoundException } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
@@ -84,7 +85,12 @@ export class ReviewTutorService {
       .exec();
   }
 
-  remove(id: string): Promise<any> {
-    return this.reviewTutorModel.findOneAndRemove({ uid: id }).exec();
+  async removeReview(from: string, to: string): Promise<any> {
+    try {
+      await this.reviewTutorModel.findOneAndRemove({ from: from, to: to });
+      return 'Xóa review thành công';
+    } catch (err) {
+      throw new NotFoundException('Do not find data'); //Return which when not find?
+    }
   }
 }

@@ -1,3 +1,4 @@
+import { NotFoundException } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
@@ -124,7 +125,12 @@ export class WarningTutorService {
     return null;
   }
 
-  remove(id: string): Promise<any> {
-    return this.warningTutorModel.findOneAndRemove({ uid: id }).exec();
+  async removeWarning(tutor: string, user: string): Promise<any> {
+    try {
+      await this.warningTutorModel.findOneAndRemove({ tutor: tutor, user: user });
+      return 'Xóa tố cáo thành công';
+    } catch (err) {
+      throw new NotFoundException('Do not find data'); //Return which when not find?
+    }
   }
 }

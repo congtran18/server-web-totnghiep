@@ -19,6 +19,7 @@ import {
   ApiTags,
   ApiQuery
 } from "@nestjs/swagger";
+import { BaseResponse } from '../../utils/base.response';
 
 @ApiTags('reviewTutor')
 @Controller('reviewTutor')
@@ -37,7 +38,7 @@ export class ReviewTutorController {
   async create(@AuthJwt() payload: JwtPayload, @Body() createMessageDto: CreateReviewTutorDto) {
     const response: any = {};
     createMessageDto.from = payload.uid;
-    
+
     const reviewCreate = await this.reviewTutorService.create(createMessageDto);
 
     if (!reviewCreate) {
@@ -117,8 +118,24 @@ export class ReviewTutorController {
   //   });
   // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.reviewTutorService.remove(id);
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'delete review' })
+  @Delete('/delete-warning/:targetUser')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async checkExistVideocall(
+    @AuthJwt() payload: JwtPayload,
+    @Param('targetUser') targetUser: string,
+  ): Promise<any> {
+    const response: BaseResponse<any> = {};
+    try {
+      const result = await this.reviewTutorService.removeReview(payload.uid, targetUser);
+      return result;
+    } catch (error) {
+      response.error = {
+        code: HttpStatus.NOT_ACCEPTABLE,
+        message: 'Something is missing',
+      };
+      return response;
+    }
   }
 }

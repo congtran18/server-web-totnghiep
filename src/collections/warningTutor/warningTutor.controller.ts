@@ -141,8 +141,29 @@ export class WarningTutorController {
     return this.warningTutorService.findOne(targetUser);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.warningTutorService.remove(id);
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.warningTutorService.remove(id);
+  // }
+
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Check called' })
+  @Delete('/delete-warning/:targetUser')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async checkExistVideocall(
+    @AuthJwt() payload: JwtPayload,
+    @Param('targetUser') targetUser: string,
+  ): Promise<any> {
+    const response: BaseResponse<any> = {};
+    try {
+      const result = await this.warningTutorService.removeWarning(targetUser, payload.uid);
+      return result;
+    } catch (error) {
+      response.error = {
+        code: HttpStatus.NOT_ACCEPTABLE,
+        message: 'Something is missing',
+      };
+      return response;
+    }
   }
 }
