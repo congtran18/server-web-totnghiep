@@ -19,6 +19,19 @@ export class Videocall extends Document {
   videoUrl?: string;
 
   @ApiProperty()
+  @Prop({
+    type:
+    {
+      read: String,
+      vocabulary: String,
+      listen: String,
+      comment: String,
+    }
+
+  })
+  comment?: { read: String, vocabulary: String, listen: String, comment: String };
+
+  @ApiProperty()
   @Prop({ type: Date, default: Date.now })
   create_at: Date;
 
@@ -30,6 +43,7 @@ export class Videocall extends Document {
     tutor: string,
     user: string,
     videoUrl: string,
+    comment: { read: String, vocabulary: String, listen: String, comment: String },
     create_at: Date,
     update_at: Date,
   ) {
@@ -37,6 +51,7 @@ export class Videocall extends Document {
     this.tutor = tutor;
     this.user = user;
     this.videoUrl = videoUrl;
+    this.comment = comment;
     this.create_at = create_at;
     this.update_at = update_at;
   }

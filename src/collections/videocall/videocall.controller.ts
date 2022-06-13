@@ -28,6 +28,7 @@ import { RolesGuard } from '../auth/roles.guard';
 import { CreateVideocallDto } from './dto/create-videocall.dto';
 import { Videocall } from './schemas/videocall.schema';
 import { VideocallService } from './videocall.service';
+import { CreateCommentDto } from './dto/create-comment.dto'
 
 @ApiTags('videocall')
 @Controller('videocall')
@@ -147,6 +148,31 @@ export class VideocallController {
   }
 
   @ApiOkResponse({
+    description: 'Check called',
+    type: Videocall,
+  })
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Check called' })
+  @Patch('/update-comment/:id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async updateCommentVideo(
+    @Param('id') id: string,
+    @Body() createCommentDto: CreateCommentDto,
+  ): Promise<any> {
+    const response: BaseResponse<any> = {};
+    try {
+      const result = await this.videocallService.updateCommentVideo(id, createCommentDto);
+      return result;
+    } catch (error) {
+      response.error = {
+        code: HttpStatus.NOT_ACCEPTABLE,
+        message: 'Something is missing',
+      };
+      return response;
+    }
+  }
+
+  @ApiOkResponse({
     description: 'Remove videocall',
     type: Videocall,
   })
@@ -170,5 +196,5 @@ export class VideocallController {
       return response;
     }
   }
-  
+
 }

@@ -4,6 +4,7 @@ import { Connection, Model } from 'mongoose';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Videocall } from './schemas/videocall.schema';
 import { CreateVideocallDto } from './dto/create-videocall.dto';
+import { CreateCommentDto } from './dto/create-comment.dto'
 
 @Injectable()
 export class VideocallService {
@@ -109,6 +110,23 @@ export class VideocallService {
       return true;
     }
     return false
+  }
+
+  async updateCommentVideo(id: string, createCommentDto: CreateCommentDto): Promise<any> {
+
+    const result = await this.videocallModel.findOneAndUpdate(
+      {
+        _id: id,
+      },
+      {
+        comment: createCommentDto,
+      },
+      {
+        new: true,
+        useFindAndModify: false,
+      },
+    );
+    return result;
   }
 
   async removeVideocall(id: string): Promise<any> {
