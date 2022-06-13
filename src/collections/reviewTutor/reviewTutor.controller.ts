@@ -120,7 +120,7 @@ export class ReviewTutorController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'delete review' })
-  @Delete('/delete-warning/:targetUser')
+  @Delete('/delete-review/:targetUser')
   @UseGuards(JwtAuthGuard, RolesGuard)
   async checkExistVideocall(
     @AuthJwt() payload: JwtPayload,
