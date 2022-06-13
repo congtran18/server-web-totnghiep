@@ -126,7 +126,7 @@ export class VideocallController {
   })
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Check called' })
-  @Get('/check-called/:id')
+  @Get('/check-called/:targetUser')
   @UseGuards(JwtAuthGuard, RolesGuard)
   async checkExistVideocall(
     @AuthJwt() payload: JwtPayload,
