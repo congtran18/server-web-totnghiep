@@ -134,6 +134,7 @@ export class VideocallController {
   ): Promise<any> {
     const response: BaseResponse<any> = {};
     try {
+      console.log("payload.uid nek", payload.uid)
       const result = await this.videocallService.checkExistVideocall(targetUser, payload.uid);
       return result;
     } catch (error) {
