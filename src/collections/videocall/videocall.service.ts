@@ -103,6 +103,14 @@ export class VideocallService {
     return null;
   }
 
+  async checkExistVideocall(tutor: string, user: string): Promise<any> {
+    const check = await this.videocallModel.findOne({ tutor: tutor, user: user });
+    if (check) {
+      return true;
+    }
+    return false
+  }
+
   async removeVideocall(id: string): Promise<any> {
     try {
       await this.videocallModel.findOneAndRemove({ _id: id });

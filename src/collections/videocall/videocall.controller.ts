@@ -121,6 +121,31 @@ export class VideocallController {
   }
 
   @ApiOkResponse({
+    description: 'Check called',
+    type: Videocall,
+  })
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Check called' })
+  @Get('/check-called/:id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async checkExistVideocall(
+    @AuthJwt() payload: JwtPayload,
+    @Param('targetUser') targetUser: string,
+  ): Promise<any> {
+    const response: BaseResponse<any> = {};
+    try {
+      const result = await this.videocallService.checkExistVideocall(targetUser, payload.uid);
+      return result;
+    } catch (error) {
+      response.error = {
+        code: HttpStatus.NOT_ACCEPTABLE,
+        message: 'Something is missing',
+      };
+      return response;
+    }
+  }
+
+  @ApiOkResponse({
     description: 'Remove videocall',
     type: Videocall,
   })
@@ -144,4 +169,5 @@ export class VideocallController {
       return response;
     }
   }
+  
 }
