@@ -241,7 +241,6 @@ export class UsersController {
   // @ApiBearerAuth()
   @ApiOkResponse({
     description: 'Update callinng user',
-    type: Boolean,
   })
   @Get('/update-test-calling/:id')
   // @UseGuards(JwtAuthGuard)
@@ -255,7 +254,6 @@ export class UsersController {
   @ApiBearerAuth()
   @ApiOkResponse({
     description: 'Update callinng user',
-    type: Boolean,
   })
   @Get('/update-calling/:id')
   @UseGuards(JwtAuthGuard)
@@ -263,7 +261,7 @@ export class UsersController {
     const response: BaseResponse<any> = {}
     response.data = await this.usersService.updateCallingUser(payload.uid, id , false);
     return response;
-  }
+  }   
 
 
   @ApiOkResponse({
