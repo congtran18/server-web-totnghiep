@@ -262,7 +262,7 @@ export class UsersController {
     const response: BaseResponse<any> = {}
     console.log("payload.uid", payload.uid, id)
     console.log("payload.uid", payload.uid, id)
-    response.data = await this.usersService.updateCallingUser(payload.uid);
+    response.data = await this.usersService.updateCallingUser(payload.uid, id , false);
     return response;
   }
 
