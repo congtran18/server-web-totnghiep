@@ -236,6 +236,36 @@ export class UsersController {
     return response;
   }
 
+
+  @ApiOperation({ summary: 'Update callinng user use to test' })
+  // @ApiBearerAuth()
+  @ApiOkResponse({
+    description: 'Update callinng user',
+    type: Boolean,
+  })
+  @Get('/update-test-calling/:id')
+  // @UseGuards(JwtAuthGuard)
+  async updateCallinngTestUser(@Param('id') id: string): Promise<BaseResponse<any>> {
+    const response: BaseResponse<any> = {}
+    response.data = await this.usersService.updateCallingUser(id);
+    return response;
+  }
+
+  @ApiOperation({ summary: 'Update callinng user' })
+  @ApiBearerAuth()
+  @ApiOkResponse({
+    description: 'Update callinng user',
+    type: Boolean,
+  })
+  @Get('/update-calling/:id')
+  @UseGuards(JwtAuthGuard)
+  async updateCallinngUser(@AuthJwt() payload: JwtPayload, @Param('id') id: string): Promise<BaseResponse<any>> {
+    const response: BaseResponse<any> = {}
+    response.data = await this.usersService.updateCallingUser(payload.uid, id , false);
+    return response;
+  }
+
+
   @ApiOkResponse({
     description: 'Check exist user minutes',
   })

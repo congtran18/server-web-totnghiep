@@ -231,7 +231,7 @@ export class UsersService {
         uid: { $in: [uidTo, uidFrom] }
       },
       {
-        calling: calling,
+        calling: calling ? calling : false,
       },
       {
         new: true,
