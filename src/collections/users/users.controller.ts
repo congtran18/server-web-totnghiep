@@ -255,9 +255,9 @@ export class UsersController {
   @ApiOkResponse({
     description: 'Update callinng user',
   })
-  @Get('/update/update-calling/:id')
+  @Patch('/update/update-calling/:id')
   @UseGuards(JwtAuthGuard)
-  async updateCallinngUser(@AuthJwt() payload: JwtPayload, @Param('id') id: string): Promise<BaseResponse<any>> {
+  async updateCallinngUser(@AuthJwt() payload: JwtPayload, @Param('id') id: string): Promise<any> {
     const response: BaseResponse<any> = {}
     console.log("payload.uid", payload.uid, id)
     console.log("payload.uid", payload.uid, id)
