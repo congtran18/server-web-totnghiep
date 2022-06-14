@@ -289,7 +289,7 @@ export class UsersController {
   })
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update User minutes and days' })
-  @Get('/update-time')
+  @Get('/update/update-time')
   @UseGuards(JwtAuthGuard)
   async updateTimeUser(@AuthJwt() payload: JwtPayload, @Body() UpdateUserTimesDto: UpdateUserTimesDto): Promise<BaseResponse<User | null>> {
     const response: BaseResponse<User | null> = {}
