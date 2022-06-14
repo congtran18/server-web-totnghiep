@@ -259,9 +259,11 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   async updateCallinngUser(@AuthJwt() payload: JwtPayload, @Param('id') id: string): Promise<BaseResponse<any>> {
     const response: BaseResponse<any> = {}
-    response.data = await this.usersService.updateCallingUser(payload.uid, id , false);
+    console.log("payload.uid", payload.uid, id)
+    console.log("payload.uid", payload.uid, id)
+    response.data = await this.usersService.updateCallingUser(payload.uid, id, false);
     return response;
-  }   
+  }
 
 
   @ApiOkResponse({
