@@ -289,11 +289,11 @@ export class UsersController {
   })
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update User minutes and days' })
-  @Patch('/update-time/update')
+  @Patch('/update-time/:id')
   @UseGuards(JwtAuthGuard)
-  async updateTimeUser(@AuthJwt() payload: JwtPayload, @Body() UpdateUserTimesDto: UpdateUserTimesDto): Promise<BaseResponse<User | null>> {
+  async updateTimeUser(@Param('id') id: string, @Body() UpdateUserTimesDto: UpdateUserTimesDto): Promise<BaseResponse<User | null>> {
     const response: BaseResponse<User | null> = {}
-    response.data = await this.usersService.updateUserMinutesAndDays(payload.uid, parseInt(UpdateUserTimesDto.daysleft), parseInt(UpdateUserTimesDto.minutes));
+    response.data = await this.usersService.updateUserMinutesAndDays(id, parseInt(UpdateUserTimesDto.daysleft), parseInt(UpdateUserTimesDto.minutes));
     return response;
   }
 
