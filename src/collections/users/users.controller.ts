@@ -13,6 +13,7 @@ import {
 import { BaseResponse, ErrorResponseType } from "../../utils/base.response";
 import { AuthJwt } from "../auth/auth.decorator";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
+import { RolesGuard } from '../auth/roles.guard';
 import { JwtPayload } from "../auth/jwt.payload";
 import { User } from "./schemas/user.schema";
 import { UpdateUserDto } from "./dto/update-user.dto";
@@ -256,12 +257,12 @@ export class UsersController {
     description: 'Update callinng user',
   })
   @Patch('/update/update-calling/:id')
-  @UseGuards(JwtAuthGuard)
-  async updateCallinngUser(@AuthJwt() payload: JwtPayload, @Param('id') id: string): Promise<any> {
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async updateCallingUser(@AuthJwt() payload: JwtPayload, @Param('id') id: string): Promise<any> {
     const response: BaseResponse<any> = {}
     console.log("payload.uid", payload.uid, id)
     console.log("payload.uid", payload.uid, id)
-    response.data = await this.usersService.updateCallingUser(payload.uid, id, false);
+    response.data = await this.usersService.updateCallingUser(payload.uid);
     return response;
   }
 
