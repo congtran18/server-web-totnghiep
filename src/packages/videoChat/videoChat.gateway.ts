@@ -80,7 +80,7 @@ export class VideoChatGateway implements OnGatewayConnection, OnGatewayDisconnec
   @SubscribeMessage('end.call')
   async endCall(@MessageBody(ValidationPipe) data: RejectCallEventDto) {
     this.logger.log(`End Call Event `)
-    // await this.usersService.updateCallingUser(data.from, data.to, false);
+    await this.usersService.updateCallingUser(data.from, data.to, false);
     this.server?.to(this.users[data.to]).emit('call.ended', { from: data.from })
   }
 
