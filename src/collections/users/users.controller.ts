@@ -256,13 +256,13 @@ export class UsersController {
   @ApiOkResponse({
     description: 'Update callinng user',
   })
-  @Patch('/update/update-calling/:id')
+  @Patch('/update/update-calling/:target')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  async updateCallingUser(@AuthJwt() payload: JwtPayload, @Param('id') id: string): Promise<any> {
+  async updateCallingUser(@Param('target') target: string, @AuthJwt() payload: JwtPayload): Promise<any> {
     const response: BaseResponse<any> = {}
-    console.log("payload.uid", payload.uid, id)
-    console.log("payload.uid", payload.uid, id)
-    response.data = await this.usersService.updateCallingUser(payload.uid, id , false);
+    console.log("payload.uid", payload.uid, target)
+    console.log("payload.uid", payload.uid, target)
+    response.data = await this.usersService.updateCallingUser(payload.uid, target, false);
     return response;
   }
 
