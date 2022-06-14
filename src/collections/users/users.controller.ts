@@ -20,6 +20,7 @@ import { UpdateUserDto } from "./dto/update-user.dto";
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserMinutesDto } from "./dto/update-minutes.dto";
+import { UpdateUserTimesDto } from "./dto/update-times.dto"
 import { AuthService } from "../auth/auth.service";
 import { AdminsService } from "../admins/admins.service";
 
@@ -279,6 +280,20 @@ export class UsersController {
     const data = await this.usersService.checkUserMinutesLeft(id)
     response.data = { minutes: data.minutes, daysleft: data.daysleft }
 
+    return response;
+  }
+
+  @ApiOkResponse({
+    description: 'User minutes days',
+    type: User,
+  })
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Update User minutes and days' })
+  @Get('/update-time')
+  @UseGuards(JwtAuthGuard)
+  async updateTimeUser(@AuthJwt() payload: JwtPayload, @Body() UpdateUserTimesDto: UpdateUserTimesDto): Promise<BaseResponse<User | null>> {
+    const response: BaseResponse<User | null> = {}
+    response.data = await this.usersService.updateUserMinutesAndDays(payload.uid, parseInt(UpdateUserTimesDto.daysleft), parseInt(UpdateUserTimesDto.minutes));
     return response;
   }
 

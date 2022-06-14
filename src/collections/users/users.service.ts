@@ -156,6 +156,21 @@ export class UsersService {
     );
   }
 
+  async updateUserMinutesAndDays(uid: string, daysleft: number, minutes: number): Promise<User | null> {
+    return await this.userModel.findOneAndUpdate(
+      {
+        uid: uid
+      },
+      {
+        $inc: { minutes: minutes, daysleft: daysleft }
+      },
+      {
+        new: true,
+        useFindAndModify: false,
+      },
+    );
+  }
+
   async checkUserMinutesLeft(uid: string): Promise<any> {
     const result = await this.userModel.findOne(
       {
