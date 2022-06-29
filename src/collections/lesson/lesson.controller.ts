@@ -31,13 +31,17 @@ import { UpdateLessonDto } from './dto/update-lesson.dto';
 import { Lesson } from './schemas/lesson.schema';
 import { LessonService } from './lesson.service';
 import { ROLE_OWNER, ROLE_ADMIN, ROLE_TUTOR } from "../admins/dto/admin.roles";
+import { CalendarService } from "../calendar/calendar.service";
 
 @ApiTags('lesson')
 @Controller('lesson')
 export class LessonController {
   private logger: Logger = new Logger(LessonController.name);
 
-  constructor(private readonly lessonService: LessonService) { }
+  constructor(
+    private readonly lessonService: LessonService,
+    private readonly calendarService: CalendarService
+    ) { }
 
   @ApiOkResponse({
     description: 'Create lesson',
@@ -53,6 +57,10 @@ export class LessonController {
     // @AuthJwt() payload: JwtPayload,
   ): Promise<BaseResponse<Model<Lesson>>> {
     const response: BaseResponse<Model<Lesson>> = {};
+    const checkExitCalendar = await this.calendarService.modifyDateTime(createLessontDto.tutoruid, createLessontDto.start, createLessontDto.end)
+    if(!checkExitCalendar){
+      await this.calendarService.updateColor(createLessontDto.tutoruid)
+    }
     const lesson = await this.lessonService.createLesson(createLessontDto);
     if (!lesson) {
       response.error = {

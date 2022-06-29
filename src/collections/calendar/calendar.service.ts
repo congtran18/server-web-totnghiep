@@ -68,6 +68,22 @@ export class CalendarService {
     return true
   }
 
+  async updateColor(uid : string): Promise<any> {
+    const result = await this.calendarModel.findOneAndUpdate(
+      {
+        tutoruid: uid,
+      },
+      {
+        color: "#e02f3e"
+      },
+      {
+        new: true,
+        useFindAndModify: false,
+      },
+    );
+    return result;
+  }
+
   async createCalendar(
     createCalendartDto: CreateCalendarDto,
   ): Promise<any> {
