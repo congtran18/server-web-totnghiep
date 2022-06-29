@@ -27,8 +27,8 @@ export class LessonService {
       // isDeleted: false,
       $and: [
         { tutoruid: id },
-        { end: { $lte: end } },
-        { start: { $gte: start } }
+        // { end: { $lte: end } },
+        // { start: { $gte: start } }
       ]
     });
     return result;
