@@ -91,10 +91,14 @@ export class CalendarService {
     return true
   }
 
-  async updateColor(uid : string): Promise<any> {
+  async updateColor(uid: string, start: Date, end: Date): Promise<any> {
     const result = await this.calendarModel.findOneAndUpdate(
       {
-        tutoruid: uid,
+        $and: [
+          { tutoruid: uid },
+          { start: { $lte: start } },
+          { end: { $gte: end } }
+        ]
       },
       {
         color: "#e02f3e"

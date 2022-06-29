@@ -58,9 +58,9 @@ export class LessonController {
     // @AuthJwt() payload: JwtPayload,
   ): Promise<BaseResponse<Model<Lesson>>> {
     const response: BaseResponse<Model<Lesson>> = {};
-    const checkExitCalendar = await this.calendarService.modifyDateTime(createLessontDto.tutoruid, createLessontDto.start, createLessontDto.end)
+    const checkExitCalendar = await this.calendarService.modifyDateTimeLesson(createLessontDto.tutoruid, createLessontDto.start, createLessontDto.end)
     if (!checkExitCalendar) {
-      await this.calendarService.updateColor(createLessontDto.tutoruid)
+      await this.calendarService.updateColor(createLessontDto.tutoruid, createLessontDto.start, createLessontDto.end)
     }
     const lesson = await this.lessonService.createLesson(createLessontDto);
     if (!lesson) {
