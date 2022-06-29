@@ -9,7 +9,7 @@ export class CreateLessonDto {
 
   @IsNotEmpty()
   @ApiProperty()
-  tutor: string;
+  tutoruid: string;
 
   @ApiProperty()
   start: Date;
@@ -20,9 +20,9 @@ export class CreateLessonDto {
   @ApiProperty()
   notes: string;
 
-  constructor(user: string, tutor: string, start: Date, end: Date, notes: string) {
+  constructor(user: string, tutoruid: string, start: Date, end: Date, notes: string) {
     this.user = user;
-    this.tutor = tutor;
+    this.tutoruid = tutoruid;
     this.start = start;
     this.end = end;
     this.notes = notes;

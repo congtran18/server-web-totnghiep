@@ -10,7 +10,7 @@ export class Lesson extends Document {
 
   @ApiProperty()
   @Prop({ required: true })
-  tutor: string;
+  tutoruid: string;
 
   @ApiProperty()
   @Prop({ type: Date, required: true })
@@ -30,7 +30,7 @@ export class Lesson extends Document {
 
   constructor(
     user: string,
-    tutor: string,
+    tutoruid: string,
     start: Date,
     end: Date,
     notes: string,
@@ -38,7 +38,7 @@ export class Lesson extends Document {
     ) {
     super();
     this.user = user;
-    this.tutor = tutor;
+    this.tutoruid = tutoruid;
     this.start = start;
     this.end = end;
     this.notes = notes;
