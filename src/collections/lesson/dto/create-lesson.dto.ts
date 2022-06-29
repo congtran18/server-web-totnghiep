@@ -9,6 +9,10 @@ export class CreateLessonDto {
 
   @IsNotEmpty()
   @ApiProperty()
+  username: string;
+
+  @IsNotEmpty()
+  @ApiProperty()
   tutoruid: string;
 
   @ApiProperty()
@@ -20,8 +24,9 @@ export class CreateLessonDto {
   @ApiProperty()
   notes: string;
 
-  constructor(user: string, tutoruid: string, start: Date, end: Date, notes: string) {
+  constructor(user: string, username: string, tutoruid: string, start: Date, end: Date, notes: string) {
     this.user = user;
+    this.username = username;
     this.tutoruid = tutoruid;
     this.start = start;
     this.end = end;
