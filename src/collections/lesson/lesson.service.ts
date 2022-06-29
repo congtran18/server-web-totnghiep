@@ -19,10 +19,14 @@ export class LessonService {
     return (await this.lessonModel.estimatedDocumentCount().exec()) == 0;
   }
 
-  async getLessonById(id: string): Promise<any> {
+  async getLessonById(id: string, start: Date, end: Date): Promise<any> {
     const result = await this.lessonModel.find({
-      tutoruid: id,
       // isDeleted: false,
+      $and: [
+        { tutoruid: id },
+        { start: { $lte: end } },
+        { end: { $gte: start } }
+      ]
     });
     return result;
   }
@@ -121,15 +125,15 @@ export class LessonService {
   async removeLesson(id: string): Promise<any> {
     const checkResult = await this.lessonModel.findOne({ _id: id, start: { "$gte": new Date(new Date().getTime() + 24 * 60 * 60 * 1000) } });
 
-    if (!checkResult){
+    if (!checkResult) {
       return null
     }
 
-      try {
-        const result = await this.lessonModel.findOneAndRemove({ _id: id });
-        return result;
-      } catch (err) {
-        throw new NotFoundException('Do not find data'); //Return which when not find?
-      }
+    try {
+      const result = await this.lessonModel.findOneAndRemove({ _id: id });
+      return result;
+    } catch (err) {
+      throw new NotFoundException('Do not find data'); //Return which when not find?
+    }
   }
 }

@@ -28,6 +28,7 @@ import { RolesGuard } from '../auth/roles.guard';
 import { RolesAllowed } from '../auth/roles.decorator'
 import { CreateLessonDto } from './dto/create-lesson.dto';
 import { UpdateLessonDto } from './dto/update-lesson.dto';
+import { GetLessonDto } from './dto/get-lesson.dto'
 import { Lesson } from './schemas/lesson.schema';
 import { LessonService } from './lesson.service';
 import { ROLE_OWNER, ROLE_ADMIN, ROLE_TUTOR } from "../admins/dto/admin.roles";
@@ -41,7 +42,7 @@ export class LessonController {
   constructor(
     private readonly lessonService: LessonService,
     private readonly calendarService: CalendarService
-    ) { }
+  ) { }
 
   @ApiOkResponse({
     description: 'Create lesson',
@@ -58,7 +59,7 @@ export class LessonController {
   ): Promise<BaseResponse<Model<Lesson>>> {
     const response: BaseResponse<Model<Lesson>> = {};
     const checkExitCalendar = await this.calendarService.modifyDateTime(createLessontDto.tutoruid, createLessontDto.start, createLessontDto.end)
-    if(!checkExitCalendar){
+    if (!checkExitCalendar) {
       await this.calendarService.updateColor(createLessontDto.tutoruid)
     }
     const lesson = await this.lessonService.createLesson(createLessontDto);
@@ -140,10 +141,10 @@ export class LessonController {
   // @UseGuards(JwtAuthGuard, RolesGuard)
   async getLessonById(
     @Param('id') params: string,
-    @AuthJwt() payload: JwtPayload,
+    @Body() getLessonDto: GetLessonDto,
   ): Promise<BaseResponse<Lesson>> {
     const response: BaseResponse<Lesson> = {};
-    const lesson = await this.lessonService.getLessonById(params);
+    const lesson = await this.lessonService.getLessonById(params, getLessonDto.start, getLessonDto.end);
     if (!lesson) {
       response.error = {
         code: HttpStatus.BAD_REQUEST,
