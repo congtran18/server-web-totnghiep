@@ -53,9 +53,10 @@ export class CalendarService {
     return { 'calendar': result, 'total': total };
   }
 
-  async modifyDateTime(start: Date, end: Date): Promise<Boolean> {
+  async modifyDateTime(tutor: string, start: Date, end: Date): Promise<Boolean> {
     var query = {
       $and: [
+        { tutoruid: tutor },
         { start: { $lte: end } },
         { end: { $gte: start } }
       ]
@@ -71,9 +72,9 @@ export class CalendarService {
     createCalendartDto: CreateCalendarDto,
   ): Promise<any> {
 
-    const { start, end } = createCalendartDto
+    const { start, end, tutoruid } = createCalendartDto
 
-    const check = await this.modifyDateTime(start, end)
+    const check = await this.modifyDateTime(tutoruid, start, end)
 
     if (!check) {
       return null
@@ -97,7 +98,7 @@ export class CalendarService {
 
     const { start, end } = updateCalendartDto
 
-    const check = await this.modifyDateTime(start, end)
+    const check = await this.modifyDateTime("123", start, end)
 
     if (!check) {
       return null
@@ -121,15 +122,15 @@ export class CalendarService {
   async removeCalendar(id: string): Promise<any> {
     const checkResult = await this.calendarModel.findOne({ _id: id, start: { "$gte": new Date(new Date().getTime() + 24 * 60 * 60 * 1000) } });
 
-    if (!checkResult){
+    if (!checkResult) {
       return null
     }
 
-      try {
-        const result = await this.calendarModel.findOneAndRemove({ _id: id });
-        return result;
-      } catch (err) {
-        throw new NotFoundException('Do not find data'); //Return which when not find?
-      }
+    try {
+      const result = await this.calendarModel.findOneAndRemove({ _id: id });
+      return result;
+    } catch (err) {
+      throw new NotFoundException('Do not find data'); //Return which when not find?
+    }
   }
 }

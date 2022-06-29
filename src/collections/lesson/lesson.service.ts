@@ -56,8 +56,8 @@ export class LessonService {
   async modifyDateTime(start: Date, end: Date): Promise<Boolean> {
     var query = {
       $and: [
-        { start: { $lte: end } },
-        { end: { $gte: start } }
+        { start: { $lt: end } },
+        { end: { $gt: start } }
       ]
     };
     const result = await this.lessonModel.findOne(query).exec()
