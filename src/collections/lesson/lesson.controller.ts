@@ -144,7 +144,7 @@ export class LessonController {
   ): Promise<BaseResponse<Lesson>> {
     const response: BaseResponse<Lesson> = {};
     const calendarid = await this.calendarService.getCalendarById(params)
-    const lesson = await this.lessonService.getLessonById(params, calendarid.start, calendarid.end);
+    const lesson = await this.lessonService.getLessonById(calendarid.tutoruid, calendarid.start, calendarid.end);
     if (!lesson) {
       response.error = {
         code: HttpStatus.BAD_REQUEST,
