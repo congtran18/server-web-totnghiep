@@ -76,6 +76,21 @@ export class CalendarService {
     return true
   }
 
+  async modifyDateTimeLesson(tutor: string, start: Date, end: Date): Promise<Boolean> {
+    var query = {
+      $and: [
+        { tutoruid: tutor },
+        { start: { $lte: start } },
+        { end: { $gte: end } }
+      ]
+    };//lịch tạo lesson nằm trong khoản calendar
+    const result = await this.calendarModel.findOne(query).exec()
+    if (result) {
+      return false
+    }
+    return true
+  }
+
   async updateColor(uid : string): Promise<any> {
     const result = await this.calendarModel.findOneAndUpdate(
       {
