@@ -141,10 +141,10 @@ export class LessonController {
   // @UseGuards(JwtAuthGuard, RolesGuard)
   async getLessonById(
     @Param('id') params: string,
-    @Body() getLessonDto: GetLessonDto,
   ): Promise<BaseResponse<Lesson>> {
     const response: BaseResponse<Lesson> = {};
-    const lesson = await this.lessonService.getLessonById(params, getLessonDto.start, getLessonDto.end);
+    const calendarid = await this.calendarService.getCalendarById(params)
+    const lesson = await this.lessonService.getLessonById(params, calendarid.start, calendarid.end);
     if (!lesson) {
       response.error = {
         code: HttpStatus.BAD_REQUEST,

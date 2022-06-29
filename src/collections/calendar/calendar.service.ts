@@ -19,9 +19,17 @@ export class CalendarService {
     return (await this.calendarModel.estimatedDocumentCount().exec()) == 0;
   }
 
-  async getCalendarById(id: string): Promise<any> {
+  async getCalendarByTutorId(id: string): Promise<any> {
     const result = await this.calendarModel.find({
       tutoruid: id,
+      // isDeleted: false,
+    });
+    return result;
+  }
+
+  async getCalendarById(id: string): Promise<any> {
+    const result = await this.calendarModel.findOne({
+      _id: id,
       // isDeleted: false,
     });
     return result;

@@ -130,12 +130,12 @@ export class CalendarController {
   @ApiOperation({ summary: 'Get tutor calendar' })
   @Get(':id')
   // @UseGuards(JwtAuthGuard, RolesGuard)
-  async getCalendarById(
+  async getCalendarByTutorId(
     @Param('id') params: string,
     @AuthJwt() payload: JwtPayload,
   ): Promise<BaseResponse<Calendar>> {
     const response: BaseResponse<Calendar> = {};
-    const calendar = await this.calendarService.getCalendarById(params);
+    const calendar = await this.calendarService.getCalendarByTutorId(params);
     if (!calendar) {
       response.error = {
         code: HttpStatus.BAD_REQUEST,
