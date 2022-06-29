@@ -46,7 +46,7 @@ export class LessonController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Create lesson' })
   @Post()
-  @RolesAllowed(ROLE_OWNER, ROLE_ADMIN, ROLE_TUTOR)
+  // @RolesAllowed(ROLE_OWNER, ROLE_ADMIN, ROLE_TUTOR)
   @UseGuards(JwtAuthGuard, RolesGuard)
   async createLesson(
     @Body() createLessontDto: CreateLessonDto,
