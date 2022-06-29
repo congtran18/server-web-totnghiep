@@ -3,14 +3,14 @@ import { Document } from 'mongoose';
 import { ApiProperty } from "@nestjs/swagger";
 
 @Schema()
-export class Calendar extends Document {
+export class Lesson extends Document {
   @ApiProperty()
   @Prop({ required: true })
   user: string;
 
   @ApiProperty()
   @Prop({ required: true })
-  tutoruid: string;
+  tutor: string;
 
   @ApiProperty()
   @Prop({ type: Date, required: true })
@@ -25,12 +25,12 @@ export class Calendar extends Document {
   notes: string;
 
   @ApiProperty()
-  @Prop({ default: "#367CF7" })
+  @Prop({ default: "#e02f3e" })
   color: string;
 
   constructor(
     user: string,
-    tutoruid: string,
+    tutor: string,
     start: Date,
     end: Date,
     notes: string,
@@ -38,7 +38,7 @@ export class Calendar extends Document {
     ) {
     super();
     this.user = user;
-    this.tutoruid = tutoruid;
+    this.tutor = tutor;
     this.start = start;
     this.end = end;
     this.notes = notes;
@@ -46,4 +46,4 @@ export class Calendar extends Document {
   }
 }
 
-export const CalendarSchema = SchemaFactory.createForClass(Calendar);
+export const LessonSchema = SchemaFactory.createForClass(Lesson);
