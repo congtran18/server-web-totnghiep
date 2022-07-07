@@ -121,7 +121,7 @@ export class UsersService {
         email: email
       },
       {
-        minutes: 30000,
+        minutes: 300000,
         $inc: { daysleft: daysleft }
       },
       {
@@ -137,7 +137,7 @@ export class UsersService {
   }
 
   async updateAllUserMinutesLeft(): Promise<User | null> {
-    await this.userModel.updateMany({ daysleft: { $gt: 0 }, track: false }, { minutes: 50000 }, { upsert: false });
+    await this.userModel.updateMany({ daysleft: { $gt: 0 }, track: false }, { minutes: 300000 }, { upsert: false });
     return null
   }
 

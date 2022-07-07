@@ -26,13 +26,13 @@ export class CronService  {
   // @Cron(CronExpression.EVERY_10_MINUTES)
   // Only refresh contract data to deal with user update lock outside FE UI Lock
   // Update lại số ngày còn lại của người dùng
-  @Cron(CronExpression.EVERY_30_SECONDS)
+  @Cron(CronExpression.EVERY_MINUTE)
   async UpdateDayLeftUser(): Promise<void> {
     return this.processingUpdateDayLeft();
   }
 
   // Update lại số phút còn lại của người dùng
-  @Cron(CronExpression.EVERY_10_MINUTES)
+  @Cron(CronExpression.EVERY_30_MINUTES)
   async UpdateMinutesLeftUser(): Promise<void> {
     return this.processingUpdateMinutesUser();
   }
