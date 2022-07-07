@@ -88,10 +88,10 @@ export class TutorService {
       } else if (sort === "teaching_minutes_low") {
         tutorSort = { "totalTeachingMinutes": 1, ...tutorSort };
       } else if (sort === "old") {
-        tutorSort = { "create_at": 1, ...tutorSort };
+        tutorSort = { "createdAt": 1, ...tutorSort };
       }
     } else {
-      tutorSort = { 'create_at': -1, ...tutorSort }
+      tutorSort = { 'createdAt': -1, ...tutorSort }
     }
 
     tutorfilter = { "accept": accept ? JSON.parse(accept?.toLowerCase()) : true, ...tutorfilter };
