@@ -7,6 +7,8 @@ import { CreateLessonDto } from './dto/create-lesson.dto';
 import { UpdateLessonDto } from './dto/update-lesson.dto';
 import { Boolean } from 'aws-sdk/clients/apigateway';
 import moment from "moment";
+import endOfDayfrom from 'date-fns/endOfDay';
+import startOfDay from 'date-fns/startOfDay';
 
 @Injectable()
 export class LessonService {
@@ -67,8 +69,8 @@ export class LessonService {
       $and: [
         {
           start: {
-            $gte: moment().startOf('day').toDate(),
-            $lte: moment().endOf('day').toDate()
+            $gte: startOfDay(new Date()),
+            $lte: endOfDay(new Date())
           }
         },
         // { end: { $gt: start } }
