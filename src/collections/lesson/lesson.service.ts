@@ -67,6 +67,7 @@ export class LessonService {
 
     var query = {
       $and: [
+        { user: user },
         {
           start: {
             $gte: moment(start).startOf('day').toDate(),
