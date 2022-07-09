@@ -87,10 +87,10 @@ export class LessonService {
     return true
   }
 
-  async modifyExistDateTime(user: string, start: Date, end: Date): Promise<Boolean> {
+  async modifyExistDateTime(tutoruid: string, start: Date, end: Date): Promise<Boolean> {
     var query = {
       $and: [
-        { user: user },
+        { tutoruid: tutoruid },
         { start: { $lt: end } },
         { end: { $gt: start } }
       ]
@@ -106,12 +106,18 @@ export class LessonService {
     createLessontDto: CreateLessonDto,
   ): Promise<any> {
 
-    const { start, end, user } = createLessontDto
+    const { start, end, user, tutoruid } = createLessontDto
 
-    const check = await this.modifyDateTime(user, start, end)
+    const checkbooking = await this.modifyDateTime(user, start, end)
 
-    if (!check) {
-      return null
+    const checksame = await this.modifyExistDateTime(tutoruid, start, end)
+
+    if (!checkbooking) {
+      return 'booked'
+    }
+
+    if (!checksame){
+      return 'same'
     }
 
     const model = new this.lessonModel({

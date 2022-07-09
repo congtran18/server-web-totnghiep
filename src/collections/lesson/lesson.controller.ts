@@ -62,12 +62,18 @@ export class LessonController {
     if (!checkExitCalendar) {
       await this.calendarService.updateColor(createLessontDto.tutoruid, createLessontDto.start, createLessontDto.end)
       const lesson = await this.lessonService.createLesson(createLessontDto);
-      if (!lesson) {
+      if (lesson === 'booked') {
         response.error = {
           code: HttpStatus.BAD_REQUEST,
           message: 'Bạn đã có lịch học ngày đó!',
         };
-      } else {
+      } else if (lesson === 'same') {
+        response.error = {
+          code: HttpStatus.BAD_REQUEST,
+          message: 'Đã có người đặt trước!',
+        };
+      }
+      else {
         response.data = lesson;
       }
     } else {
