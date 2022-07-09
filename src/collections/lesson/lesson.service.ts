@@ -7,7 +7,7 @@ import { CreateLessonDto } from './dto/create-lesson.dto';
 import { UpdateLessonDto } from './dto/update-lesson.dto';
 import { Boolean } from 'aws-sdk/clients/apigateway';
 import moment from "moment";
-import endOfDay from 'date-fns/endOfDay';
+import endOfDayfrom from 'date-fns/endOfDay';
 import startOfDay from 'date-fns/startOfDay';
 
 @Injectable()
@@ -63,14 +63,14 @@ export class LessonService {
   }
 
   async modifyDateTime(user: string, start: Date, end: Date): Promise<Boolean> {
-    const today = moment().startOf('day')
+    // const today = moment().startOf('day')
 
     var query = {
       $and: [
         {
           start: {
-            $gte: startOfDay(new Date()),
-            $lte: endOfDay(new Date())
+            $gte: moment(start).startOf('day').toDate(),
+            $lte: moment(start).endOf('day').toDate()
           }
         },
         // { end: { $gt: start } }
