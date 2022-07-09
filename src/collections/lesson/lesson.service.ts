@@ -7,7 +7,7 @@ import { CreateLessonDto } from './dto/create-lesson.dto';
 import { UpdateLessonDto } from './dto/update-lesson.dto';
 import { Boolean } from 'aws-sdk/clients/apigateway';
 import moment from "moment";
-import endOfDayfrom from 'date-fns/endOfDay';
+import endOfDay from 'date-fns/endOfDay';
 import startOfDay from 'date-fns/startOfDay';
 
 @Injectable()
