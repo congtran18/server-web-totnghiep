@@ -185,19 +185,19 @@ export class StripeService {
                 if (data && customer?.email && dataProduct?.type) {
                     if (dataProduct?.type === "6 month") {
                         await this.usersService.updateTimeLeftCoureUser(customer?.email, 180)
-                        if (customer?.email) {
-                            await this.mailService.sendSuccessjCoursesOrder(customer?.email || '', "Khóa học", moment(new Date(data.create_at)).format('DD/MM/YYYY, h:mm:ss a'), "6 tháng", expanded_session.amount_total ? expanded_session.amount_total * 230 : 0)
-                        }
+                        // if (customer?.email) {
+                        //     await this.mailService.sendSuccessjCoursesOrder(customer?.email || '', "Khóa học", moment(new Date(data.create_at)).format('DD/MM/YYYY, h:mm:ss a'), "6 tháng", expanded_session.amount_total ? expanded_session.amount_total * 230 : 0)
+                        // }
                     } else if (dataProduct?.type === "3 month") {
                         await this.usersService.updateTimeLeftCoureUser(customer?.email, 90)
-                        if (customer?.email) {
-                            await this.mailService.sendSuccessjCoursesOrder(customer?.email || '', "Khóa học", moment(new Date(data.create_at)).format('DD/MM/YYYY, h:mm:ss a'), "3 tháng", expanded_session.amount_total ? expanded_session.amount_total * 230 : 0)
-                        }
+                        // if (customer?.email) {
+                        //     await this.mailService.sendSuccessjCoursesOrder(customer?.email || '', "Khóa học", moment(new Date(data.create_at)).format('DD/MM/YYYY, h:mm:ss a'), "3 tháng", expanded_session.amount_total ? expanded_session.amount_total * 230 : 0)
+                        // }
                     } else {
                         await this.usersService.updateTimeLeftCoureUser(customer?.email, 30)
-                        if (customer?.email) {
-                            await this.mailService.sendSuccessjCoursesOrder(customer?.email || '', "Khóa học", moment(new Date(data.create_at)).format('DD/MM/YYYY, h:mm:ss a'), "1 tháng", expanded_session.amount_total ? expanded_session.amount_total * 230 : 0)
-                        }
+                        // if (customer?.email) {
+                        //     await this.mailService.sendSuccessjCoursesOrder(customer?.email || '', "Khóa học", moment(new Date(data.create_at)).format('DD/MM/YYYY, h:mm:ss a'), "1 tháng", expanded_session.amount_total ? expanded_session.amount_total * 230 : 0)
+                        // }
                     }
                 }
                 return data;
@@ -270,9 +270,9 @@ export class StripeService {
                     })
                 })
 
-                if (customer?.email) {
-                    await this.mailService.sendSuccessjBooksOrder(customer?.email || '', "Sách", createAt, total_details?.amount_shipping ? (total_details?.amount_shipping * 230) : 0, expanded_session.amount_total ? expanded_session.amount_total * 230 : 0, books)
-                }
+                // if (customer?.email) {
+                //     await this.mailService.sendSuccessjBooksOrder(customer?.email || '', "Sách", createAt, total_details?.amount_shipping ? (total_details?.amount_shipping * 230) : 0, expanded_session.amount_total ? expanded_session.amount_total * 230 : 0, books)
+                // }
                 return data;
             }
 
