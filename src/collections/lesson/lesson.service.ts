@@ -75,6 +75,9 @@ export class LessonService {
       ]
     };
     const result = await this.lessonModel.findOne(query).exec()
+
+    console.log("result nek", result)
+
     if (result) {
       return false
     }
