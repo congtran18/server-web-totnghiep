@@ -232,16 +232,17 @@ export class LessonService {
     console.log("checkbooked", checkbooked)
     console.log("checkbookedtutor", checkbookedtutor)
     console.log("checklesson", checklesson)
-    if (checkbooked && checklessontutor && !checkbookedtutor) {
+    if (checkbooked && !checkbookedtutor) {
       //khi nguoi dung co lich hoc truoc va call ko dung gia su
       return "not true tutor"
-    } else if (checkbooked && checklessontutor && checkbookedtutor && !checklesson) {
+    } else if (checkbooked && checkbookedtutor && !checklesson) {
       // khi nguoi dung co lich hoc truoc, call dung gia su nhung ko dung thoi gian dat truoc
       return "not true time"
-    } else if (checkbooked && checklessontutor && checkbookedtutor && checklesson) {
+    } else if (checkbooked && checkbookedtutor && checklesson) {
       // khi nguoi dung co lich hoc truoc, call dung gia su va trong thoi gian dat truoc
       return "call lesson"
     }else if(checklessontutor){
+      // khi nguoi dung ko dat truoc call vao thoi diem nguoi dung da dat
       return "tutor calling"
     } 
     else {
