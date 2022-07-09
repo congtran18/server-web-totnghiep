@@ -60,9 +60,24 @@ export class LessonService {
     return { 'lesson': result, 'total': total };
   }
 
-  async modifyDateTime(start: Date, end: Date): Promise<Boolean> {
+  async modifyDateTime(user: string, start: Date, end: Date): Promise<Boolean> {
     var query = {
       $and: [
+        { start: { $lt: end } },
+        { end: { $gt: start } }
+      ]
+    };
+    const result = await this.lessonModel.findOne(query).exec()
+    if (result) {
+      return false
+    }
+    return true
+  }
+
+  async modifyExistDateTime(user: string ,start: Date, end: Date): Promise<Boolean> {
+    var query = {
+      $and: [
+        { user: user },
         { start: { $lt: end } },
         { end: { $gt: start } }
       ]
@@ -78,9 +93,9 @@ export class LessonService {
     createLessontDto: CreateLessonDto,
   ): Promise<any> {
 
-    const { start, end } = createLessontDto
+    const { start, end, user } = createLessontDto
 
-    const check = await this.modifyDateTime(start, end)
+    const check = await this.modifyDateTime(user, start, end)
 
     if (!check) {
       return null
@@ -104,11 +119,11 @@ export class LessonService {
 
     const { start, end } = updateLessontDto
 
-    const check = await this.modifyDateTime(start, end)
+    // const check = await this.modifyDateTime( ,start, end)
 
-    if (!check) {
-      return null
-    }
+    // if (!check) {
+    //   return null
+    // }
 
     const result = await this.lessonModel.findOneAndUpdate(
       {

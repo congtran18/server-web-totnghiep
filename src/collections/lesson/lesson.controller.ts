@@ -61,15 +61,15 @@ export class LessonController {
     const checkExitCalendar = await this.calendarService.modifyDateTimeLesson(createLessontDto.tutoruid, createLessontDto.start, createLessontDto.end)
     if (!checkExitCalendar) {
       await this.calendarService.updateColor(createLessontDto.tutoruid, createLessontDto.start, createLessontDto.end)
-    }
-    const lesson = await this.lessonService.createLesson(createLessontDto);
-    if (!lesson) {
-      response.error = {
-        code: HttpStatus.BAD_REQUEST,
-        message: 'Lịch bị trùng!',
-      };
-    } else {
-      response.data = lesson;
+      const lesson = await this.lessonService.createLesson(createLessontDto);
+      if (!lesson) {
+        response.error = {
+          code: HttpStatus.BAD_REQUEST,
+          message: 'Lịch bị trùng!',
+        };
+      } else {
+        response.data = lesson;
+      }
     }
     return response;
   }
