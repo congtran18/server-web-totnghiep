@@ -79,8 +79,6 @@ export class LessonService {
     };
     const result = await this.lessonModel.findOne(query).exec()
 
-    console.log("result nek", result)
-
     if (result) {
       return false
     }
@@ -158,6 +156,8 @@ export class LessonService {
   }
 
   async checkCallTutor(tutoruid: string, user: string): Promise<any> {
+    console.log("tutoruid", tutoruid)
+    console.log("user", user)
     var querycheckbooked = {
       $and: [
         { user: user },
@@ -197,6 +197,10 @@ export class LessonService {
     const checkbooked = await this.lessonModel.findOne(querycheckbooked).exec()
     const checkbookedtutor = await this.lessonModel.findOne(querycheckbookedtutor).exec()
     const checklesson = await this.lessonModel.findOne(querychecklesson).exec()
+
+    console.log("checkbooked", checkbooked)
+    console.log("checkbookedtutor", checkbookedtutor)
+    console.log("checklesson", checklesson)
     if (checkbooked && !checkbookedtutor) {
       //khi nguoi dung co lich hoc truoc va call ko dung gia su
       return "not true tutor"

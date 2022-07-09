@@ -26,13 +26,11 @@ export class VideoChatGateway implements OnGatewayConnection, OnGatewayDisconnec
     const validateUser = await this.authService.getUserFromWSToken(socket.handshake)
     const userFromSocket = await this.usersService.getUserByUid(validateUser.uid)
     if (userFromSocket) {
-      console.log("userFromSocket", userFromSocket)
       const id = userFromSocket.uid
       this.users[id] = socket.id
       socket.emit('me', id)
       this.server?.to(socket.id).emit('hey', 'Helloo')
       socket.on("updateMyMedia", ({ type, currentMediaStatus }) => {
-        console.log("updateMyMedia");
         socket.broadcast.emit("updateUserMedia", { type, currentMediaStatus });
       });
       this.logger.log(`New Socket >> ${socket.id}`)
