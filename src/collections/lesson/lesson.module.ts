@@ -10,7 +10,7 @@ import {CalendarModule} from "../calendar/calendar.module";
     MongooseModule.forFeature([
       {name: Lesson.name, schema: LessonSchema},
     ]),
-    CalendarModule,
+    forwardRef(() => CalendarModule),
   ],
   controllers: [LessonController],
   providers: [LessonService],
