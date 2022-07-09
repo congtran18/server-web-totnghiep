@@ -108,9 +108,9 @@ export class LessonService {
 
     const { start, end, user, tutoruid } = createLessontDto
 
-    const checkbooking = await this.modifyDateTime(user, start, end)
+    const checkbooking = await this.modifyDateTime(user, start, end)// check hoc vien da dat lich hoc trong khoang tg nay chua
 
-    const checksame = await this.modifyExistDateTime(tutoruid, start, end)
+    const checksame = await this.modifyExistDateTime(tutoruid, start, end)// check hoc vien co dat lich trung voi hoc vien khac ko
 
     if (!checkbooking) {
       return 'booked'
@@ -156,6 +156,61 @@ export class LessonService {
     );
     return result;
   }
+
+  async checkCallTutor(tutoruid: string, user: string): Promise<any> {
+    var querycheckbooked = {
+      $and: [
+        { user: user },
+        // { tutoruid: tutoruid },
+        {
+          start: {
+            $gte: moment().startOf('day').toDate(),
+            $lte: moment().endOf('day').toDate()
+          }
+        },
+        // { end: { $gt: start } }
+      ]
+    };//check lich hoc co trong ngay
+
+    var querycheckbookedtutor = {
+      $and: [
+        { user: user },
+        { tutoruid: tutoruid },
+        {
+          start: {
+            $gte: moment().startOf('day').toDate(),
+            $lte: moment().endOf('day').toDate()
+          }
+        },
+        // { end: { $gt: start } }
+      ]
+    };//check lich hoc co trong ngay voi 1 gia su cu the
+
+    var querychecklesson = {
+      $and: [
+        { tutoruid: tutoruid },
+        { user: user },
+        { start: { $lt: new Date().toISOString() } },
+        { end: { $gt: new Date().toISOString() } }
+      ]
+    };
+    const checkbooked = await this.lessonModel.findOne(querycheckbooked).exec()
+    const checkbookedtutor = await this.lessonModel.findOne(querycheckbookedtutor).exec()
+    const checklesson = await this.lessonModel.findOne(querychecklesson).exec()
+    if (checkbooked && !checkbookedtutor) {
+      //khi nguoi dung co lich hoc truoc va call ko dung gia su
+      return "not true tutor"
+    } else if (checkbooked && checkbookedtutor && !checklesson) {
+      // khi nguoi dung co lich hoc truoc, call dung gia su nhung ko dung thoi gian dat truoc
+      return "not true time"
+    } else if (checkbooked && checkbookedtutor && checklesson) {
+      // khi nguoi dung co lich hoc truoc, call dung gia su va trong thoi gian dat truoc
+      return "call lesson"
+    } else {
+      // khi nguoi dung ko dat lich truoc => call thong thuong
+      return "regular call"
+    }
+  }// check hien tai co phai trong thoi gian hoc
 
   async removeLessonByTutor(tutoruid: string, start: Date, end: Date): Promise<any> {
     var query = {

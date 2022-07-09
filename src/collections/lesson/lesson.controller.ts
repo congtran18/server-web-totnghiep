@@ -141,6 +141,31 @@ export class LessonController {
     return response;
   }
 
+  @ApiOkResponse({
+    description: 'Check call lesson',
+    type: Lesson,
+  })
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Check call lesson' })
+  @Get("/checkCallTutor/:tutoruid")
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async checkCallLesson(
+    @AuthJwt() payload: JwtPayload,
+    @Param('tutoruid') tutoruid: string,
+  ): Promise<BaseResponse<Lesson>> {
+    const response: BaseResponse<Lesson> = {};
+    const lesson = await this.lessonService.checkCallTutor(tutoruid, payload.uid);
+    if (!lesson) {
+      response.error = {
+        code: HttpStatus.BAD_REQUEST,
+        message: 'ERROR.',
+      };
+    } else {
+      response.data = lesson
+    }
+    return response;
+  }
+
 
   @ApiOkResponse({
     description: 'Get tutor lesson',
