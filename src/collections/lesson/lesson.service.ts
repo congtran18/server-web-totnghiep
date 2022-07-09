@@ -106,6 +106,10 @@ export class LessonService {
 
     const { start, end, user, tutoruid } = createLessontDto
 
+    console.log("start nek", start)
+    console.log("new date nek", new Date())
+    console.log("new date nek", new Date().toISOString())
+
     const checkbooking = await this.modifyDateTime(user, start, end)// check hoc vien da dat lich hoc trong khoang tg nay chua
 
     const checksame = await this.modifyExistDateTime(tutoruid, start, end)// check hoc vien co dat lich trung voi hoc vien khac ko
