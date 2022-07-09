@@ -61,10 +61,17 @@ export class LessonService {
   }
 
   async modifyDateTime(user: string, start: Date, end: Date): Promise<Boolean> {
+    const today = moment().startOf('day')
+
     var query = {
       $and: [
-        { start: { $lt: end } },
-        { end: { $gt: start } }
+        {
+          start: {
+            $gte: today.toDate(),
+            $lte: moment(today).endOf('day').toDate()
+          }
+        },
+        // { end: { $gt: start } }
       ]
     };
     const result = await this.lessonModel.findOne(query).exec()
@@ -74,7 +81,7 @@ export class LessonService {
     return true
   }
 
-  async modifyExistDateTime(user: string ,start: Date, end: Date): Promise<Boolean> {
+  async modifyExistDateTime(user: string, start: Date, end: Date): Promise<Boolean> {
     var query = {
       $and: [
         { user: user },

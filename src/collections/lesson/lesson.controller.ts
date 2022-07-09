@@ -65,7 +65,7 @@ export class LessonController {
       if (!lesson) {
         response.error = {
           code: HttpStatus.BAD_REQUEST,
-          message: 'Lịch bị trùng!',
+          message: 'Bạn đã có lịch học ngày đó!',
         };
       } else {
         response.data = lesson;
