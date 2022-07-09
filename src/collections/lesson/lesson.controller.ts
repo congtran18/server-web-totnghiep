@@ -70,6 +70,11 @@ export class LessonController {
       } else {
         response.data = lesson;
       }
+    } else {
+      response.error = {
+        code: HttpStatus.BAD_REQUEST,
+        message: 'Gia sư không có lịch dạy!',
+      };
     }
     return response;
   }
