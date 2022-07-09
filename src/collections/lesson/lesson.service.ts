@@ -202,6 +202,20 @@ export class LessonService {
       ]
     };//check lich hoc co trong ngay voi 1 gia su cu the
 
+    var querychecklessontutor = {
+      $and: [
+        // { user: user },
+        { tutoruid: tutoruid },
+        {
+          start: {
+            $gte: startday,
+            $lte: endday
+          }
+        },
+        // { end: { $gt: start } }
+      ]
+    };
+
     var querychecklesson = {
       $and: [
         { tutoruid: tutoruid },
@@ -213,20 +227,24 @@ export class LessonService {
     const checkbooked = await this.lessonModel.findOne(querycheckbooked).exec()
     const checkbookedtutor = await this.lessonModel.findOne(querycheckbookedtutor).exec()
     const checklesson = await this.lessonModel.findOne(querychecklesson).exec()
+    const checklessontutor = await this.lessonModel.findOne(querychecklessontutor).exec()
 
     console.log("checkbooked", checkbooked)
     console.log("checkbookedtutor", checkbookedtutor)
     console.log("checklesson", checklesson)
-    if (checkbooked && !checkbookedtutor) {
+    if (checkbooked && checklessontutor && !checkbookedtutor) {
       //khi nguoi dung co lich hoc truoc va call ko dung gia su
       return "not true tutor"
-    } else if (checkbooked && checkbookedtutor && !checklesson) {
+    } else if (checkbooked && checklessontutor && checkbookedtutor && !checklesson) {
       // khi nguoi dung co lich hoc truoc, call dung gia su nhung ko dung thoi gian dat truoc
       return "not true time"
-    } else if (checkbooked && checkbookedtutor && checklesson) {
+    } else if (checkbooked && checklessontutor && checkbookedtutor && checklesson) {
       // khi nguoi dung co lich hoc truoc, call dung gia su va trong thoi gian dat truoc
       return "call lesson"
-    } else {
+    }else if(checklessontutor){
+      return "tutor calling"
+    } 
+    else {
       // khi nguoi dung ko dat lich truoc => call thong thuong
       return "regular call"
     }
