@@ -162,7 +162,8 @@ export class LessonService {
   async checkCallTutor(tutoruid: string, user: string): Promise<any> {
     console.log("tutoruid", tutoruid)
     console.log("user", user)
-    console.log("date now", moment(new Date().toISOString()).startOf('day').toDate())
+    console.log("date start", moment(new Date().toISOString()).startOf('day').toDate())
+    console.log("date end", moment(new Date().toISOString()).endOf('day').toDate())
     var querycheckbooked = {
       $and: [
         { user: user },
@@ -170,7 +171,7 @@ export class LessonService {
         {
           start: {
             $gte: moment(new Date().toISOString()).startOf('day').toDate(),
-            $lte: moment(new Date().toISOString()).endOf('day').toDate()
+            // $lte: moment(new Date().toISOString()).endOf('day').toDate()
           }
         },
         // { end: { $gt: start } }
