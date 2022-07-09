@@ -116,7 +116,7 @@ export class LessonService {
       return 'booked'
     }
 
-    if (!checksame){
+    if (!checksame) {
       return 'same'
     }
 
@@ -157,7 +157,17 @@ export class LessonService {
     return result;
   }
 
-
+  async removeLessonByTutor(tutoruid: string, start: Date, end: Date): Promise<any> {
+    var query = {
+      $and: [
+        { tutoruid: tutoruid },
+        { start: { $gte: start } },
+        { end: { $lte: end } }
+      ]
+    };
+    await this.lessonModel.deleteMany(query)
+    return null
+  }
 
   async removeLesson(id: string): Promise<any> {
     const checkResult = await this.lessonModel.findOne({ _id: id, start: { "$gte": new Date(new Date().getTime() + 24 * 60 * 60 * 1000) } });

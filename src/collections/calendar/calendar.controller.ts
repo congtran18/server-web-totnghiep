@@ -31,13 +31,17 @@ import { UpdateCalendarDto } from './dto/update-calendar.dto';
 import { Calendar } from './schemas/calendar.schema';
 import { CalendarService } from './calendar.service';
 import { ROLE_OWNER, ROLE_ADMIN, ROLE_TUTOR } from "../admins/dto/admin.roles";
+import { LessonService } from "../lesson/lesson.service";
 
 @ApiTags('calendar')
 @Controller('calendar')
 export class CalendarController {
   private logger: Logger = new Logger(CalendarController.name);
 
-  constructor(private readonly calendarService: CalendarService) { }
+  constructor(
+    private readonly calendarService: CalendarService,
+    private readonly lessonService: LessonService
+  ) { }
 
   @ApiOkResponse({
     description: 'Create calendar',
@@ -168,6 +172,7 @@ export class CalendarController {
         message: 'Không được xóa lịch trong quá khứ',
       }
     } else {
+      await this.lessonService.removeLessonByTutor(resultDelete.tutoruid, resultDelete.start, resultDelete.end)
       response.data = resultDelete;
     }
     return response;
