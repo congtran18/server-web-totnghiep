@@ -62,16 +62,23 @@ export class LessonService {
     return { 'lesson': result, 'total': total };
   }
 
+  subtractHours(numOfHours: number, date = new Date()) {
+    date.setHours(date.getHours() - numOfHours);
+    return date;
+  }
+
   async modifyDateTime(user: string, start: Date, end: Date): Promise<Boolean> {
     // const today = moment().startOf('day')
+    const startday = this.subtractHours(7, new Date(moment(start).startOf('day').toDate())).toISOString()
+    const endday = this.subtractHours(7, new Date(moment(start).endOf('day').toDate())).toISOString()
 
     var query = {
       $and: [
         { user: user },
         {
           start: {
-            $gte: moment(start).startOf('day').toDate(),
-            $lte: moment(start).endOf('day').toDate()
+            $gte: startday,
+            $lte: endday
           }
         },
         // { end: { $gt: start } }
@@ -157,11 +164,6 @@ export class LessonService {
       },
     );
     return result;
-  }
-
-  subtractHours(numOfHours: number, date = new Date()) {
-    date.setHours(date.getHours() - numOfHours);
-    return date;
   }
 
   async checkCallTutor(tutoruid: string, user: string): Promise<any> {
