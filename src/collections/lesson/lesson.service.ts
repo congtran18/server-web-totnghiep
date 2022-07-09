@@ -171,7 +171,7 @@ export class LessonService {
         {
           start: {
             $gte: moment(new Date().toISOString()).startOf('day').toDate(),
-            // $lte: moment(new Date().toISOString()).endOf('day').toDate()
+            $lte: moment(new Date().toISOString()).endOf('day').toDate()
           }
         },
         // { end: { $gt: start } }
