@@ -168,8 +168,8 @@ export class LessonService {
         // { tutoruid: tutoruid },
         {
           start: {
-            $gte: startOfDay(new Date()),
-            $lte: endOfDay(new Date())
+            $gte: moment(new Date().toISOString()).startOf('day').toDate(),
+            $lte: moment(new Date().toISOString()).endOf('day').toDate()
           }
         },
         // { end: { $gt: start } }
@@ -182,8 +182,8 @@ export class LessonService {
         { tutoruid: tutoruid },
         {
           start: {
-            $gte: startOfDay(new Date()),
-            $lte: endOfDay(new Date())
+            $gte: moment(new Date().toISOString()).startOf('day').toDate(),
+            $lte: moment(new Date().toISOString()).endOf('day').toDate()
           }
         },
         // { end: { $gt: start } }
