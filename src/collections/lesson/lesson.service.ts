@@ -162,6 +162,7 @@ export class LessonService {
   async checkCallTutor(tutoruid: string, user: string): Promise<any> {
     console.log("tutoruid", tutoruid)
     console.log("user", user)
+    console.log("date now", moment(new Date().toISOString()).startOf('day').toDate())
     var querycheckbooked = {
       $and: [
         { user: user },
