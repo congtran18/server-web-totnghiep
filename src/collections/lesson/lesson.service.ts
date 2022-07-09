@@ -159,19 +159,27 @@ export class LessonService {
     return result;
   }
 
+  subtractHours(numOfHours: number, date = new Date()) {
+    date.setHours(date.getHours() - numOfHours);
+    return date;
+  }
+
   async checkCallTutor(tutoruid: string, user: string): Promise<any> {
     console.log("tutoruid", tutoruid)
     console.log("user", user)
-    console.log("date start", moment(new Date().toISOString()).startOf('day').toDate())
-    console.log("date end", moment(new Date().toISOString()).endOf('day').toDate())
+    const startday = this.subtractHours(7, new Date(moment(new Date().toISOString()).startOf('day').toDate())).toISOString()
+    const endday = this.subtractHours(7, new Date(moment(new Date().toISOString()).endOf('day').toDate())).toISOString()
+
+    console.log("date start", startday)
+    console.log("date end", endday)
     var querycheckbooked = {
       $and: [
         { user: user },
         // { tutoruid: tutoruid },
         {
           start: {
-            $gte: moment(new Date().toISOString()).startOf('day').toDate(),
-            $lte: moment(new Date().toISOString()).endOf('day').toDate()
+            $gte: startday,
+            $lte: endday
           }
         },
         // { end: { $gt: start } }
@@ -184,8 +192,8 @@ export class LessonService {
         { tutoruid: tutoruid },
         {
           start: {
-            $gte: moment(new Date().toISOString()).startOf('day').toDate(),
-            $lte: moment(new Date().toISOString()).endOf('day').toDate()
+            $gte: startday,
+            $lte: endday
           }
         },
         // { end: { $gt: start } }
