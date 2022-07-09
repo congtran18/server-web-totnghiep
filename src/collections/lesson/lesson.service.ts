@@ -162,12 +162,12 @@ export class LessonService {
       $and: [
         { user: user },
         // { tutoruid: tutoruid },
-        {
-          start: {
-            $gte: moment(new Date().toISOString()).startOf('day').toDate(),
-            $lte: moment(new Date().toISOString()).endOf('day').toDate()
-          }
-        },
+        // {
+        //   start: {
+        //     $gte: moment(new Date().toISOString()).startOf('day').toDate(),
+        //     $lte: moment(new Date().toISOString()).endOf('day').toDate()
+        //   }
+        // },
         // { end: { $gt: start } }
       ]
     };//check lich hoc co trong ngay
