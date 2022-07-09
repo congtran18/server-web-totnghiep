@@ -7,7 +7,7 @@ import { CreateLessonDto } from './dto/create-lesson.dto';
 import { UpdateLessonDto } from './dto/update-lesson.dto';
 import { Boolean } from 'aws-sdk/clients/apigateway';
 import moment from "moment";
-import endOfDayfrom from 'date-fns/endOfDay';
+import endOfDay from 'date-fns/endOfDay';
 import startOfDay from 'date-fns/startOfDay';
 
 @Injectable()
@@ -162,12 +162,12 @@ export class LessonService {
       $and: [
         { user: user },
         // { tutoruid: tutoruid },
-        // {
-        //   start: {
-        //     $gte: moment(new Date().toISOString()).startOf('day').toDate(),
-        //     $lte: moment(new Date().toISOString()).endOf('day').toDate()
-        //   }
-        // },
+        {
+          start: {
+            $gte: startOfDay(new Date()),
+            $lte: endOfDay(new Date())
+          }
+        },
         // { end: { $gt: start } }
       ]
     };//check lich hoc co trong ngay
@@ -178,8 +178,8 @@ export class LessonService {
         { tutoruid: tutoruid },
         {
           start: {
-            $gte: moment(new Date().toISOString()).startOf('day').toDate(),
-            $lte: moment(new Date().toISOString()).endOf('day').toDate()
+            $gte: startOfDay(new Date()),
+            $lte: endOfDay(new Date())
           }
         },
         // { end: { $gt: start } }
