@@ -67,8 +67,8 @@ export class LessonService {
       $and: [
         {
           start: {
-            $gte: today.toDate(),
-            $lte: moment(today).endOf('day').toDate()
+            $gte: moment().startOf('day').toDate(),
+            $lte: moment().endOf('day').toDate()
           }
         },
         // { end: { $gt: start } }
