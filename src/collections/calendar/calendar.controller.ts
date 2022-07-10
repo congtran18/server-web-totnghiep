@@ -174,8 +174,8 @@ export class CalendarController {
         message: 'Không được xóa lịch trong quá khứ',
       }
     } else {
-      await this.lessonService.removeLessonByTutor(resultDelete.tutoruid, resultDelete.start, resultDelete.end)
-      // await this.tutorService
+      const removeLesson = await this.lessonService.removeLessonByTutor(resultDelete.tutoruid, resultDelete.start, resultDelete.end)
+      await this.tutorService.updateTutorMinutesCall(resultDelete.tutoruid, 300000*parseInt(removeLesson.deletedCount))
       response.data = resultDelete;
     }
     return response;

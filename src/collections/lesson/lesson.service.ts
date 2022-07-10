@@ -279,8 +279,7 @@ export class LessonService {
     };
     const result = await this.lessonModel.deleteMany(query)
 
-    console.log("result nnek", result)
-    return null
+    return result
   }
 
   async removeLesson(id: string): Promise<any> {
