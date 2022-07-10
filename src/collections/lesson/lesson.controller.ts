@@ -33,6 +33,7 @@ import { Lesson } from './schemas/lesson.schema';
 import { LessonService } from './lesson.service';
 import { ROLE_OWNER, ROLE_ADMIN, ROLE_TUTOR } from "../admins/dto/admin.roles";
 import { CalendarService } from "../calendar/calendar.service";
+import { TutorService } from "../tutor/tutor.service";
 
 @ApiTags('lesson')
 @Controller('lesson')
@@ -41,7 +42,8 @@ export class LessonController {
 
   constructor(
     private readonly lessonService: LessonService,
-    private readonly calendarService: CalendarService
+    private readonly calendarService: CalendarService,
+    private readonly tutorService: TutorService
   ) { }
 
   @ApiOkResponse({
@@ -74,6 +76,7 @@ export class LessonController {
         };
       }
       else {
+        await this.tutorService.updateTutorMinutesCall(createLessontDto.tutoruid, 300000)
         response.data = lesson;
       }
     } else {
