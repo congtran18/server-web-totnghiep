@@ -206,12 +206,8 @@ export class LessonService {
       $and: [
         // { user: user },
         { tutoruid: tutoruid },
-        {
-          start: {
-            $gte: startday,
-            $lte: endday
-          }
-        },
+        { start: { $lte: new Date().toISOString() } },
+        { end: { $gte: new Date().toISOString() } }
         // { end: { $gt: start } }
       ]
     };
