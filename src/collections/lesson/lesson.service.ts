@@ -241,15 +241,37 @@ export class LessonService {
     } else if (checkbooked && checkbookedtutor && checklesson) {
       // khi nguoi dung co lich hoc truoc, call dung gia su va trong thoi gian dat truoc
       return "call lesson"
-    }else if(checklessontutor){
+    } else if (checklessontutor) {
       // khi nguoi dung ko dat truoc call vao thoi diem nguoi dung da dat
       return "tutor calling"
-    } 
+    }
     else {
       // khi nguoi dung ko dat lich truoc => call thong thuong
       return "regular call"
     }
   }// check hien tai co phai trong thoi gian hoc
+
+
+  async tutorCheckLesson(tutoruid: string, user: string): Promise<any> {
+
+    var querychecklesson = {
+      $and: [
+        { tutoruid: tutoruid },
+        { user: user },
+        { start: { $lt: new Date().toISOString() } },
+        { end: { $gt: new Date().toISOString() } }
+      ]
+    };
+    const checklessontutor = await this.lessonModel.findOne(querychecklesson).exec()
+
+    if (checklessontutor) {
+      // gia su dang trong lich dat truoc
+      return "call lesson"
+    }
+
+    return "regular call"
+
+  }
 
   async removeLessonByTutor(tutoruid: string, start: Date, end: Date): Promise<any> {
     var query = {
