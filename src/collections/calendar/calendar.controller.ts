@@ -175,7 +175,7 @@ export class CalendarController {
       }
     } else {
       const removeLesson = await this.lessonService.removeLessonByTutor(resultDelete.tutoruid, resultDelete.start, resultDelete.end)
-      await this.tutorService.updateTutorMinutesCall(resultDelete.tutoruid, 300000*parseInt(removeLesson.deletedCount))
+      await this.tutorService.updateTutorMinutesCall(resultDelete.tutoruid, -300000*parseInt(removeLesson.deletedCount))
       response.data = resultDelete;
     }
     return response;
