@@ -4,12 +4,14 @@ import {Calendar, CalendarSchema} from "./schemas/calendar.schema";
 import {MongooseModule} from "@nestjs/mongoose";
 import {forwardRef, Module} from '@nestjs/common';
 import {LessonModule} from "../lesson/lesson.module";
+import {TutorModule} from "../tutor/tutor.module";
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       {name: Calendar.name, schema: CalendarSchema},
     ]),
+    TutorModule,
     forwardRef(() => LessonModule),
   ],
   controllers: [CalendarController],

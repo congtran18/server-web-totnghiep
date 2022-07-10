@@ -225,9 +225,9 @@ export class LessonService {
     const checklesson = await this.lessonModel.findOne(querychecklesson).exec()
     const checklessontutor = await this.lessonModel.findOne(querychecklessontutor).exec()
 
-    console.log("checkbooked", checkbooked)
-    console.log("checkbookedtutor", checkbookedtutor)
-    console.log("checklesson", checklesson)
+    // console.log("checkbooked", checkbooked)
+    // console.log("checkbookedtutor", checkbookedtutor)
+    // console.log("checklesson", checklesson)
     if (checkbooked && !checkbookedtutor) {
       //khi nguoi dung co lich hoc truoc va call ko dung gia su
       return "not true tutor"
@@ -277,7 +277,9 @@ export class LessonService {
         { end: { $lte: end } }
       ]
     };
-    await this.lessonModel.deleteMany(query)
+    const result = await this.lessonModel.deleteMany(query)
+
+    console.log("result nnek", result)
     return null
   }
 

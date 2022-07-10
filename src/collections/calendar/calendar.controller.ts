@@ -32,6 +32,7 @@ import { Calendar } from './schemas/calendar.schema';
 import { CalendarService } from './calendar.service';
 import { ROLE_OWNER, ROLE_ADMIN, ROLE_TUTOR } from "../admins/dto/admin.roles";
 import { LessonService } from "../lesson/lesson.service";
+import { TutorService } from "../tutor/tutor.service";
 
 @ApiTags('calendar')
 @Controller('calendar')
@@ -40,7 +41,8 @@ export class CalendarController {
 
   constructor(
     private readonly calendarService: CalendarService,
-    private readonly lessonService: LessonService
+    private readonly lessonService: LessonService,
+    private readonly tutorService: TutorService
   ) { }
 
   @ApiOkResponse({
@@ -173,6 +175,7 @@ export class CalendarController {
       }
     } else {
       await this.lessonService.removeLessonByTutor(resultDelete.tutoruid, resultDelete.start, resultDelete.end)
+      // await this.tutorService
       response.data = resultDelete;
     }
     return response;
