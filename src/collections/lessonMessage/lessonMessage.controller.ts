@@ -95,11 +95,11 @@ export class LessonMessageController {
   }
 
   @ApiOkResponse({
-    description: 'Get all lessonMessage',
+    description: 'Get all lessonMessageCount',
     type: LessonMessage,
   })
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get all lessonMessage' })
+  @ApiOperation({ summary: 'Get all lessonMessageCount' })
   @Get()
   @UseGuards(JwtAuthGuard, RolesGuard)
   async getCountLessonMessage(
