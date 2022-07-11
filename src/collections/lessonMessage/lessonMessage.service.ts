@@ -17,7 +17,7 @@ export class LessonMessageService {
   }
 
 
-  async getAllLessonMessage(page?: string, limit?: string, uid?: string): Promise<any> {
+  async getAllLessonMessage(page?: string, limit?: string, uid?: string, realname?: string): Promise<any> {
     let pageNumber = 1;
     let limitNumber = 100;
     if (page) {
@@ -104,6 +104,13 @@ export class LessonMessageService {
     return this.lessonMessageModel
       .updateMany({ $or: [{ tutoruid: uid, read: false }, { useruid: uid, read: false }] }, { read: true }, { upsert: false })
       .exec();
+  }
+
+  async countUnread(
+    uid: string,
+  ): Promise<any> {
+    const result = await this.lessonMessageModel.countDocuments({ $or: [{ tutoruid: uid, read: false }, { useruid: uid, read: false }] })
+    return result;
   }
 
 }

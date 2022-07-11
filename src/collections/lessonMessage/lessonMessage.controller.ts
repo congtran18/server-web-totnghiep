@@ -58,7 +58,7 @@ export class LessonMessageController {
         code: HttpStatus.BAD_REQUEST,
         message: 'Lỗi khi tạo lesson message!',
       };
-    }else {
+    } else {
       response.data = lessonMessage;
     }
     return response;
@@ -90,6 +90,30 @@ export class LessonMessageController {
       };
     } else {
       response.data = lessonMessage
+    }
+    return response;
+  }
+
+  @ApiOkResponse({
+    description: 'Get all lessonMessage',
+    type: LessonMessage,
+  })
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get all lessonMessage' })
+  @Get()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async getCountLessonMessage(
+    @AuthJwt() payload: JwtPayload,
+  ): Promise<BaseResponse<LessonMessage>> {
+    const response: BaseResponse<LessonMessage> = {};
+    const lessonMessageCount = await this.lessonMessageService.countUnread(payload.uid);
+    if (!lessonMessageCount) {
+      response.error = {
+        code: HttpStatus.BAD_REQUEST,
+        message: 'ERROR.',
+      };
+    } else {
+      response.data = lessonMessageCount
     }
     return response;
   }
