@@ -9,15 +9,15 @@ import { CreateLessonMessageDto } from './dto/create-lesson-message.dto';
 export class LessonMessageService {
   constructor(
     @InjectConnection() private connection: Connection,
-    @InjectModel(LessonMessage.name) private lessonModel: Model<LessonMessage>,
+    @InjectModel(LessonMessage.name) private lessonMessageModel: Model<LessonMessage>,
   ) { }
 
   async isEmpty(): Promise<boolean> {
-    return (await this.lessonModel.estimatedDocumentCount().exec()) == 0;
+    return (await this.lessonMessageModel.estimatedDocumentCount().exec()) == 0;
   }
 
 
-  async getAllLessonMessage(page?: string, limit?: string): Promise<any> {
+  async getAllLessonMessage(page?: string, limit?: string, uid?: string): Promise<any> {
     let pageNumber = 1;
     let limitNumber = 100;
     if (page) {
@@ -28,26 +28,63 @@ export class LessonMessageService {
       limitNumber = parseInt(limit);
     }
 
-    var lessonfilter = {}
-    var lessonSort = {}
-
-    const result = await this.lessonModel
-      .find(lessonfilter).sort(lessonSort)
-      .limit(limitNumber)
-      .skip((pageNumber - 1) * limitNumber);
-
-    let total = await this.lessonModel.countDocuments(lessonfilter)
-
-    total = Math.ceil(total / limitNumber);
-
-    return { 'lesson': result, 'total': total };
+    return this.lessonMessageModel
+      .aggregate([
+        {
+          "$lookup": {
+            "from": "users",
+            "localField": "useruid",
+            "foreignField": "uid",
+            "as": "user"
+          }
+        },
+        {
+          "$lookup": {
+            "from": "tutors",
+            "localField": "tutoruid",
+            "foreignField": "uid",
+            "as": "tutor"
+          }
+        },
+        {
+          $match: {
+            $or: [
+              { "useruid": uid },
+              { "tutoruid": uid }
+            ]
+          }
+        },
+        {
+          $unset: [
+            "useruid",
+            "tutoruid",
+            // "identifiers"
+          ]
+        },
+        { $sort: { 'createdAt': -1 } },
+        {
+          $facet: {
+            'lessonMessage':
+              [
+                { $unwind: '$user' },
+                { $unwind: '$tutor' },
+                { $skip: (pageNumber - 1) * limitNumber },
+                { $limit: limitNumber },
+              ],
+            'count':
+              [
+                { $count: "totalCount" },
+              ],
+          }
+        }
+      ])
   }
 
   async createLessonMessage(
     createLessonMessagetDto: CreateLessonMessageDto,
   ): Promise<any> {
 
-    const model = new this.lessonModel({
+    const model = new this.lessonMessageModel({
       ...createLessonMessagetDto
     });
     const modelRes = await model.save();
@@ -59,6 +96,14 @@ export class LessonMessageService {
       return obj;
     }
     return null;
+  }
+
+  updateUnread(
+    uid: string,
+  ): Promise<any> {
+    return this.lessonMessageModel
+      .updateMany({ $or: [{ tutoruid: uid, read: false }, { useruid: uid, read: false }] }, { read: true }, { upsert: false })
+      .exec();
   }
 
 }

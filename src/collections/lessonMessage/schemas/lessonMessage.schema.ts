@@ -28,13 +28,18 @@ export class LessonMessage extends Document {
   @Prop({ default: false })
   read: boolean;
 
+  @ApiProperty()
+  @Prop({ type: Date, default: Date.now })
+  createdAt: Date;
+
   constructor(
     useruid: string,
     tutoruid: string,
     start: Date,
     end: Date,
     type: string,
-    read: boolean
+    read: boolean,
+    createdAt: Date
   ) {
     super();
     this.useruid = useruid;
@@ -43,6 +48,7 @@ export class LessonMessage extends Document {
     this.end = end;
     this.type = type;
     this.read = read;
+    this.createdAt = createdAt;
   }
 }
 

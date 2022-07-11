@@ -56,7 +56,7 @@ export class MessageService {
     id: string,
   ): Promise<any> {
     return this.messageModel
-      .updateMany({ from: targetUser, to: id }, { read: true }, { upsert: false })
+      .updateMany({ from: targetUser, to: id, read: false }, { read: true }, { upsert: false })
       .exec();
   }
 
