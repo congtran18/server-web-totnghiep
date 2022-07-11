@@ -187,7 +187,7 @@ export class CalendarController {
         })
       }
       await this.lessonMessageService.createLessonMessage({
-        // useruid: resultDelete.user,
+        useruid: resultDelete.tutoruid,
         tutoruid: resultDelete.tutoruid,
         start: resultDelete.start,
         end: resultDelete.end,
