@@ -28,6 +28,7 @@ import { RolesGuard } from '../auth/roles.guard';
 import { CreateLessonMessageDto } from './dto/create-lesson-message.dto';
 import { LessonMessage } from './schemas/lessonMessage.schema';
 import { LessonMessageService } from './lessonMessage.service';
+import { AdminsService } from "../admins/admins.service";
 
 @ApiTags('lessonMessage')
 @Controller('lessonMessage')
@@ -36,6 +37,7 @@ export class LessonMessageController {
 
   constructor(
     private readonly lessonMessageService: LessonMessageService,
+    private readonly adminsService: AdminsService,
   ) { }
 
   @ApiOkResponse({
@@ -82,7 +84,8 @@ export class LessonMessageController {
   ): Promise<BaseResponse<LessonMessage>> {
     const response: BaseResponse<LessonMessage> = {};
     await this.lessonMessageService.updateUnread(uid)
-    const lessonMessage = await this.lessonMessageService.getAllLessonMessage(page, limit, uid);
+    const checkRole = await this.adminsService.getAdmin(uid)
+    const lessonMessage = await this.lessonMessageService.getAllLessonMessage(page, limit, uid, checkRole?.role);
     if (!lessonMessage) {
       response.error = {
         code: HttpStatus.BAD_REQUEST,

@@ -17,7 +17,7 @@ export class LessonMessageService {
   }
 
 
-  async getAllLessonMessage(page?: string, limit?: string, uid?: string, realname?: string): Promise<any> {
+  async getAllLessonMessage(page?: string, limit?: string, uid?: string, role?: string): Promise<any> {
     let pageNumber = 1;
     let limitNumber = 100;
     if (page) {
@@ -48,9 +48,19 @@ export class LessonMessageService {
         },
         {
           $match: {
-            $or: [
-              { "useruid": uid },
-              { "tutoruid": uid }
+            $and: [
+              {
+                $or: [
+                  { "useruid": uid },
+                  { "tutoruid": uid }
+                ]
+              },
+              {
+                $or: [
+                  { "type": role === "user" ? "removed" : "tutorremoved" },
+                  { "type": "booked" }
+                ]
+              }
             ]
           }
         },
