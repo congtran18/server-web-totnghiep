@@ -68,20 +68,21 @@ export class LessonMessageController {
     description: 'Get all lessonMessage',
     type: LessonMessage,
   })
-  @ApiBearerAuth()
+  // @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all lessonMessage' })
-  @Get()
+  @Get(':uid')
   @ApiQuery({ name: 'page', required: false })
   @ApiQuery({ name: 'limit', required: false })
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
   async getAllLessonMessage(
-    @AuthJwt() payload: JwtPayload,
+    // @AuthJwt() payload: JwtPayload,
     @Query('page') page: string,
     @Query('limit') limit: string,
+    @Param('uid') uid: string,
   ): Promise<BaseResponse<LessonMessage>> {
     const response: BaseResponse<LessonMessage> = {};
-    await this.lessonMessageService.updateUnread(payload.uid)
-    const lessonMessage = await this.lessonMessageService.getAllLessonMessage(page, limit, payload.uid);
+    await this.lessonMessageService.updateUnread(uid)
+    const lessonMessage = await this.lessonMessageService.getAllLessonMessage(page, limit, uid);
     if (!lessonMessage) {
       response.error = {
         code: HttpStatus.BAD_REQUEST,
