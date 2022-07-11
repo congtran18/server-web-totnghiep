@@ -179,10 +179,10 @@ export class CalendarController {
       const listLessonRemove = await this.lessonService.getLessonById(resultDelete.tutoruid, resultDelete.start, resultDelete.end)
       for (let i = 0; i < listLessonRemove.length; i++) {
         await this.lessonMessageService.createLessonMessage({
-          useruid: listLessonRemove.user,
-          tutoruid: listLessonRemove.tutoruid,
-          start: listLessonRemove.start,
-          end: listLessonRemove.end,
+          useruid: listLessonRemove[i].user,
+          tutoruid: listLessonRemove[i].tutoruid,
+          start: listLessonRemove[i].start,
+          end: listLessonRemove[i].end,
           type: "removed"
         })
       }
