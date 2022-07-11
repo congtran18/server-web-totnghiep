@@ -177,17 +177,24 @@ export class CalendarController {
       }
     } else {
       const listLessonRemove = await this.lessonService.getLessonById(resultDelete.tutoruid, resultDelete.start, resultDelete.end)
-      for(let i = 0; i < listLessonRemove.length; i++){
+      for (let i = 0; i < listLessonRemove.length; i++) {
         await this.lessonMessageService.createLessonMessage({
-          useruid: resultDelete.user,
-          tutoruid: resultDelete.tutoruid,
-          start: resultDelete.start,
-          end: resultDelete.end,
+          useruid: listLessonRemove.user,
+          tutoruid: listLessonRemove.tutoruid,
+          start: listLessonRemove.start,
+          end: listLessonRemove.end,
           type: "removed"
         })
       }
+      await this.lessonMessageService.createLessonMessage({
+        // useruid: resultDelete.user,
+        tutoruid: resultDelete.tutoruid,
+        start: resultDelete.start,
+        end: resultDelete.end,
+        type: "tutorremoved"
+      })
       const removeLesson = await this.lessonService.removeLessonByTutor(resultDelete.tutoruid, resultDelete.start, resultDelete.end)
-      await this.tutorService.updateTutorMinutesCall(resultDelete.tutoruid, -300000*parseInt(removeLesson.deletedCount))
+      await this.tutorService.updateTutorMinutesCall(resultDelete.tutoruid, -300000 * parseInt(removeLesson.deletedCount))
       response.data = resultDelete;
     }
     return response;

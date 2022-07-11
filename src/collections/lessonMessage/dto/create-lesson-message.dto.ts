@@ -5,7 +5,7 @@ export class CreateLessonMessageDto {
 
   @IsNotEmpty()
   @ApiProperty()
-  useruid: string;
+  useruid?: string;
 
   @IsNotEmpty()
   @ApiProperty()

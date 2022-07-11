@@ -5,8 +5,8 @@ import { ApiProperty } from "@nestjs/swagger";
 @Schema()
 export class LessonMessage extends Document {
   @ApiProperty()
-  @Prop({ required: true })
-  useruid: string;
+  @Prop()
+  useruid?: string;
 
   @ApiProperty()
   @Prop({ required: true })
