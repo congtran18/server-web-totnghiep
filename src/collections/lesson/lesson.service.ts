@@ -22,9 +22,6 @@ export class LessonService {
   }
 
   async getLessonById(id: string, start: Date, end: Date): Promise<any> {
-    console.log("id", id)
-    console.log("start", start)
-    console.log("end", end)
     const result = await this.lessonModel.find({
       // isDeleted: false,
       $and: [

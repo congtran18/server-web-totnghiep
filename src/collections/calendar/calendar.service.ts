@@ -160,8 +160,6 @@ export class CalendarService {
     return result;
   }
 
-
-
   async removeCalendar(id: string): Promise<any> {
     const checkResult = await this.calendarModel.findOne({ _id: id, start: { "$gte": new Date(new Date().getTime() + 24 * 60 * 60 * 1000) } });
 

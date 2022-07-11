@@ -33,6 +33,7 @@ import { CalendarService } from './calendar.service';
 import { ROLE_OWNER, ROLE_ADMIN, ROLE_TUTOR } from "../admins/dto/admin.roles";
 import { LessonService } from "../lesson/lesson.service";
 import { TutorService } from "../tutor/tutor.service";
+import { LessonMessageService } from "../lessonMessage/lessonMessage.service";
 
 @ApiTags('calendar')
 @Controller('calendar')
@@ -42,7 +43,8 @@ export class CalendarController {
   constructor(
     private readonly calendarService: CalendarService,
     private readonly lessonService: LessonService,
-    private readonly tutorService: TutorService
+    private readonly tutorService: TutorService,
+    private readonly lessonMessageService: LessonMessageService
   ) { }
 
   @ApiOkResponse({
@@ -174,6 +176,16 @@ export class CalendarController {
         message: 'Không được xóa lịch trong quá khứ',
       }
     } else {
+      const listLessonRemove = await this.lessonService.getLessonById(resultDelete.tutoruid, resultDelete.start, resultDelete.end)
+      for(let i = 0; i < listLessonRemove.length; i++){
+        await this.lessonMessageService.createLessonMessage({
+          useruid: resultDelete.user,
+          tutoruid: resultDelete.tutoruid,
+          start: resultDelete.start,
+          end: resultDelete.end,
+          type: "removed"
+        })
+      }
       const removeLesson = await this.lessonService.removeLessonByTutor(resultDelete.tutoruid, resultDelete.start, resultDelete.end)
       await this.tutorService.updateTutorMinutesCall(resultDelete.tutoruid, -300000*parseInt(removeLesson.deletedCount))
       response.data = resultDelete;
