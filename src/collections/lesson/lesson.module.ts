@@ -5,6 +5,7 @@ import {MongooseModule} from "@nestjs/mongoose";
 import {forwardRef, Module} from '@nestjs/common';
 import {CalendarModule} from "../calendar/calendar.module";
 import {TutorModule} from "../tutor/tutor.module";
+import {LessonMessageModule} from "../lessonMessage/lessonMessage.module";
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import {TutorModule} from "../tutor/tutor.module";
       {name: Lesson.name, schema: LessonSchema},
     ]),
     TutorModule,
+    LessonMessageModule,
     forwardRef(() => CalendarModule),
   ],
   controllers: [LessonController],

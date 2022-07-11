@@ -30,7 +30,8 @@ import { CalendarModule } from 'src/collections/calendar/calendar.module'
 import { VideocallModule } from 'src/collections/videocall/videocall.module';
 import { ReviewTutorModule } from 'src/collections/reviewTutor/reviewTutor.module'
 import { WarningTutorModule } from 'src/collections/warningTutor/warningTutor.module'
-import { LessonModule } from'src/collections/lesson/lesson.module'
+import { LessonModule } from 'src/collections/lesson/lesson.module'
+import { LessonMessageModule } from 'src/collections/lessonMessage/lessonMessage.module'
 
 import { CronModule } from 'src/packages/cron/cron.module';
 import { MessageModule } from 'src/collections/message/message.module';
@@ -77,6 +78,7 @@ import { MailModule } from 'src/packages/mail/mail.module'
     WarningTutorModule,
     MailModule,
     LessonModule,
+    LessonMessageModule,
     // RealtimeModule,
     CalendarModule,
     VideocallModule,
