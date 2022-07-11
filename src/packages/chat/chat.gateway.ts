@@ -89,7 +89,8 @@ export class ChatGateway {
 
   @SubscribeMessage('private-lesson-message')
   async handleLessonMessage(@MessageBody() message: any): Promise<void> {
-    this.server?.to(message.uid[0]).emit('private-lesson-message', "oke");
-    this.server?.to(message.uid[1]).emit('private-lesson-message', "oke");
+    for (let i = 0; i < message.uid.length; i++) {
+      this.server?.to(message.uid[i]).emit('private-lesson-message', "oke");
+    }
   }
 }
