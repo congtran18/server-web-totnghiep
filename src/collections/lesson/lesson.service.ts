@@ -26,8 +26,8 @@ export class LessonService {
       // isDeleted: false,
       $and: [
         { tutoruid: id },
-        { end: { $lt: end } },
-        { start: { $gt: start } }
+        { end: { $lte: end } },
+        { start: { $gte: start } }
       ]
     });
     return result;
@@ -109,10 +109,6 @@ export class LessonService {
   ): Promise<any> {
 
     const { start, end, user, tutoruid } = createLessontDto
-
-    console.log("start nek", start)
-    console.log("new date nek", new Date())
-    console.log("new date nek", new Date().toISOString())
 
     const checkbooking = await this.modifyDateTime(user, start, end)// check hoc vien da dat lich hoc trong khoang tg nay chua
 
