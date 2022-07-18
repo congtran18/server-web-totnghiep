@@ -76,8 +76,7 @@ export class LessonController {
           code: HttpStatus.BAD_REQUEST,
           message: 'Đã có người đặt trước!',
         };
-      }
-      else {
+      } else {
         await this.tutorService.updateTutorMinutesCall(createLessontDto.tutoruid, 300000)
         await this.lessonMessageService.createLessonMessage({
           useruid: createLessontDto.user,
